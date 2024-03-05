@@ -7,11 +7,11 @@ import './App.css';
 
 function App() {
   /* State */
-  const [showCustomModal, setShowCustomModal] = useState(false);
+  const [showDemoModal, setShowDemoModal] = useState(false);
 
   /* Handlers */
-  const handleCloseCustomModal = () => setShowCustomModal(false);
-  const handleShowCustomModal = () => setShowCustomModal(true);
+  const handleCloseDemoModal = () => setShowDemoModal(false);
+  const handleShowDemoModal = () => setShowDemoModal(true);
 
   /* Components */
   function AppHeader() {
@@ -25,12 +25,12 @@ function App() {
   function AppMain() {
     return (
       <div className="App-main">
-        <Button variant="primary" onClick={handleShowCustomModal}>
+        <Button variant="primary" onClick={handleShowDemoModal}>
           Show demo modal
         </Button>
         <DemoModal
-          show={showCustomModal}
-          handleClose={handleCloseCustomModal}
+          show={showDemoModal}
+          handleClose={handleCloseDemoModal}
         />
       </div>
     );
