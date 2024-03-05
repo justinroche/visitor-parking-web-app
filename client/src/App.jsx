@@ -2,15 +2,18 @@ import { useState } from 'react';
 import React from 'react';
 import axios from 'axios';
 import Button from 'react-bootstrap/Button';
-import CustomModal from './CustomModal';
+import DemoModal from './DemoModal';
 import './App.css';
 
 function App() {
+  /* State */
   const [showCustomModal, setShowCustomModal] = useState(false);
 
+  /* Handlers */
   const handleCloseCustomModal = () => setShowCustomModal(false);
   const handleShowCustomModal = () => setShowCustomModal(true);
 
+  /* Components */
   function AppHeader() {
     return (
       <div className="App-header">
@@ -25,11 +28,15 @@ function App() {
         <Button variant="primary" onClick={handleShowCustomModal}>
           Show demo modal
         </Button>
-        <CustomModal show={showCustomModal} handleClose={handleCloseCustomModal} />
+        <DemoModal
+          show={showCustomModal}
+          handleClose={handleCloseCustomModal}
+        />
       </div>
     );
   }
 
+  /* Render */
   return (
     <>
       <AppHeader />
