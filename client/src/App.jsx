@@ -2,9 +2,9 @@ import { useState } from 'react';
 import React from 'react';
 import axios from 'axios';
 import Button from 'react-bootstrap/Button';
-import DemoModal from './DemoModal';
-import './App.css';
+import DemoModal from './components/DemoModal';
 import ParkingInfoModal from './components/ParkingInfoModal';
+import './App.css';
 
 function App() {
   /* State */
@@ -30,11 +30,19 @@ function App() {
   function AppMain() {
     return (
       <div className="App-main">
-        <Button variant="primary" onClick={handleShowDemoModal}>
+        <Button
+          className="button-spacing"
+          variant="primary"
+          onClick={handleShowDemoModal}
+        >
           Show demo modal
         </Button>
         <br />
-        <Button variant="primary" onClick={handleShowParkingInfoModal}>
+        <Button
+          className="button-spacing"
+          variant="primary"
+          onClick={handleShowParkingInfoModal}
+        >
           Visitor Parking Information
         </Button>
         <DemoModal show={showDemoModal} handleClose={handleCloseDemoModal} />
