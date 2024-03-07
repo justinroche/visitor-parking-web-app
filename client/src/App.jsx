@@ -28,10 +28,8 @@ function App() {
         <Button variant="primary" onClick={handleShowDemoModal}>
           Show demo modal
         </Button>
-        <DemoModal
-          show={showDemoModal}
-          handleClose={handleCloseDemoModal}
-        />
+        {/* Add purchase a pass button */}
+        <DemoModal show={showDemoModal} handleClose={handleCloseDemoModal} />
       </div>
     );
   }
