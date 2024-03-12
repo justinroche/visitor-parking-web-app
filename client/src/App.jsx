@@ -1,23 +1,22 @@
 import { useState } from 'react';
 import React from 'react';
 import axios from 'axios';
-import Button from 'react-bootstrap/Button';
-import DemoModal from './DemoModal';
 import './App.css';
-import ParkingInfoModal from './ParkingInfoModal';
+import Button from 'react-bootstrap/Button';
+import PurchasePassModal from './PurchasePassModal';
+import DemoModal from './DemoModal';
 
 function App() {
   /* State */
   const [showDemoModal, setShowDemoModal] = useState(false);
-  const [showParkingInfoModal, setShowParkingInfoModal] = useState(false); // State for parking info modal
+  const [showPurchasePassModal, setShowPurchasePassModal] = useState(false); // State for purchase a pass modal
 
   /* Handlers */
   const handleCloseDemoModal = () => setShowDemoModal(false);
   const handleShowDemoModal = () => setShowDemoModal(true);
 
-  const handleCloseParkingInfoModal = () => setShowParkingInfoModal(false); 
-  const handleShowParkingInfoModal = () => setShowParkingInfoModal(true);
-
+  const handleClosePurchasePassModal = () => setShowPurchasePassModal(false);
+  const handleShowPurchasePassModal = () => setShowPurchasePassModal(true);
 
   /* Components */
   function AppHeader() {
@@ -36,16 +35,13 @@ function App() {
         </Button>
         <br></br>
         <br></br>
-        <Button variant="secondary" onClick={handleShowParkingInfoModal}> {/* Button to show parking info modal */}
-          Parking Info
+        <Button variant="primary" onClick={handleShowPurchasePassModal}>
+          Purchase a pass
         </Button>
-        <DemoModal
-          show={showDemoModal}
-          handleClose={handleCloseDemoModal}
-        />
-        <ParkingInfoModal
-          show={showParkingInfoModal}
-          handleClose={handleCloseParkingInfoModal}
+        <DemoModal show={showDemoModal} handleClose={handleCloseDemoModal} />
+        <PurchasePassModal
+          show={showPurchasePassModal}
+          handleClose={handleClosePurchasePassModal}
         />
       </div>
     );
