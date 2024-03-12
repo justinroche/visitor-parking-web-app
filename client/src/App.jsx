@@ -4,14 +4,20 @@ import axios from 'axios';
 import Button from 'react-bootstrap/Button';
 import DemoModal from './DemoModal';
 import './App.css';
+import ParkingInfoModal from './ParkingInfoModal';
 
 function App() {
   /* State */
   const [showDemoModal, setShowDemoModal] = useState(false);
+  const [showParkingInfoModal, setShowParkingInfoModal] = useState(false); // State for parking info modal
 
   /* Handlers */
   const handleCloseDemoModal = () => setShowDemoModal(false);
   const handleShowDemoModal = () => setShowDemoModal(true);
+
+  const handleCloseParkingInfoModal = () => setShowParkingInfoModal(false); 
+  const handleShowParkingInfoModal = () => setShowParkingInfoModal(true);
+
 
   /* Components */
   function AppHeader() {
@@ -28,8 +34,19 @@ function App() {
         <Button variant="primary" onClick={handleShowDemoModal}>
           Show demo modal
         </Button>
-        {/* Add purchase a pass button */}
-        <DemoModal show={showDemoModal} handleClose={handleCloseDemoModal} />
+        <br></br>
+        <br></br>
+        <Button variant="secondary" onClick={handleShowParkingInfoModal}> {/* Button to show parking info modal */}
+          Parking Info
+        </Button>
+        <DemoModal
+          show={showDemoModal}
+          handleClose={handleCloseDemoModal}
+        />
+        <ParkingInfoModal
+          show={showParkingInfoModal}
+          handleClose={handleCloseParkingInfoModal}
+        />
       </div>
     );
   }

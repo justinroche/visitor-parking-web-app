@@ -3,3 +3,16 @@
   margin: 0 auto;
   padding: 2rem;
 }
+
+.radio{
+  margin-right: 10px;
+  margin-left: 5px;
+}
+
+.notification{
+  margin-left: 10px;
+}
+
+.phone{
+  margin-top: 5px;
+}
