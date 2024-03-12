@@ -42,6 +42,7 @@ function App() {
         <PurchasePassModal
           show={showPurchasePassModal}
           handleClose={handleClosePurchasePassModal}
+          isLoggedIn={true}
         />
       </div>
     );
