@@ -1,0 +1,16 @@
+.radioButtonLabel {
+  margin-right: 10px;
+  margin-left: 5px;
+}
+
+#notificationLabel {
+  margin-left: 5px;
+}
+
+#notificationTimeSelector {
+  margin-bottom: 5px;
+}
+
+#notificationPrompt {
+  margin: 10px 0 5px;
+}
