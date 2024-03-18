@@ -34,11 +34,12 @@ app.post('/parking-info', (req, res) => {
   res.send("Hey, it's the server. We received your button press.");
 });
 
+// POST request for the purchase-pass form.
 app.post('/purchase-pass', (req, res) => {
   const data = req.body;
   console.log('Received:', data);
 
-  // Store data to database (and other logic)
+  // TODO: Store data to database (and other logic)
 
   res.status(200).json({ message: 'purchase-pass data received!' });
 });
