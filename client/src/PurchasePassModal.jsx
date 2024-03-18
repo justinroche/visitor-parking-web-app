@@ -2,27 +2,41 @@ import React, { useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
+import './PurchasePassModal.css';
 
-// This modal is a DEMO component. Use it as a reference.
 function PurchasePassModal({ show, handleClose, isLoggedIn }) {
   /* State */
+  // formData contains all information entered and sent to the backend.
   const [formData, setFormData] = useState({
     licensePlate: '',
     passLength: '',
     notificationsEnabled: false,
-    notificationTime: '',
+    notificationTime: '15min',
     phoneNumber: '',
   });
 
   /* Handlers */
+  // handleInputChange updates the form data when the user edits an input field.
   function handleInputChange(event) {
     const { name, value, type, checked } = event.target;
     const newValue = type === 'checkbox' ? checked : value;
     setFormData({ ...formData, [name]: newValue });
   }
 
-  // Send a POST request to the server when the modal is saved.
+  // handlePayButton sends the form data to the backend when the user clicks the pay button.
   function handlePayButton() {
+    // If any required fields are missing, prevent form submission.
+    if (!formData.licensePlate || !formData.passLength) {
+      alert('Please fill out all required fields.');
+      return;
+    }
+
+    if (formData.notificationsEnabled && !formData.phoneNumber) {
+      alert('Please enter your phone number to enable notifications.');
+      return;
+    }
+
+    // Send the form data to the backend.
     axios
       .post('http://localhost:8080/purchase-pass', formData)
       .then((response) => {
@@ -85,7 +99,7 @@ function PurchasePassModal({ show, handleClose, isLoggedIn }) {
             checked={formData.passLength === 'hourly'}
             onChange={handleInputChange}
           />
-          <label className="radio" htmlFor="hourlyRadioButton">
+          <label className="radioButtonLabel" htmlFor="hourlyRadioButton">
             Hourly
           </label>
 
@@ -97,7 +111,7 @@ function PurchasePassModal({ show, handleClose, isLoggedIn }) {
             checked={formData.passLength === 'daily'}
             onChange={handleInputChange}
           />
-          <label className="radio" htmlFor="dailyRadioButton">
+          <label className="radioButtonLabel" htmlFor="dailyRadioButton">
             Daily
           </label>
 
@@ -109,7 +123,7 @@ function PurchasePassModal({ show, handleClose, isLoggedIn }) {
             checked={formData.passLength === 'weekly'}
             onChange={handleInputChange}
           />
-          <label className="radio" htmlFor="weeklyRadioButton">
+          <label className="radioButtonLabel" htmlFor="weeklyRadioButton">
             Weekly
           </label>
         </form>
@@ -126,7 +140,7 @@ function PurchasePassModal({ show, handleClose, isLoggedIn }) {
             checked={formData.notificationsEnabled}
             onChange={handleInputChange}
           />
-          <label className="notification" htmlFor="pushNotificationCheckbox">
+          <label id="notificationLabel" htmlFor="pushNotificationCheckbox">
             Enable push notifications
           </label>
         </div>
@@ -139,7 +153,6 @@ function PurchasePassModal({ show, handleClose, isLoggedIn }) {
             </p>
 
             <select
-              className="notificationTime"
               name="notificationTime"
               id="notificationTimeSelector"
               value={formData.notificationTime}
