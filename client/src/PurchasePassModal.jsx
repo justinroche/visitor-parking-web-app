@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
@@ -6,30 +6,25 @@ import axios from 'axios';
 // This modal is a DEMO component. Use it as a reference.
 function PurchasePassModal({ show, handleClose, isLoggedIn }) {
   /* State */
-  const [notificationsEnabled, setNotificationsEnabled] = useState(false);
+  const [formData, setFormData] = useState({
+    licensePlate: '',
+    passLength: '',
+    notificationsEnabled: false,
+    notificationTime: '',
+    phoneNumber: '',
+  });
 
   /* Handlers */
-  const handleToggleNotifications = () => {
-    setNotificationsEnabled(!notificationsEnabled);
-  };
-
-  // Send a POST request to the server when the modal is closed.
-  function handleCloseButton() {
-    axios
-      .post('http://localhost:8080/purchase-pass', { data: 'modal closed' })
-      .then((response) => {
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
-    handleClose();
+  function handleInputChange(event) {
+    const { name, value, type, checked } = event.target;
+    const newValue = type === 'checkbox' ? checked : value;
+    setFormData({ ...formData, [name]: newValue });
   }
 
   // Send a POST request to the server when the modal is saved.
-  function handleSaveButton() {
+  function handlePayButton() {
     axios
-      .post('http://localhost:8080/purchase-pass', { data: 'modal saved' })
+      .post('http://localhost:8080/purchase-pass', formData)
       .then((response) => {
         console.log(response.data);
       })
@@ -41,125 +36,142 @@ function PurchasePassModal({ show, handleClose, isLoggedIn }) {
 
   // Render the modal.
   return (
-    <Modal show={show} onHide={handleClose}>
+    <Modal show={show} onHide={handleClose} backdrop="static">
       <Modal.Header closeButton>
         <Modal.Title>Purchase a Visitor Parking Pass</Modal.Title>
       </Modal.Header>
+
       <Modal.Body>
-        <h5>License plate number</h5>
+        {/* License plate text input */}
+        <h5>License Plate</h5>
         <form>
           <input
             type="text"
-            id="textbox"
-            name="textbox"
+            id="licensePlateInput"
+            name="licensePlate"
             placeholder="ABC-1234"
-          ></input>
+            value={formData.licensePlate}
+            onChange={handleInputChange}
+          />
         </form>
         <br />
 
-        {/* Only display saved vehicles if user is logged in.
+        {/* Saved vehicles dropdown
+        Only display saved vehicles if user is logged in.
         This feature is work in progress and contains placeholder data.
         TODO: Implement saved vehicles. */}
         {isLoggedIn && (
           <div>
             <h5>Saved Vehicles</h5>
-            <select class="vehicles" name="vehicles" id="vehicles">
-              <option value="vehicle1">vehicle1</option>
-              <option value="vehicle2">vehicle2</option>
-              <option value="vehicle3">vehicle3</option>
+            <select name="vehicle" id="vehicleSelect">
+              <option value="vehicle-1">Vehicle 1</option>
+              <option value="vehicle-2">Vehicle 2</option>
+              <option value="vehicle-3">Vehicle 3</option>
             </select>
             <br />
             <br />
           </div>
         )}
 
-        <h5>Time</h5>
+        {/* Pass duration radio buttons
+        TODO: Allow user to specify number of days/hours. */}
+        <h5>Pass Duration</h5>
         <form>
           <input
             type="radio"
-            id="option1"
-            name="option"
-            value="option1"
-          ></input>
-          <label class="radio" for="option1">
-            {' '}
+            id="hourlyRadioButton"
+            name="passLength"
+            value="hourly"
+            checked={formData.passLength === 'hourly'}
+            onChange={handleInputChange}
+          />
+          <label className="radio" htmlFor="hourlyRadioButton">
             Hourly
           </label>
 
           <input
             type="radio"
-            id="option2"
-            name="option"
-            value="option2"
-          ></input>
-          <label class="radio" for="option2">
+            id="dailyRadioButton"
+            name="passLength"
+            value="daily"
+            checked={formData.passLength === 'daily'}
+            onChange={handleInputChange}
+          />
+          <label className="radio" htmlFor="dailyRadioButton">
             Daily
           </label>
 
           <input
             type="radio"
-            id="option3"
-            name="option"
-            value="option3"
-          ></input>
-          <label class="radio" for="option3">
+            id="weeklyRadioButton"
+            name="passLength"
+            value="weekly"
+            checked={formData.passLength === 'weekly'}
+            onChange={handleInputChange}
+          />
+          <label className="radio" htmlFor="weeklyRadioButton">
             Weekly
           </label>
         </form>
-        <br></br>
+        <br />
 
+        {/* Push notifications checkbox 
+        TODO: Setup notification API? */}
         <h5>Push Notifications</h5>
         <div>
           <input
             type="checkbox"
-            id="push"
-            name="notifiy"
-            checked={notificationsEnabled}
-            onChange={handleToggleNotifications}
+            id="pushNotificationCheckbox"
+            name="notificationsEnabled" // Correct name attribute
+            checked={formData.notificationsEnabled}
+            onChange={handleInputChange} // Use the common handler
           />
-          <label class="notification" for="scales">
+          <label className="notification" htmlFor="pushNotificationCheckbox">
             Enable push notifications
           </label>
         </div>
 
         {/* Only display time selection and phone number input if notifications have been enabled. */}
-        {notificationsEnabled && (
+        {formData.notificationsEnabled && (
           <div>
-            <select name="times" id="times">
-              <option value="15min">15 min</option>
-              <option value="30min">30 min</option>
-              <option value="45min">45 min</option>
-              <option value="60min">60 min</option>
+            <p id="notificationPrompt">
+              How long before your pass expires should we notify you?
+            </p>
+
+            <select
+              className="notificationTime"
+              name="notificationTime"
+              id="notificationTimeSelector"
+              value={formData.notificationTime}
+              onChange={handleInputChange}
+            >
+              <option value="15min">15 minutes</option>
+              <option value="30min">30 minutes</option>
+              <option value="45min">45 minutes</option>
+              <option value="60min">60 minutes</option>
             </select>
             <form>
               <input
-                class="phone"
                 type="text"
-                id="textbox"
-                name="textbox"
-                placeholder="Enter your phone number"
-              ></input>
+                id="phoneNumberInput"
+                name="phoneNumber"
+                placeholder="123-456-7890"
+                value={formData.phoneNumber}
+                onChange={handleInputChange}
+              />
             </form>
           </div>
         )}
       </Modal.Body>
+
       <Modal.Footer>
         <div className="container d-flex justify-content-between">
-          <Button variant="primary" onClick={handleSaveButton}>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={handlePayButton}>
             Pay
           </Button>
-          <div>
-            <Button
-              style={{ marginRight: '5px' }}
-              variant="secondary"
-              onClick={handleCloseButton}
-            >
-              Close
-            </Button>
-            <Button variant="primary" onClick={handleSaveButton}>
-              Save Changes
-            </Button>
-          </div>
         </div>
       </Modal.Footer>
     </Modal>

@@ -4,15 +4,19 @@
   padding: 2rem;
 }
 
-.radio{
+.radio {
   margin-right: 10px;
   margin-left: 5px;
 }
 
-.notification{
-  margin-left: 10px;
+.notification {
+  margin-left: 5px;
 }
 
-.phone{
-  margin-top: 5px;
+.notificationTime {
+  margin-bottom: 5px;
+}
+
+#notificationPrompt {
+  margin: 10px 0 5px;
 }
