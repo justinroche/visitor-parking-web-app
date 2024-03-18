@@ -122,9 +122,9 @@ function PurchasePassModal({ show, handleClose, isLoggedIn }) {
           <input
             type="checkbox"
             id="pushNotificationCheckbox"
-            name="notificationsEnabled" // Correct name attribute
+            name="notificationsEnabled"
             checked={formData.notificationsEnabled}
-            onChange={handleInputChange} // Use the common handler
+            onChange={handleInputChange}
           />
           <label className="notification" htmlFor="pushNotificationCheckbox">
             Enable push notifications
