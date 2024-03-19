@@ -4,6 +4,8 @@ import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import './PurchasePassModal.css';
 
+/* React Bootstrap has a whole system for handling forms: https://react-bootstrap.netlify.app/docs/forms/overview/
+We might want to rewrite this to fit their outline in the future, but this works well enough for now. */
 function PurchasePassModal({ show, handleClose, isLoggedIn }) {
   /* State */
   // formData contains all information entered and sent to the backend.
@@ -23,28 +25,43 @@ function PurchasePassModal({ show, handleClose, isLoggedIn }) {
     setFormData({ ...formData, [name]: newValue });
   }
 
-  // handlePayButton sends the form data to the backend when the user clicks the pay button.
+  // handlePayButton sends the relevant form data to the backend when the user clicks the pay button.
   function handlePayButton() {
     // If any required fields are missing, prevent form submission.
     if (!formData.licensePlate || !formData.passLength) {
-      alert('Please fill out all required fields.');
+      alert('Please enter your license plate and select a duration.');
       return;
     }
 
+    // If notifications are enabled but phone number is missing, prevent form submission.
     if (formData.notificationsEnabled && !formData.phoneNumber) {
       alert('Please enter your phone number to enable notifications.');
       return;
     }
 
-    // Send the form data to the backend.
+    // Prepare data to be sent to the backend.
+    const dataToSend = {
+      licensePlate: formData.licensePlate,
+      passLength: formData.passLength,
+      notificationsEnabled: formData.notificationsEnabled,
+    };
+
+    // Include additional fields if notifications are enabled.
+    if (formData.notificationsEnabled) {
+      dataToSend.notificationTime = formData.notificationTime;
+      dataToSend.phoneNumber = formData.phoneNumber;
+    }
+
+    // Send the data to the backend.
     axios
-      .post('http://localhost:8080/purchase-pass', formData)
+      .post('http://localhost:8080/purchase-pass', dataToSend)
       .then((response) => {
         console.log(response.data);
       })
       .catch((error) => {
         console.error('Error:', error);
       });
+
     handleClose();
   }
 
