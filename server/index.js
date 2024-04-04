@@ -24,8 +24,14 @@ app.post('/demo-modal', (req, res) => {
   res.send("Hey, it's the server. We received your button press.");
 });
 
-// POST request example from the demo modal.
+// POST request example from the parking-info modal.
 app.post('/parking-info', (req, res) => {
+  console.log('We just received', req.body.data, 'from the client.');
+  res.send("Hey, it's the server. We received your button press.");
+});
+
+// POST request example from the parking-info modal.
+app.post('/payment-info', (req, res) => {
   console.log('We just received', req.body.data, 'from the client.');
   res.send("Hey, it's the server. We received your button press.");
 });
