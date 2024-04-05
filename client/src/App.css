@@ -1,3 +1,11 @@
+.modal{
+  z-index: 1050;
+}
+
+.modal-backdrop{
+  z-index: 1040;
+}
+
 #root {
   max-width: 1280px;
   margin: 0 auto;
@@ -15,4 +23,9 @@
 
 .phone{
   margin-top: 5px;
+}
+
+.modal-button{
+  background-color: rgb(81, 40, 132) !important;
+  border: 3px rgb(81, 40, 132) !important;
 }

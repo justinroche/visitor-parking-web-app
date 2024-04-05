@@ -3,8 +3,8 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 
-// This modal is a DEMO component. Use it as a reference.
-function ParkingInfoModal({ show, handleClose }) {
+
+function ParkingInfoModal({ show, handleClose, handlePaymentModalOpen }) {
   // Send a POST request to the server when the modal is closed.
   function handleCloseButton() {
     axios
@@ -30,6 +30,12 @@ function ParkingInfoModal({ show, handleClose }) {
       });
     handleClose();
   }
+
+  function handlePayButton() {
+    handlePaymentModalOpen();
+    handleClose();
+  }
+
 
   // Render the modal.
   return (
@@ -83,14 +89,14 @@ function ParkingInfoModal({ show, handleClose }) {
       </Modal.Body>
       <Modal.Footer>
         <div className="container d-flex justify-content-between">
-          <Button variant="primary" onClick={handleSaveButton}>
+          <Button className='modal-button' variant="primary" onClick={handlePayButton}>
             Pay
           </Button>
           <div>
             <Button style = {{marginRight: "5px"}}  variant="secondary" onClick={handleCloseButton}>
               Close
             </Button>
-            <Button variant="primary" onClick={handleSaveButton}>
+            <Button className='modal-button' variant="primary" onClick={handleSaveButton}>
               Save Changes
             </Button>
           </div>

@@ -20,6 +20,8 @@ function App() {
   const handleShowParkingInfoModal = () => setShowParkingInfoModal(true);
   const handleClosePaymentModal = () => setShowPaymentModal(false);
   const handleShowPaymentModal = () => setShowPaymentModal(true);
+  const handlePaymentModalOpen = () => setShowPaymentModal(true);
+
 
 
   /* Components */
@@ -34,17 +36,12 @@ function App() {
   function AppMain() {
     return (
       <div className="App-main">
-        <Button variant="primary" onClick={handleShowDemoModal}>
-          Show demo modal
-        </Button>
-        <br></br>
-        <br></br>
-        <Button variant="secondary" onClick={handleShowParkingInfoModal}> {/* Button to show parking info modal */}
+        <Button className='modal-button' variant="secondary" onClick={handleShowParkingInfoModal}> {/* Button to show parking info modal */}
           Parking Info
         </Button>
         <br></br>
         <br></br>
-        <Button variant="secondary" onClick={handleShowPaymentModal}> {/* Button to show payment info modal */}
+        <Button className='modal-button' variant="secondary" onClick={handleShowPaymentModal}> {/* Button to show payment info modal */}
           Payment Info
         </Button>
         <DemoModal
@@ -54,6 +51,7 @@ function App() {
         <ParkingInfoModal
           show={showParkingInfoModal}
           handleClose={handleCloseParkingInfoModal}
+          handlePaymentModalOpen={handlePaymentModalOpen}
         />
         <PaymentModal
           show={showPaymentModal}
