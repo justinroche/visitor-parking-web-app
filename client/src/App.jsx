@@ -23,16 +23,16 @@ function App() {
     );
   }
 
-  function MyComponent() {
+/* function MyComponent() {
     return (
       <div className="container">
         <img src={leftImage} alt="Left Image" className="left-image" />
         
       </div>
     );
-  }
+  } */
   
-  function TextBox () {
+function TextBox () {
     return (
       <div className = "container">
         <div className = "text-container">
@@ -40,7 +40,7 @@ function App() {
            <p>A parking pass is required at all times except for 
            5 p.m. Fridays to 11:00 p.m. Sundays</p>
           <p>and Univeristy recognized holidays</p>
-        </div>
+        </div> 
 
       </div>
     )
