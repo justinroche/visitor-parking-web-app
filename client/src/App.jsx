@@ -70,7 +70,7 @@ function TextBox () {
     <>
       <AppHeader />
       <AppMain />
-      <MyComponent />
+      
       <TextBox />
     </>
   );
