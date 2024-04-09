@@ -45,9 +45,10 @@ function App() {
       </div>
     );
   }
+  
   function AppPurchasePass() {
     return (
-      <div className="App-main">
+      <div className="Appmain">
        div className = "button2">
          <Button variant="primary" style={{backgroundColor: '#4b0082', color: 'white', border: 'none'}} onClick={handleShowPurchasePassModal}>
          Purchase a pass
