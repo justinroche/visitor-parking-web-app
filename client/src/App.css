@@ -1,5 +1,47 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+.App-header{
+    
+    border-width: 20px;
+    border-bottom-style:outset;
+    border-bottom-width: .5in;
+    border-bottom-color:rgb(199, 189, 205);
+   margin: 0 auto;
+   padding: 40px;
+    text-align: center;
+    
+  background-color: #420d6e;
+  /*background-color: black;*/
+  color: white;
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-style: normal;
+  
+  
+  }
+
+.radio{ /*time buttons*/
+  margin-right: 10px;
+  margin-left: 5px;
+  
+
 }
+
+.notification{ /*text of push notifications*/
+  margin-left: 10px;
+  
+}
+
+.phone{
+  margin-top: 5px;
+  color: yellow;
+}
+
+.App-main{
+  position:sticky;
+  display: inline-table;
+  margin-left: 10px;;
+  margin-top: 20px;;
+  border-color: rgb(141, 118, 148);
+  text-align: center;
+  justify-content:left;
+}
+  /*background-color:rgb(64, 4, 119);*/
+  
