@@ -12,9 +12,9 @@ function PurchasePassModal({
   handleClose,
   isLoggedIn,
   handleShowPaymentModal,
+  setPurchasePassData,
 }) {
   /* State */
-  // formData contains all information entered and sent to the backend.
   const [formData, setFormData] = useState({
     licensePlate: '',
     passLength: '',
@@ -58,16 +58,7 @@ function PurchasePassModal({
       dataToSend.phoneNumber = formData.phoneNumber;
     }
 
-    // Send the data to the backend.
-    axios
-      .post('http://localhost:8080/purchase-pass', dataToSend)
-      .then((response) => {
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
-
+    setPurchasePassData(dataToSend);
     handleShowPaymentModal();
     handleClose();
   }

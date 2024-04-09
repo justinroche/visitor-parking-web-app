@@ -10,6 +10,7 @@ function App() {
   /* State */
   const [showPurchasePassModal, setShowPurchasePassModal] = useState(false); // State for purchase a pass modal
   const [showPaymentModal, setShowPaymentModal] = useState(false); // State for payment modal
+  const [purchasePassData, setPurchasePassData] = useState(null);
 
   /* Handlers */
 
@@ -37,13 +38,14 @@ function App() {
         <PurchasePassModal
           show={showPurchasePassModal}
           handleClose={handleClosePurchasePassModal}
-          handleShowPaymentModal={handleShowPaymentModal}
           isLoggedIn={true}
+          handleShowPaymentModal={handleShowPaymentModal}
+          setPurchasePassData={setPurchasePassData}
         />
-
         <PaymentModal
           show={showPaymentModal}
           handleClose={handleClosePaymentModal}
+          purchasePassData={purchasePassData}
         />
       </div>
     );
