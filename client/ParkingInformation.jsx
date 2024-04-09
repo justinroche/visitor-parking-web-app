@@ -19,7 +19,13 @@ function ParkingInformation({ show, handleClose }) {
            <p> University recognized Holidays</p>
         <p>University of Wisconsin uses License Plate Recognition software to enforce parking regulations, therefor it is important that you enter you liecnse Plate correctly when purchasing your pass.</p>
         <p>You may purchase an Hourly, Daily, or Weekly Pass</p>
-        <p></p>
+        
+        <p>Cost per Pass</p>
+        <p>1 Hour $1.25</p>
+        <p>2 Hours $2.00</p>
+        <p>3 Hours $3.00</p>
+        <p>4 Hours $4.00</p>
+        
       </Modal.Body>
       <Modal.Footer>
         <Button variant="primary" onClick={handleClose}>
