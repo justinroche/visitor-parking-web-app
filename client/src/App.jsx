@@ -7,17 +7,19 @@ import './App.css';
 
 function App() {
   /* State */
-  const [showDemoModal, setShowDemoModal] = useState(false);
+ 
+  const [showParkingInformation, setParkingInformation] = useState(false);
+
 
   /* Handlers */
-  const handleCloseDemoModal = () => setShowDemoModal(false);
-  const handleShowDemoModal = () => setShowDemoModal(true);
+  const handleCloseParkingInformation = () => setShowparkingInformation(false);
+  const handleShowParkingInformation = () => setShowParkingInformation(true);
 
   /* Components */
   function AppHeader() {
     return (
       <div className="App-header">
-        <h1>Visitor Parking</h1>
+        <h1>Parking Information</h1>
       </div>
     );
   }
@@ -25,12 +27,13 @@ function App() {
   function AppMain() {
     return (
       <div className="App-main">
-        <Button variant="primary" onClick={handleShowDemoModal}>
-          Show demo modal
+        <div className = "button1">
+        <Button variant="primary" style={{backgroundColor: '#4b0082', color: 'white', border: 'none'}}  onClick={handleShowParkingInformation}>
+          Parking Info
         </Button>
-        <DemoModal
-          show={showDemoModal}
-          handleClose={handleCloseDemoModal}
+        <ParkingInformation
+          show={showParkingInformation}
+          handleClose={handleCloseParkingInformation}
         />
       </div>
     );
