@@ -14,3 +14,11 @@
 #notificationPrompt {
   margin: 10px 0 5px;
 }
+
+#passLengthPrompt {
+  margin: 10px 0 5px;
+}
+
+#passLengthInput {
+  width: 50px;
+}
