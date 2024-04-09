@@ -31,6 +31,7 @@ function App() {
         <Button variant="primary" style={{backgroundColor: '#4b0082', color: 'white', border: 'none'}}  onClick={handleShowParkingInformation}>
           Parking Info
         </Button>
+          </div>
         <ParkingInformation
           show={showParkingInformation}
           handleClose={handleCloseParkingInformation}
