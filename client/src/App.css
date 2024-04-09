@@ -17,6 +17,17 @@
   
   }
 
+.left-image {
+  object-position: 20;
+  float:right;
+ 
+  
+  height: 10; /* Adjust the height as needed */
+  width: 15; /* Automatically adjust the width */
+  
+}
+
+
 .radio{ /*time buttons*/
   margin-right: 10px;
   margin-left: 5px;
