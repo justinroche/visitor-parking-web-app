@@ -41,7 +41,7 @@ function PaymentModal({ show, handleClose, purchasePassData }) {
 
   // Render the modal.
   return (
-    <Modal show={show} onHide={handleClose}>
+    <Modal show={show} onHide={handleClose} backdrop="static">
       <Modal.Header>
         <Modal.Title>Purchase a Visitor Parking Pass</Modal.Title>
       </Modal.Header>
