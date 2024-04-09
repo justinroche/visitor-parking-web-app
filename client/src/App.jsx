@@ -9,7 +9,7 @@ import ParkingInformation from './ParkingInformation';
 function App() {
   /* State */
  
-  const [showParkingInformation, setParkingInformation] = useState(false);
+  const [showParkingInformation, setShowParkingInformation] = useState(false);
 
 
   /* Handlers */
