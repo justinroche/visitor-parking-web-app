@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import React from 'react';
 import axios from 'axios';
+import '.App.css';
 import Button from 'react-bootstrap/Button';
 import ParkingInformation from './ParkingInformation';
-import './App.css';
+
 
 function App() {
   /* State */
