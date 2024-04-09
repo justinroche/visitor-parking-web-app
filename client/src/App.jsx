@@ -2,7 +2,7 @@ import { useState } from 'react';
 import React from 'react';
 import axios from 'axios';
 import Button from 'react-bootstrap/Button';
-import DemoModal from './DemoModal';
+import ParkingInformation from './ParkingInformation';
 import './App.css';
 
 function App() {
