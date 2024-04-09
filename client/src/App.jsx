@@ -1,17 +1,26 @@
 import { useState } from 'react';
 import React from 'react';
 import axios from 'axios';
-import Button from 'react-bootstrap/Button';
-import DemoModal from './DemoModal';
 import './App.css';
+import Button from 'react-bootstrap/Button';
+import LoginModal from './LoginModal';
+
+import AccountSettingsModal from './AccountSettingsModal';
 
 function App() {
   /* State */
-  const [showDemoModal, setShowDemoModal] = useState(false);
+
+  const [showLoginModal, setShowLoginModal] = useState(false);
+
+  const [showAccountSettingsModal, setShowAccountSettingsModal] = useState(false);
 
   /* Handlers */
-  const handleCloseDemoModal = () => setShowDemoModal(false);
-  const handleShowDemoModal = () => setShowDemoModal(true);
+
+  const handleCloseLoginModal = () => setShowLoginModal(false);
+  const handleShowLoginModal = () => setShowLoginModal(true);
+
+  const handleCloseAccountSettingsModal = () => setShowAccountSettingsModal(false);
+  const handleShowAccountSettingsModal = () => setShowAccountSettingsModal(true);
 
   /* Components */
   function AppHeader() {
@@ -25,12 +34,28 @@ function App() {
   function AppMain() {
     return (
       <div className="App-main">
-        <Button variant="primary" onClick={handleShowDemoModal}>
-          Show demo modal
+
+        <br/>
+        <Button variant='primary' onClick={handleShowLoginModal}>
+          Login
         </Button>
-        <DemoModal
-          show={showDemoModal}
-          handleClose={handleCloseDemoModal}
+        <br/>
+
+        <LoginModal
+        show={showLoginModal}
+        handleClose={handleCloseLoginModal}
+        isLoggedIn={false}
+        />
+        <br/>
+
+        <Button variant='primary' onClick={handleShowAccountSettingsModal}>
+          Account Settings
+        </Button>
+
+        <AccountSettingsModal 
+          show={showAccountSettingsModal}
+          handleClose={handleCloseAccountSettingsModal}
+          isLoggedIn={true}
         />
       </div>
     );
@@ -46,3 +71,4 @@ function App() {
 }
 
 export default App;
+
