@@ -13,7 +13,7 @@ function App() {
 
 
   /* Handlers */
-  const handleCloseParkingInformation = () => setShowparkingInformation(false);
+  const handleCloseParkingInformation = () => setShowParkingInformation(false);
   const handleShowParkingInformation = () => setShowParkingInformation(true);
 
   /* Components */
@@ -30,7 +30,7 @@ function App() {
       <div className="App-main">
         <div className = "button1">
         <Button variant="primary" style={{backgroundColor: '#4b0082', color: 'white', border: 'none'}}  onClick={handleShowParkingInformation}>
-          Parking Info
+          Parking Information
         </Button>
           </div>
         <ParkingInformation
