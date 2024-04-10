@@ -6,11 +6,11 @@ import './PurchasePassModal.css';
 /* React Bootstrap has a whole system for handling forms: https://react-bootstrap.netlify.app/docs/forms/overview/
 We might want to rewrite this to fit their outline in the future, but this works well enough for now. */
 function PurchasePassModal({
-  show,
-  handleClose,
-  isLoggedIn,
-  handleShowPaymentModal,
-  setPurchasePassData,
+  show, // Boolean to determine if the modal is visible.
+  handleClose, // Function to close the modal.
+  isLoggedIn, // Boolean to determine if the user is logged in. This displays the saved vehicles feature.
+  handleShowPaymentModal, // Function to show the payment modal.
+  setPurchasePassData, // Function to set the purchase pass data when the user continues to payment.
 }) {
   /* State */
   const [formData, setFormData] = useState({
@@ -30,7 +30,7 @@ function PurchasePassModal({
     setFormData({ ...formData, [name]: newValue });
   }
 
-  // handlePayButton sends the relevant form data to the backend when the user clicks the pay button.
+  // handleContinueButton validates user inputs and continues to the payment modal.
   function handleContinueButton() {
     // If any required fields are missing, prevent form submission.
     if (
@@ -42,6 +42,7 @@ function PurchasePassModal({
       return;
     }
 
+    // Pass length must be between 1 and 7.
     if (formData.passLengthValue < 1 || formData.passLengthValue > 7) {
       alert(
         'The number of ' + formData.passLengthType + ' must be between 1 and 7.'
@@ -69,9 +70,9 @@ function PurchasePassModal({
       formDataToSend.phoneNumber = formData.phoneNumber;
     }
 
-    setPurchasePassData(formDataToSend);
-    handleShowPaymentModal();
-    handleClose();
+    setPurchasePassData(formDataToSend); // Set the purchase pass data for the payment modal.
+    handleShowPaymentModal(); // Show the payment modal.
+    handleClose(); // Close this modal.
   }
 
   // Render the modal.
@@ -101,7 +102,7 @@ function PurchasePassModal({
         This feature is work in progress and contains placeholder data.
         TODO: Implement saved vehicles. */}
         {isLoggedIn && (
-          <div>
+          <>
             <h5>Saved Vehicles</h5>
             <select name="vehicle" id="vehicleSelect">
               <option value="vehicle-1">Vehicle 1</option>
@@ -110,11 +111,10 @@ function PurchasePassModal({
             </select>
             <br />
             <br />
-          </div>
+          </>
         )}
 
-        {/* Pass duration radio buttons
-        TODO: Allow user to specify number of days/hours. */}
+        {/* Pass duration radio buttons */}
         <h5>Pass Duration</h5>
         <form>
           <input
@@ -140,8 +140,10 @@ function PurchasePassModal({
           <label className="radioButtonLabel" htmlFor="dailyRadioButton">
             Daily
           </label>
+
+          {/* Only display pass length selector after hours/weeks have been specified. */}
           {formData.passLengthType !== '' && (
-            <div>
+            <>
               <p id="passLengthPrompt">
                 Please specify the number of {formData.passLengthType}.
               </p>
@@ -154,7 +156,7 @@ function PurchasePassModal({
                 max={7}
                 onChange={handleInputChange}
               />
-            </div>
+            </>
           )}
         </form>
         <br />
@@ -162,22 +164,20 @@ function PurchasePassModal({
         {/* Push notifications checkbox 
         TODO: Setup notification API? */}
         <h5>Push Notifications</h5>
-        <div>
-          <input
-            type="checkbox"
-            id="pushNotificationCheckbox"
-            name="notificationsEnabled"
-            checked={formData.notificationsEnabled}
-            onChange={handleInputChange}
-          />
-          <label id="notificationLabel" htmlFor="pushNotificationCheckbox">
-            Enable push notifications
-          </label>
-        </div>
+        <input
+          type="checkbox"
+          id="pushNotificationCheckbox"
+          name="notificationsEnabled"
+          checked={formData.notificationsEnabled}
+          onChange={handleInputChange}
+        />
+        <label id="notificationLabel" htmlFor="pushNotificationCheckbox">
+          Enable push notifications
+        </label>
 
         {/* Only display time selection and phone number input if notifications have been enabled. */}
         {formData.notificationsEnabled && (
-          <div>
+          <>
             <p id="notificationPrompt">
               How long before your pass expires should we notify you?
             </p>
@@ -203,7 +203,7 @@ function PurchasePassModal({
                 onChange={handleInputChange}
               />
             </form>
-          </div>
+          </>
         )}
       </Modal.Body>
 

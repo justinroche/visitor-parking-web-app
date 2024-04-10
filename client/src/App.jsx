@@ -8,14 +8,18 @@ import PaymentModal from './PaymentModal';
 
 function App() {
   /* State */
-  const [showPurchasePassModal, setShowPurchasePassModal] = useState(false); // State for purchase a pass modal
-  const [showPaymentModal, setShowPaymentModal] = useState(false); // State for payment modal
-  const [purchasePassData, setPurchasePassData] = useState(null);
+  const [showPurchasePassModal, setShowPurchasePassModal] = useState(false);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [purchasePassData, setPurchasePassData] = useState(null); // State for purchase pass data (license plate, credit card, etc.)
 
   /* Handlers */
-
   const handleClosePurchasePassModal = () => setShowPurchasePassModal(false);
-  const handleShowPurchasePassModal = () => setShowPurchasePassModal(true);
+
+  // Reset the purchase pass data when the modal is opened.
+  const handleShowPurchasePassModal = () => {
+    setPurchasePassData(null);
+    setShowPurchasePassModal(true);
+  };
 
   const handleClosePaymentModal = () => setShowPaymentModal(false);
   const handleShowPaymentModal = () => setShowPaymentModal(true);

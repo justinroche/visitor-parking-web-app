@@ -5,7 +5,7 @@ import Form from 'react-bootstrap/Form';
 import axios from 'axios';
 
 function PaymentModal({ show, handleClose, purchasePassData }) {
-  // State for payment-related data
+  /* State */
   const [paymentData, setPaymentData] = useState({
     nameOnCard: '',
     cardNumber: '',
@@ -13,8 +13,9 @@ function PaymentModal({ show, handleClose, purchasePassData }) {
     cvc: '',
   });
 
-  // Handle changes in payment-related inputs
-  const handlePaymentInputChange = (event) => {
+  /* Handlers */
+  // handleInputChange updates the payment data when the user edits an input field.
+  const handleInputChange = (event) => {
     const { name, value } = event.target;
     setPaymentData({ ...paymentData, [name]: value });
   };
@@ -24,8 +25,8 @@ function PaymentModal({ show, handleClose, purchasePassData }) {
     handleClose();
   }
 
+  // handleSubmitButton merges the pass and payment data and sends it to the backend.
   function handleSubmitButton() {
-    // Send the data to the backend.
     const mergedData = { ...purchasePassData, ...paymentData };
 
     axios
@@ -36,6 +37,7 @@ function PaymentModal({ show, handleClose, purchasePassData }) {
       .catch((error) => {
         console.error('Error:', error);
       });
+
     handleClose();
   }
 
@@ -57,7 +59,7 @@ function PaymentModal({ show, handleClose, purchasePassData }) {
               type="text"
               name="nameOnCard"
               value={paymentData.nameOnCard}
-              onChange={handlePaymentInputChange} // Handle change for nameOnCard input
+              onChange={handleInputChange}
               placeholder="Enter your name"
             />
           </Form.Group>
@@ -69,7 +71,7 @@ function PaymentModal({ show, handleClose, purchasePassData }) {
               type="text"
               name="cardNumber"
               value={paymentData.cardNumber}
-              onChange={handlePaymentInputChange} // Handle change for cardNumber input
+              onChange={handleInputChange}
               placeholder="1234 1234 1234 1234"
             />
           </Form.Group>
@@ -81,7 +83,7 @@ function PaymentModal({ show, handleClose, purchasePassData }) {
               type="text"
               name="expirationDate"
               value={paymentData.expirationDate}
-              onChange={handlePaymentInputChange} // Handle change for expirationDate input
+              onChange={handleInputChange}
               placeholder="MM / YY"
             />
           </Form.Group>
@@ -93,7 +95,7 @@ function PaymentModal({ show, handleClose, purchasePassData }) {
               type="text"
               name="cvc"
               value={paymentData.cvc}
-              onChange={handlePaymentInputChange} // Handle change for cvc input
+              onChange={handleInputChange}
               placeholder="CVC"
             />
           </Form.Group>
