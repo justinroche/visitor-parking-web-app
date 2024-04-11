@@ -61,9 +61,9 @@ function PaymentModal({ show, handleClose }) {
       </form>
       <br></br>
 
-      <h5>CVC</h5>
+      <h5>CVV</h5>
       <form>
-      <input type="text" id="textbox" name="textbox" placeholder="CVC"></input>
+      <input type="text" id="textbox" name="textbox" placeholder="CVV"></input>
       </form>
       <br></br>
 
