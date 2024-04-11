@@ -1,15 +1,28 @@
-.modal{
-  z-index: 1050;
-}
-
-.modal-backdrop{
-  z-index: 1040;
-}
-
 #root {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 40px;
+  text-align: center;
+  
+  background-color: #420d6e;
+  /*background-color: black;*/
+  color: white;
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-style: normal;
+  
+  
+  }
+
+.radio{ /*time buttons*/
+  margin-right: 10px;
+  margin-left: 5px;
+  
+
+}
+
+.notification{ /*text of push notifications*/
+  margin-left: 10px;
+  
 }
 
 .radio{

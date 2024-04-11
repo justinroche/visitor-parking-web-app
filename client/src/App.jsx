@@ -1,28 +1,17 @@
 import { useState } from 'react';
 import React from 'react';
 import axios from 'axios';
+import './App.css';
 import Button from 'react-bootstrap/Button';
 import DemoModal from './DemoModal';
-import './App.css';
-import ParkingInfoModal from './ParkingInfoModal';
-import PaymentModal from './PaymentModal';
 
 function App() {
   /* State */
   const [showDemoModal, setShowDemoModal] = useState(false);
-  const [showParkingInfoModal, setShowParkingInfoModal] = useState(false); // State for parking info modal
-  const [showPaymentModal, setShowPaymentModal] = useState(false);
 
   /* Handlers */
   const handleCloseDemoModal = () => setShowDemoModal(false);
   const handleShowDemoModal = () => setShowDemoModal(true);
-  const handleCloseParkingInfoModal = () => setShowParkingInfoModal(false); 
-  const handleShowParkingInfoModal = () => setShowParkingInfoModal(true);
-  const handleClosePaymentModal = () => setShowPaymentModal(false);
-  const handleShowPaymentModal = () => setShowPaymentModal(true);
-  const handlePaymentModalOpen = () => setShowPaymentModal(true);
-
-
 
   /* Components */
   function AppHeader() {
@@ -33,16 +22,34 @@ function App() {
     );
   }
 
+/* function MyComponent() {
+    return (
+      <div className="container">
+        <img src={leftImage} alt="Left Image" className="left-image" />
+        
+      </div>
+    );
+  } */
+  
+function TextBox () {
+    return (
+      <div className = "container">
+        <div className = "text-container">
+          <p>Parking on Campus</p>
+           <p>A parking pass is required at all times except for 
+           5 p.m. Fridays to 11:00 p.m. Sundays</p>
+          <p>and Univeristy recognized holidays</p>
+        </div> 
+
+      </div>
+    )
+  }
+
   function AppMain() {
     return (
       <div className="App-main">
-        <Button className='modal-button' variant="secondary" onClick={handleShowParkingInfoModal}> {/* Button to show parking info modal */}
-          Parking Info
-        </Button>
-        <br></br>
-        <br></br>
-        <Button className='modal-button' variant="secondary" onClick={handleShowPaymentModal}> {/* Button to show payment info modal */}
-          Payment Info
+        <Button variant="primary" onClick={handleShowDemoModal}>
+          Show demo modal
         </Button>
         <DemoModal
           show={showDemoModal}
@@ -66,6 +73,8 @@ function App() {
     <>
       <AppHeader />
       <AppMain />
+      
+      <TextBox />
     </>
   );
 }
