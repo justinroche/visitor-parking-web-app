@@ -81,6 +81,14 @@
   /*border-color: rgb(106, 105, 107) !important;*/
 }
 
+.logout-button{
+  width: 50%;
+  max-width: 100% !important;
+  margin-top: 10px;
+  /*background-color: rgb(106, 105, 107) !important;*/
+  /*border-color: rgb(106, 105, 107) !important;*/
+}
+
 .account-settings{
   width: 50%;
   margin-bottom: 10px; 
@@ -104,6 +112,11 @@
 }
 
 .current-passes th{
+  white-space: nowrap;
+  padding-right: 20px;
+}
+
+.current-passes td{
   white-space: nowrap;
   padding-right: 20px;
 }

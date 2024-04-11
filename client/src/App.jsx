@@ -53,6 +53,9 @@ function App() {
             <Button className='login-button' variant='secondary' onClick={handleShowLoginModal}>
               Login
             </Button>
+            <Button className='logout-button' variant='secondary'>
+              Log Out
+            </Button>
         </div>
 
         </div>  
