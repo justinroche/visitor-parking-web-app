@@ -37,7 +37,7 @@ function PaymentModal({ show, handleClose }) {
   return (
     <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
-        <Modal.Title>Payment Info</Modal.Title>
+        <Modal.Title>Payment Information</Modal.Title>
       </Modal.Header>
       <Modal.Body>
       <h5>Total</h5>

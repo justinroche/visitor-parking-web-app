@@ -2,10 +2,9 @@ import React from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
-import leftImage from './CampusMap.jpg';
+import './PhoneModal';
 
-// This modal is a DEMO component. Use it as a reference.
-function CampusParkingInfoModal({ show, handleClose }) {
+function PhoneModal({ show, handleClose }) {
   // Send a POST request to the server when the modal is closed.
   function handleCloseButton() {
     axios
@@ -20,7 +19,7 @@ function CampusParkingInfoModal({ show, handleClose }) {
   }
 
   // Send a POST request to the server when the modal is saved.
-  /*function handleSaveButton() {
+  function handleSaveButton() {
     axios
       .post('http://localhost:8080/demo-modal', { data: 'modal saved' })
       .then((response) => {
@@ -30,34 +29,47 @@ function CampusParkingInfoModal({ show, handleClose }) {
         console.error('Error:', error);
       });
     handleClose();
-  }*/
+  }
+
+  // handleInputChange updates the form data when the user edits an input field.
+  function handleInputChange(event) {
+    const { name, value, type, checked } = event.target;
+    const newValue = type === 'checkbox' ? checked : value;
+    setFormData({ ...formData, [name]: newValue });
+  }
 
   // Render the modal.
   return (
-    <Modal show={show} onHide={handleClose}>
+    <Modal show={show} onHide={handleCloseButton}>
       <Modal.Header closeButton>
-        <Modal.Title>Campus Restrictions</Modal.Title>
+        <Modal.Title>Update Phone Number</Modal.Title>
       </Modal.Header>
       <Modal.Body>
 
-      <div className = "container">
-        <div className = "text-container">
-          <h5>Parking on Campus</h5>
-           <p>A parking pass is required at all times except for 
-           5 p.m. Fridays to 11:00 p.m. Sundays and Univeristy recognized holidays</p>
+        <h5>Phone Number</h5>
+        <form>
+          <input 
+            type='phone'
+            id='phoneInput'
+            name='phone'
+            placeholder='Phone Number *' //Need to display current phone num that's connected with the account, could be null if never added previously
+            //value={formData.email}
+            onChange={handleInputChange}
+          />
+        </form>
+        <br/>
 
-          <img src={leftImage} alt="Left Image" className="campus-map" />
-        </div> 
-      </div>
-        
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={handleCloseButton}>
           Close
+        </Button>
+        <Button className='save-button' variant="primary" onClick={handleSaveButton}>
+          Save Changes
         </Button>
       </Modal.Footer>
     </Modal>
   );
 }
 
-export default CampusParkingInfoModal;
+export default PhoneModal;
