@@ -26,8 +26,9 @@ function PurchasePassModal({
 
   const [passCost, setPassCost] = useState(0);
 
+  /* Effects */
+  // Calculate pass cost
   useEffect(() => {
-    // Function to calculate pass cost
     function calculatePassCost() {
       // Cost per day is $5.
       const costPerDay = 5;
@@ -51,6 +52,16 @@ function PurchasePassModal({
       setFormData({ ...formData, passLengthValue: '3' });
     }
   }, [formData.passLengthType, formData.passLengthValue]);
+
+  // Max length for license plate is 7 characters.
+  useEffect(() => {
+    if (formData.licensePlate.length > 7) {
+      setFormData({
+        ...formData,
+        licensePlate: formData.licensePlate.substring(0, 7),
+      });
+    }
+  }, [formData.licensePlate]);
 
   /* Handlers */
   // handleInputChange updates the form data when the user edits an input field.
@@ -86,13 +97,10 @@ function PurchasePassModal({
       return;
     }
 
-    /* Verify license plate format */
-    // 123ABC or ABC1234
-    const plateRegex = /^[0-9]{3}[a-zA-Z]{3}$|^[a-zA-Z]{3}[0-9]{4}$/;
-    if (!plateRegex.test(formData.licensePlate)) {
-      console.log('Invalid license plate format.');
+    /* Verify license plate length */
+    if (formData.licensePlate.length < 1 || formData.licensePlate.length > 7) {
       alert(
-        'Please enter a valid license plate format (e.g., "123ABC" or "ABC1234").'
+        'Please enter a valid license plate (e.g., "123ABC" or "ABC1234").'
       );
       return;
     }
