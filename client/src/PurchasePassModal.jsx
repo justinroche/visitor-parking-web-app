@@ -103,6 +103,16 @@ function PurchasePassModal({
       return;
     }
 
+    if (formData.passLengthType === 'hours' && formData.passLengthValue > 3) {
+      alert('The maximum duration for an hourly pass is 3 hours.');
+      return;
+    }
+
+    if (formData.passLengthType === 'days' && formData.passLengthValue > 7) {
+      alert('The maximum duration for an daily pass is one week.');
+      return;
+    }
+
     // Prepare data to be sent to the backend.
     const formDataToSend = {
       licensePlate: formData.licensePlate,
