@@ -3,6 +3,7 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import axios from 'axios';
+import './PaymentModal.css';
 
 function PaymentModal({ show, handleClose, purchasePassData }) {
   /* State */
@@ -48,10 +49,6 @@ function PaymentModal({ show, handleClose, purchasePassData }) {
         <Modal.Title>Purchase a Visitor Parking Pass</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        {/* Placeholder data */}
-        <h5>Total</h5>
-        <p>$25.00</p>
-
         <Form>
           <Form.Group controlId="nameOnCard">
             <Form.Label>Name on Card</Form.Label>
@@ -100,6 +97,14 @@ function PaymentModal({ show, handleClose, purchasePassData }) {
             />
           </Form.Group>
         </Form>
+        <br />
+
+        {purchasePassData && (
+          <div id="totalSection">
+            <h5>Total</h5>
+            <p>${purchasePassData.passCost.toFixed(2)}</p>
+          </div>
+        )}
       </Modal.Body>
       <Modal.Footer>
         <div className="container d-flex justify-content-between">

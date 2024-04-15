@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import './PurchasePassModal.css';
@@ -13,6 +13,7 @@ function PurchasePassModal({
   setPurchasePassData, // Function to set the purchase pass data when the user continues to payment.
 }) {
   /* State */
+  // formData is sent to the backend when the user pays.
   const [formData, setFormData] = useState({
     licensePlate: '',
     passLengthType: '',
@@ -20,13 +21,48 @@ function PurchasePassModal({
     notificationsEnabled: false,
     notificationTime: '15min',
     email: '',
+    passCost: 0,
   });
+
+  const [passCost, setPassCost] = useState(0);
+
+  useEffect(() => {
+    // Function to calculate pass cost
+    function calculatePassCost() {
+      // Cost per day is $5.
+      const costPerDay = 5;
+      // Cost per hour is y = 1.4x + 0.25.
+      const costPerHour = 1.4;
+      const costPerHourBase = 0.25;
+
+      if (formData.passLengthType === 'hours') {
+        setPassCost(costPerHour * formData.passLengthValue + costPerHourBase);
+      } else if (formData.passLengthType === 'days') {
+        setPassCost(costPerDay * formData.passLengthValue);
+      }
+    }
+
+    calculatePassCost(); // Calculate pass cost initially and whenever pass length changes
+  }, [formData.passLengthType, formData.passLengthValue]);
+
+  // If the user selects a duration longer than 3 hours, reset the duration to 3 hours.
+  useEffect(() => {
+    if (formData.passLengthType === 'hours' && formData.passLengthValue > 3) {
+      setFormData({ ...formData, passLengthValue: '3' });
+    }
+  }, [formData.passLengthType, formData.passLengthValue]);
 
   /* Handlers */
   // handleInputChange updates the form data when the user edits an input field.
   function handleInputChange(event) {
     const { name, value, type, checked } = event.target;
-    const newValue = type === 'checkbox' ? checked : value;
+    let newValue = type === 'checkbox' ? checked : value;
+
+    // Convert license plate to uppercase if it's the license plate input
+    if (name === 'licensePlate') {
+      newValue = value.toUpperCase();
+    }
+
     setFormData({ ...formData, [name]: newValue });
   }
 
@@ -61,19 +97,6 @@ function PurchasePassModal({
       return;
     }
 
-    // Convert license plate letters to uppercase
-    const uppercaseLicensePlate = formData.licensePlate.toUpperCase();
-    setFormData({ ...formData, licensePlate: uppercaseLicensePlate });
-
-    /* Verify pass length */
-    // Pass length must be between 1 and 7.
-    if (formData.passLengthValue < 1 || formData.passLengthValue > 7) {
-      alert(
-        'The number of ' + formData.passLengthType + ' must be between 1 and 7.'
-      );
-      return;
-    }
-
     /* Verify email format */
     if (formData.notificationsEnabled && !isValidEmail(formData.email)) {
       alert('Please enter a valid email address to enable notifications.');
@@ -85,6 +108,7 @@ function PurchasePassModal({
       licensePlate: formData.licensePlate,
       passLengthType: formData.passLengthType,
       passLengthValue: formData.passLengthValue,
+      passCost: passCost,
       notificationsEnabled: formData.notificationsEnabled,
     };
 
@@ -175,7 +199,8 @@ function PurchasePassModal({
           {formData.passLengthType !== '' && (
             <>
               <p id="passLengthPrompt">
-                Please specify the number of {formData.passLengthType}.
+                Please specify the number of {formData.passLengthType} (
+                {formData.passLengthType === 'hours' ? 3 : 7} max).
               </p>
               <input
                 type="number"
@@ -183,8 +208,10 @@ function PurchasePassModal({
                 name="passLengthValue"
                 value={formData.passLengthValue}
                 min={1}
-                max={7}
+                max={formData.passLengthType === 'hours' ? 3 : 7}
                 onChange={handleInputChange}
+                inputMode="numeric" // Restrict input to numeric values
+                onKeyDown={(e) => e.preventDefault()} // Prevent direct input
               />
             </>
           )}
@@ -235,6 +262,12 @@ function PurchasePassModal({
             </form>
           </>
         )}
+
+        <div id="passCostSection">
+          <br />
+          <h5>Total</h5>
+          <p>${passCost.toFixed(2)}</p>
+        </div>
       </Modal.Body>
 
       <Modal.Footer>
