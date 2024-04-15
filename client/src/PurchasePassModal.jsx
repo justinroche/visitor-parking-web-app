@@ -19,7 +19,7 @@ function PurchasePassModal({
     passLengthValue: '1',
     notificationsEnabled: false,
     notificationTime: '15min',
-    phoneNumber: '',
+    email: '',
   });
 
   /* Handlers */
@@ -31,7 +31,9 @@ function PurchasePassModal({
   }
 
   // handleContinueButton validates user inputs and continues to the payment modal.
+  // This system uses alerts for error messages. We might want to change this to a more user-friendly system in the future.
   function handleContinueButton() {
+    /* Verify that necessary fields are present */
     // If any required fields are missing, prevent form submission.
     if (
       !formData.licensePlate ||
@@ -42,6 +44,28 @@ function PurchasePassModal({
       return;
     }
 
+    // If notifications are enabled but email is missing, prevent form submission.
+    if (formData.notificationsEnabled && !formData.email) {
+      alert('Please enter your email address to enable notifications.');
+      return;
+    }
+
+    /* Verify license plate format */
+    // 123ABC or ABC1234
+    const plateRegex = /^[0-9]{3}[a-zA-Z]{3}$|^[a-zA-Z]{3}[0-9]{4}$/;
+    if (!plateRegex.test(formData.licensePlate)) {
+      console.log('Invalid license plate format.');
+      alert(
+        'Please enter a valid license plate format (e.g., "123ABC" or "ABC1234").'
+      );
+      return;
+    }
+
+    // Convert license plate letters to uppercase
+    const uppercaseLicensePlate = formData.licensePlate.toUpperCase();
+    setFormData({ ...formData, licensePlate: uppercaseLicensePlate });
+
+    /* Verify pass length */
     // Pass length must be between 1 and 7.
     if (formData.passLengthValue < 1 || formData.passLengthValue > 7) {
       alert(
@@ -50,9 +74,9 @@ function PurchasePassModal({
       return;
     }
 
-    // If notifications are enabled but phone number is missing, prevent form submission.
-    if (formData.notificationsEnabled && !formData.phoneNumber) {
-      alert('Please enter your phone number to enable notifications.');
+    /* Verify email format */
+    if (formData.notificationsEnabled && !isValidEmail(formData.email)) {
+      alert('Please enter a valid email address to enable notifications.');
       return;
     }
 
@@ -67,12 +91,18 @@ function PurchasePassModal({
     // Include additional fields if notifications are enabled.
     if (formData.notificationsEnabled) {
       formDataToSend.notificationTime = formData.notificationTime;
-      formDataToSend.phoneNumber = formData.phoneNumber;
+      formDataToSend.email = formData.email;
     }
 
     setPurchasePassData(formDataToSend); // Set the purchase pass data for the payment modal.
     handleShowPaymentModal(); // Show the payment modal.
     handleClose(); // Close this modal.
+  }
+
+  function isValidEmail(email) {
+    // Regular expression for email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
   }
 
   // Render the modal.
@@ -90,7 +120,7 @@ function PurchasePassModal({
             type="text"
             id="licensePlateInput"
             name="licensePlate"
-            placeholder="ABC-1234"
+            placeholder="ABC1234"
             value={formData.licensePlate}
             onChange={handleInputChange}
           />
@@ -175,7 +205,7 @@ function PurchasePassModal({
           Enable push notifications
         </label>
 
-        {/* Only display time selection and phone number input if notifications have been enabled. */}
+        {/* Only display time selection and email input if notifications have been enabled. */}
         {formData.notificationsEnabled && (
           <>
             <p id="notificationPrompt">
@@ -196,10 +226,10 @@ function PurchasePassModal({
             <form>
               <input
                 type="text"
-                id="phoneNumberInput"
-                name="phoneNumber"
-                placeholder="123-456-7890"
-                value={formData.phoneNumber}
+                id="emailInput"
+                name="email"
+                placeholder="Enter your email address"
+                value={formData.email}
                 onChange={handleInputChange}
               />
             </form>
