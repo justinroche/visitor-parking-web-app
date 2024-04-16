@@ -128,72 +128,84 @@ function AccountSettingsModal({ show, handleClose, isLoggedIn }) {
     // Render the modal.
     return (
       <Modal show={show} onHide={handleClose} backdrop="static">
-        <Modal.Header closeButton>
-          <Modal.Title>Account Settings</Modal.Title>
-        </Modal.Header>
+  <Modal.Header closeButton>
+    <Modal.Title>Account Settings</Modal.Title>
+  </Modal.Header>
+
+  <Modal.Body>
+    {/* EmailModal */}
+    <div className='button-group'>
+      <h5>Email Address</h5>
+      <Button id='email-button' variant="primary" onClick={handleOpenEmailModal}>
+          Update
+      </Button>
+    </div>
+    <EmailModal show={emailModalVisible} handleClose={handleCloseEmailModal} />
+    <br />
+
+    {/* PasswordModal */}
+    <div className="button-group">
+      <h5>Password</h5>
+      <Button id='pass-button' variant="primary" onClick={handleOpenPasswordModal}>
+        Update
+      </Button>
+    </div>
+    <PasswordModal show={passwordModalVisible} handleClose={handleClosePasswordModal} />
+    <br />
+
+    {/* PhoneModal */}
+    <div className="button-group">
+      <h5>Phone Number</h5>
+      <Button id='phone-button' variant="primary" onClick={handleOpenPhoneModal}>
+        Update
+      </Button>
+    </div>
+    <PhoneModal show={phoneModalVisible} handleClose={handleClosePhoneModal} />
+    <br />
+
+    {/* AddressModal */}
+    <div className="button-group">
+      <h5>Address</h5>
+      <Button id='address-button' variant="primary" onClick={handleOpenAddressModal}>
+        Update
+      </Button>
+    </div>
+    <AddressModal show={addressModalVisible} handleClose={handleCloseAddressModal} />
+    <br />
+
+    {/* VehicleModal */}
+    <div className="button-group">
+      <h5>Vehicles</h5>
+      <Button id='vehicle-button' variant="primary" onClick={handleOpenVehicleModal}>
+        Update/Add
+      </Button>
+    </div>
+    <VehicleModal show={vehicleModalVisible} handleClose={handleCloseVehicleModal} />
+    <br />
+
+    {/* CardInfoModal */}
+    <div className="button-group">
+      <h5>Card Information</h5>
+      <Button id='card-info-button' variant="primary" onClick={handleOpenCardInfoModal}>
+        Update/Add
+      </Button>
+    </div>
+    <CardInfoModal show={cardInfoModalVisible} handleClose={handleCloseCardInfoModal} />
+    <br />
+  </Modal.Body>
   
-        <Modal.Body>
-    
-          {/* EmailModal */}
-          <button type='button' onClick={handleOpenEmailModal}>Email Address</button>
-          <EmailModal
-            show={emailModalVisible}
-            handleClose={handleCloseEmailModal}
-          />
-          <br/><br/>
+  <Modal.Footer>
+    <div className="container d-flex justify-content-between">
+      <Button variant="secondary" onClick={handleClose}>
+        Close
+      </Button>
+      <Button variant="primary" onClick={handleCreateButton}>
+        Save
+      </Button>
+    </div>
+  </Modal.Footer>
+</Modal>
 
-          {/* PasswordModal */}
-          <button type='button' onClick={handleOpenPasswordModal}>Password</button>
-          <PasswordModal
-            show={passwordModalVisible}
-            handleClose={handleClosePasswordModal}
-          />
-          <br/><br/>
-
-          {/* PhoneModal */}
-          <button type='button' onClick={handleOpenPhoneModal}>Phone Number</button>
-          <PhoneModal
-            show={phoneModalVisible}
-            handleClose={handleClosePhoneModal}
-          />
-          <br/><br/>
-
-          {/* AddressModal */}
-          <button type='button' onClick={handleOpenAddressModal}>Address</button>
-          <AddressModal
-            show={addressModalVisible}
-            handleClose={handleCloseAddressModal}
-          />
-          <br/><br/>
-
-          {/* VehicleModal */}
-          <button type='button' onClick={handleOpenVehicleModal}>Vehicles</button>
-          <VehicleModal
-            show={vehicleModalVisible}
-            handleClose={handleCloseVehicleModal}
-          />
-          <br/><br/>
-
-          {/* CardInfoModal */}
-          <button type='button' onClick={handleOpenCardInfoModal}>Card Information</button>
-          <CardInfoModal
-            show={cardInfoModalVisible}
-            handleClose={handleCloseCardInfoModal}
-          />
-          <br/><br/>
-
-        </Modal.Body>
-        <Modal.Footer>
-          <div className="container d-flex justify-content-between">
-            <Button variant="secondary" onClick={handleClose}>
-              Close
-            </Button>
-            <Button variant="primary" onClick={handleCreateButton}>
-              Save
-            </Button>
-          </div>
-        </Modal.Footer>
-      </Modal>
     );
   }
   export default AccountSettingsModal;

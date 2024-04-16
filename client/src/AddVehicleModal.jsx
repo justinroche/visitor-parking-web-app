@@ -49,6 +49,16 @@ function AddVehicleModal({ show, handleClose }) {
     handleSaveButton();
   };
 
+  // Handle reset button
+  function handleResetButton() {
+    setFormData({
+        carModel: '',
+        carYear: '',
+        carColor: '',
+        licensePlate: '',
+    });
+}
+
   // Render the modal.
   return (
     <Modal show={show} onHide={handleCloseButton}>
@@ -110,6 +120,9 @@ function AddVehicleModal({ show, handleClose }) {
         <Button variant='secondary' onClick={handleCloseButton}>
           Close
         </Button>
+        <Button variant='secondary' onClick={handleResetButton}>
+          Reset
+        </Button>
         <Button variant="primary" onClick={handleSubmit}>
           Save & Add
         </Button>
@@ -119,4 +132,3 @@ function AddVehicleModal({ show, handleClose }) {
 }
 
 export default AddVehicleModal;
-

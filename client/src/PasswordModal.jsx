@@ -111,5 +111,3 @@ function PasswordModal({ show, handleClose }) {
 }
 
 export default PasswordModal;
-
-

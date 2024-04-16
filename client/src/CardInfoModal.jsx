@@ -21,28 +21,31 @@ function CardInfoModal({ show, handleClose }) {
 
   // Send a POST request to the server when the modal is closed.
   function handleCloseButton() {
-    axios
-      .post('http://localhost:8080/card-info-modal', { data: 'modal closed' })
-      .then((response) => {
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
+    axios.post('http://localhost:8080/card-info-modal', { data: 'modal closed' })
+        .then(response => {
+            console.log(response.data);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
     handleClose();
   }
 
   // Send a POST request to the server when the modal is saved.
   function handleSaveButton() {
-    axios
-      .post('http://localhost:8080/card-info-modal', { data: 'modal saved' })
-      .then((response) => {
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
+    axios.post('http://localhost:8080/card-info-modal', { data: 'modal saved' })
+        .then(response => {
+            console.log(response.data);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
     handleClose();
+  }
+
+  // Function to handle the edit button (to be implemented)
+  function handleEditButton() {
+    // Implement the function to handle editing the card information
   }
 
   // Render the modal.
@@ -53,22 +56,28 @@ function CardInfoModal({ show, handleClose }) {
       </Modal.Header>
       <Modal.Body>
         {/* Credit Card Number text input */}
-        <h5>Credit & Debit Cards</h5>
+        <h5>Available Credit & Debit Cards</h5>
         <p>Card ending in "1234"</p>
         {/* Display last 4 digits of user's default card */}
         <p>First Name Last Name</p>
         {/* Display first name & last name of logged-in user's card (cardholder value) */}
-       <p><button type='button'>Edit</button>&nbsp;button needs function</p> {/* Add a way to edit current card */}
-        <br/>
+        
+        {/* Delete button */}
+        <Button variant="primary" onClick={handleEditButton}>
+            Delete
+        </Button>
+        <br/><br/>
 
         {/* AddCardInfoModal button */}
         <h5>Add a new payment method</h5>
-        <button type='button' onClick={handleOpenAddCardInfoModal}>Add Card</button>
+        <Button variant="primary" onClick={handleOpenAddCardInfoModal}>
+            Add Card
+        </Button>
 
         {/* AddCardInfoModal */}
         <AddCardInfoModal
-          show={addCardInfoModalVisible}
-          handleClose={handleCloseAddCardInfoModal}
+            show={addCardInfoModalVisible}
+            handleClose={handleCloseAddCardInfoModal}
         />
         <br/><br/>
       </Modal.Body>
@@ -77,7 +86,7 @@ function CardInfoModal({ show, handleClose }) {
           Close
         </Button>
         <Button variant="primary" onClick={handleSaveButton}>
-          Save
+          Save Changes
         </Button>
       </Modal.Footer>
     </Modal>
@@ -85,4 +94,3 @@ function CardInfoModal({ show, handleClose }) {
 }
 
 export default CardInfoModal;
-

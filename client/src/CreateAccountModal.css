@@ -1,24 +1,28 @@
 .radioButtonLabel {
-    margin-right: 10px;
-    margin-left: 5px;
-  }
-  
-  #notificationLabel {
-    margin-left: 5px;
-  }
-  
-  #notificationTimeSelector {
-    margin-bottom: 5px;
-  }
-  
-  #notificationPrompt {
-    margin: 10px 0 5px;
-  }
-  
-  #h3Font {
-    color: #0d6efd;
-  }
+  margin-right: 10px;
+  margin-left: 5px;
+}
 
-  #password-button {
-    font-size: 0.5em;
+#notificationLabel {
+  margin-left: 5px;
+}
+
+#notificationTimeSelector {
+  margin-bottom: 5px;
+}
+
+#notificationPrompt {
+  margin: 10px 0 5px;
+}
+
+#h3Font {
+  color: #0d6efd;
+}
+
+#password-button {
+  font-size: 0.5em;
+}
+#error-message{
+color: red;
+font-size: 0.75em;
 }

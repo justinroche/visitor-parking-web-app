@@ -32,11 +32,40 @@ function LoginModal({ show, handleClose, isLoggedIn }) {
         setCreateAccountModalVisible(false);
     };
 
-    const handleLogin = () => {
-        // Perform login logic here
-        console.log('Logging in with:', formData);
-        handleClose();
+    const handleLogin = async () => {
+        // Validate email and password
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(formData.email)) {
+            alert('Please enter a valid email address.');
+            return;
+        }
+        
+        if (formData.password.length < 6) {
+            alert('Password must be at least 6 characters long.');
+            return;
+        }
+    
+        try {
+            // Make API request to login
+            const response = await axios.post('/api/login', formData);
+            
+            if (response.status === 200) {
+                // Successful login
+                alert('Login successful!');
+                handleClose(); // Close the modal on successful login
+                isLoggedIn(); // Call the prop function to update the login state
+            } else {
+                // Handle different response status codes
+                alert('Login failed. Please check your credentials.');
+            }
+        } catch (error) {
+            console.error('Login error:', error);
+            alert('An error occurred during login. Please try again later.');
+        }
     };
+    
+
+    
 
     return (
         <Modal show={show} onHide={handleClose} backdrop="static">
@@ -70,13 +99,18 @@ function LoginModal({ show, handleClose, isLoggedIn }) {
                     />
                     &nbsp;&nbsp;
                     <Button id='password-button' onClick={togglePasswordVisibility}>
-                        {passwordVisibility ? 'Hide Password' : 'Show Password'}
+                        {passwordVisibility ? 'Hide' : 'Show'}
                     </Button>
                 </div>
                 <br />
 
                 {/* CreateAccountModal */}
-                <p id='footer-text'>Don't have an account?&nbsp;&nbsp;<button type='button' onClick={handleOpenCreateAccountModal}>Register</button></p>
+                <p id='footer-text'>Don't have an account?&nbsp;&nbsp;
+                    <Button id='register-button' variant="primary" onClick={handleOpenCreateAccountModal}>
+                        Register
+                    </Button>
+                </p>
+
                 <CreateAccountModal
                     show={createAccountModalVisible}
                     handleClose={handleCloseCreateAccountModal}

@@ -1,0 +1,8 @@
+.wider-input {
+    width: 300px;
+}
+
+.error-message {
+    color: red;
+    font-size: 0.75em;
+}

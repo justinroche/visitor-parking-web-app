@@ -1,0 +1,20 @@
+#email-button, #pass-button, #phone-button, #address-button {
+    font-size: 0.65em;
+    padding: 0;
+    height: 25px;
+    width: 60px;
+    line-height: 20px;
+}
+
+#vehicle-button, #card-info-button {
+    font-size: 0.65em;
+    padding: 0;
+    height: 25px;
+    width: 90px;
+    line-height: 20px;
+}
+
+.button-group {
+    display: flex;
+    justify-content: space-between;
+}

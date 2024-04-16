@@ -1,53 +1,78 @@
 import React, { useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
-import axios from 'axios';
 import './CreateAccountModal.css';
 
-function CreateAccountModal({ show, handleClose, isLoggedIn }) {
-    /* State */
+// Function to validate email address
+const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+};
+
+function CreateAccountModal({ show, handleClose }) {
+    // State variables
     const [formData, setFormData] = useState({
-        fName: '', lName: '', email: '', password: '', phone: '',
-        licensePlate: '', carModel: '', carYear: '', carColor: '',
-        cardInfo: '', cardholderInfo: '', expDate: '', cvv: '',
-        streetAddress: '', city: '', zipCode: '', country: '',
+        fName: '', lName: '', email: '', password: '', confirmPassword: ''
     });
     const [passwordVisibility, setPasswordVisibility] = useState(false);
+    const [isPasswordStarted, setIsPasswordStarted] = useState(false);
+    const [formSubmitted, setFormSubmitted] = useState(false);
 
-    /* Handlers */
+    // Handlers
     const handleInputChange = (event) => {
         const { name, value } = event.target;
+
+        // Update form data
         setFormData({ ...formData, [name]: value });
+
+        // When user starts typing in password, confirmation input opens
+        if (name === 'password' && value.length > 0) {
+            setIsPasswordStarted(true);
+        }
     };
 
     const togglePasswordVisibility = () => {
         setPasswordVisibility(!passwordVisibility);
     };
 
+    // Handle form submission
     const handleCreateButton = () => {
-        // If any required fields are missing, prevent form submission.
-        const requiredFields = ['fName', 'lName', 'email', 'password', 'phone', 'licensePlate', 'carModel', 'carYear', 'carColor', 'cardInfo', 'cardholderInfo', 'expDate', 'cvv', 'streetAddress', 'city', 'zipCode', 'country'];
+        // If any required fields are missing, prevent form submission
+        const requiredFields = ['fName', 'lName', 'email', 'password', 'confirmPassword'];
         if (requiredFields.some(field => !formData[field])) {
             alert('Please fill out all required fields before submitting.');
             return;
         }
 
-        // Prepare data to be sent to the backend.
-        const dataToSend = { ...formData };
+        // Check if password and confirmPassword match
+        if (formData.password !== formData.confirmPassword) {
+            alert('Password and Confirm Password do not match. Please try again.');
+            return;
+        }
 
-        // Send the data to the backend.
-        axios.post('http://localhost:8080/purchase-pass', dataToSend)
-            .then((response) => {
-                console.log(response.data);
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
+        // Validate email address
+        if (!validateEmail(formData.email)) {
+            alert('Please enter a valid email address.');
+            return;
+        }
 
+        // Notify the user of successful account creation
+        alert('Your account has been registered successfully.');
+
+        // Close modal
         handleClose();
     };
 
-    /* Render */
+    // Function to reset form data
+    const handleResetButton = () => {
+        setFormData({
+            fName: '', lName: '', email: '', password: '', confirmPassword: ''
+        });
+        setIsPasswordStarted(false);
+        setPasswordVisibility(false);
+    };
+
+    // Render
     return (
         <Modal show={show} onHide={handleClose} backdrop="static">
             <Modal.Header closeButton>
@@ -55,7 +80,7 @@ function CreateAccountModal({ show, handleClose, isLoggedIn }) {
             </Modal.Header>
 
             <Modal.Body>
-                {/* First name text input */}
+                {/* Form fields */}
                 <h5>First Name</h5>
                 <form>
                     <input
@@ -68,7 +93,6 @@ function CreateAccountModal({ show, handleClose, isLoggedIn }) {
                     />
                 </form>
                 <br />
-                {/* Last name text input */}
                 <h5>Last Name</h5>
                 <form>
                     <input
@@ -81,7 +105,6 @@ function CreateAccountModal({ show, handleClose, isLoggedIn }) {
                     />
                 </form>
                 <br />
-                {/* Email input */}
                 <h5>Email</h5>
                 <form>
                     <input
@@ -94,35 +117,60 @@ function CreateAccountModal({ show, handleClose, isLoggedIn }) {
                     />
                 </form>
                 <br />
-                {/* Password input */}
-                <h5>Password</h5>
+                <h5>Choose Password</h5>
                 <div className="password-input-container">
                     <input
                         type={passwordVisibility ? 'text' : 'password'}
                         id='passwordInput'
                         name='password'
-                        placeholder='Password *'
+                        placeholder='Choose Password *'
                         value={formData.password}
                         onChange={handleInputChange}
                     />
-                    &nbsp;&nbsp;
                     <Button variant="primary" id='password-button' onClick={togglePasswordVisibility}>
                         {passwordVisibility ? 'Hide' : 'Show'}
                     </Button>
                 </div>
                 <br />
-                <h8>* indicates required field to fill out.</h8>
+                {isPasswordStarted && (
+                    <>
+                        <h5>Confirm Password</h5>
+                        <div className="password-input-container">
+                            <input
+                                type={passwordVisibility ? 'text' : 'password'}
+                                id='confirmPasswordInput'
+                                name='confirmPassword'
+                                placeholder='Confirm Password *'
+                                value={formData.confirmPassword}
+                                onChange={handleInputChange}
+                            />
+                        </div>
+                    </>
+                )}
+                <h6 id='error-message'>* indicates required field to fill out.</h6>
             </Modal.Body>
 
             <Modal.Footer>
                 <div className="container d-flex justify-content-between">
+                    {/* Close button */}
                     <Button variant="secondary" onClick={handleClose}>
                         Close
                     </Button>
+                    {/* Reset button */}
+                    <Button variant="secondary" onClick={handleResetButton}>
+                        Reset
+                    </Button>
+                    {/* Create button */}
                     <Button variant="primary" onClick={handleCreateButton}>
                         Create
                     </Button>
                 </div>
+                {/* Display confirmation message */}
+                {formSubmitted && (
+                    <div className="confirmation-message">
+                        Your account has been registered successfully.
+                    </div>
+                )}
             </Modal.Footer>
         </Modal>
     );
