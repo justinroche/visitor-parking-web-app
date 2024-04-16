@@ -113,6 +113,9 @@ function App() {
 
         <div className='col'>
           <div className='availability'>
+            <h5>Welcome test_user!</h5>
+          </div>
+          <div className='availability'>
             <h5>Current Availability</h5>
           <p>27 spots remaining</p>
           </div>
