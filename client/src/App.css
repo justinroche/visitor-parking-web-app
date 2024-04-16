@@ -1,47 +1,165 @@
-.App-header{
-    
-    border-width: 20px;
-    border-bottom-style:outset;
-    border-bottom-width: .5in;
-    border-bottom-color:rgb(199, 189, 205);
-   margin: 0 auto;
-   padding: 40px;
-    text-align: center;
-    
-  background-color: #420d6e;
-  /*background-color: black;*/
-  color: white;
-  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  font-style: normal;
-  
-  
-  }
-
 .radio{ /*time buttons*/
   margin-right: 10px;
   margin-left: 5px;
-  
-
 }
 
 .notification{ /*text of push notifications*/
   margin-left: 10px;
-  
+}
+
+.radio{
+  margin-right: 10px;
+  margin-left: 5px;
+}
+
+.notification{
+  margin-left: 10px;
 }
 
 .phone{
   margin-top: 5px;
-  color: yellow;
 }
 
-.App-main{
-  position:sticky;
-  display: inline-table;
-  margin-left: 10px;;
-  margin-top: 20px;;
-  border-color: rgb(141, 118, 148);
-  text-align: center;
-  justify-content:left;
+#info-button{
+  margin-left: 85px;
+  margin-top: 40px;  
+  width: 55%;
+  height: 25%;
+  white-space: nowrap;
 }
-  /*background-color:rgb(64, 4, 119);*/
-  
+
+#buy-pass-button{
+  margin-left: 85px;
+  width: 55%;
+  height: 25%;
+  white-space: nowrap;
+}
+
+.modal-button{
+  background-color: rgb(81, 40, 132) !important;
+  border: 3px rgb(81, 40, 132) !important;
+  margin-left: 40px;
+ }
+
+.App-header {
+  border-width: 20px !important;
+  max-width: 100% !important;
+  border-bottom-style: outset;
+  border-bottom-width: .43in !important;
+  border-bottom-color: lightgray;
+  margin: 0 auto;
+  padding: 40px;
+  text-align: center;
+  background-color: #420d6e;
+  color: white;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-style: normal;
+  overflow-x: hidden;
+}
+
+.campus-map{
+  flex: 0 0 auto; /* Prevent the container from stretching */
+  margin-left: 70px;/* Add margin to create space between text and image */
+  max-width: 100%; /* Ensure the image doesn't exceed container width */
+  max-height: 100%; /* Ensure the image doesn't exceed container height */
+   
+  }
+
+
+.whitewater-logo{
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.top-bar {
+  display: grid;
+  align-items: center; 
+  grid-template-columns: 1fr 1fr 1fr;
+  column-gap: 5px;
+}
+
+.login-button{
+  width: 50%;
+  max-width: 100% !important;
+  /*background-color: rgb(106, 105, 107) !important;*/
+  /*border-color: rgb(106, 105, 107) !important;*/
+}
+
+.logout-button{
+  width: 50%;
+  max-width: 100% !important;
+  margin-top: 10px;
+  /*background-color: rgb(106, 105, 107) !important;*/
+  /*border-color: rgb(106, 105, 107) !important;*/
+}
+
+.account-settings{
+  width: 50%;
+  margin-bottom: 10px; 
+  max-width: 100% !important;
+  /*background-color: rgb(106, 105, 107) !important;*/
+  /*border-color: rgb(106, 105, 107) !important;*/
+}
+
+.button-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.text-container h5{
+  text-align: center;
+  font-size: x-large;
+  font-style: bold;
+  padding-bottom: 20px;
+}
+
+.text-container h6 {
+font-size: large;
+}
+
+.current-passes{
+  align-items: center !important;
+  margin-left: 50px;
+  margin-right: 40px;
+  margin-top: 40px;
+  width: 25%;
+}
+
+.current-passes th{
+  white-space: nowrap;
+  padding-right: 20px;
+}
+
+.current-passes td{
+  white-space: nowrap;
+  padding-right: 20px;
+}
+
+.add-time-button{
+  font-size: 15px !important;
+  background-color: rgb(81, 40, 132) !important;
+  border-color: rgb(81, 40, 132) !important ;
+}
+
+.availability{
+  margin-left: 120px;
+  margin-top: 40px;
+}
+
+.user-passes{
+  white-space: nowrap;
+}
+
+.row{
+  max-width: 100% !important;
+}
+
+.col{
+  max-width: 100% !important;
+}
+
+.header-row{
+  padding-right: 100px !important;
+}
+
