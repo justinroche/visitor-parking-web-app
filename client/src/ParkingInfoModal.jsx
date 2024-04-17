@@ -48,7 +48,7 @@ function CampusParkingInfoModal({ show, handleClose }) {
         <p>Parking Passes are required 24/7 with the following exceptions</p>
         <p> * Starting 5 p.m. Fridays through 11 p.m. Sundays</p>
         <p> * University recognized Holidays</p>
-     <p>University of Wisconsin uses License Plate Recognition software to enforce parking regulations, therefor it is important that you enter you liecnse plate correctly when purchasing your pass.</p>
+     <p>University of Wisconsin uses License Plate Recognition software to enforce parking regulations, therefor it is important that you enter your liecnse plate correctly when purchasing your pass.</p>
      <p>You may purchase a daily permit. The daily permits are valid in commuter parking lots except between the hours of 2 am to 5 am.   These permits are not valid in parking stalls with signs saying "Restricted", "Reserved", "No Parking", or "Passport Metered Stalls".   In addition you are not allowed to park overnight with this permit.   The cost is $5.00 per day.  </p>
      <p>We offer daily and multi-day permits (up to 1 week) at $5.00 per day.   In addition we also offer hourly parking (1 to 4 hours). </p>
      <h6>Hourly Rates</h6>

@@ -1,18 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
-import axios from 'axios';
-import './AddTimeModal';
+import './PurchasePassModal.css';
 
-function AddTimeModal({
-  
-    show, // Boolean to determine if the modal is visible.
-    handleClose, // Function to close the modal.
-    //isLoggedIn, // Boolean to determine if the user is logged in. This displays the saved vehicles feature.
-    handleShowPaymentModal, // Function to show the payment modal.
-    setPurchasePassData, // Function to set the purchase pass data when the user continues to payment.
-}){
-
+/* React Bootstrap has a whole system for handling forms: https://react-bootstrap.netlify.app/docs/forms/overview/
+We might want to rewrite this to fit their outline in the future, but this works well enough for now. */
+function PurchasePassModal({
+  show, // Boolean to determine if the modal is visible.
+  handleClose, // Function to close the modal.
+  isLoggedIn, // Boolean to determine if the user is logged in. This displays the saved vehicles feature.
+  handleShowPaymentModal, // Function to show the payment modal.
+  setPurchasePassData, // Function to set the purchase pass data when the user continues to payment.
+}) {
+  /* State */
+  // formData is sent to the backend when the user pays.
   const [formData, setFormData] = useState({
     licensePlate: '',
     passLengthType: '',
@@ -52,6 +53,17 @@ function AddTimeModal({
     }
   }, [formData.passLengthType, formData.passLengthValue]);
 
+  // Max length for license plate is 7 characters.
+  useEffect(() => {
+    if (formData.licensePlate.length > 7) {
+      setFormData({
+        ...formData,
+        licensePlate: formData.licensePlate.substring(0, 7),
+      });
+    }
+  }, [formData.licensePlate]);
+
+  /* Handlers */
   // handleInputChange updates the form data when the user edits an input field.
   function handleInputChange(event) {
     const { name, value, type, checked } = event.target;
@@ -68,14 +80,31 @@ function AddTimeModal({
   // handleContinueButton validates user inputs and continues to the payment modal.
   // This system uses alerts for error messages. We might want to change this to a more user-friendly system in the future.
   function handleContinueButton() {
-    console.log("continue button clicked");
     /* Verify that necessary fields are present */
     // If any required fields are missing, prevent form submission.
-    if (!formData.passLengthType || !formData.passLengthValue) {
-      alert('Please set a duration.');
+    if (
+      !formData.licensePlate ||
+      !formData.passLengthType ||
+      !formData.passLengthValue
+    ) {
+      alert('Please enter your license plate and set a duration.');
       return;
     }
-    
+
+    // If notifications are enabled but email is missing, prevent form submission.
+    if (formData.notificationsEnabled && !formData.email) {
+      alert('Please enter your email address to enable notifications.');
+      return;
+    }
+
+    /* Verify license plate length */
+    if (formData.licensePlate.length < 1 || formData.licensePlate.length > 7) {
+      alert(
+        'Please enter a valid license plate (e.g., "123ABC" or "ABC1234").'
+      );
+      return;
+    }
+
     /* Verify email format */
     if (formData.notificationsEnabled && !isValidEmail(formData.email)) {
       alert('Please enter a valid email address to enable notifications.');
@@ -101,6 +130,12 @@ function AddTimeModal({
       notificationsEnabled: formData.notificationsEnabled,
     };
 
+    // Include additional fields if notifications are enabled.
+    if (formData.notificationsEnabled) {
+      formDataToSend.notificationTime = formData.notificationTime;
+      formDataToSend.email = formData.email;
+    }
+
     setPurchasePassData(formDataToSend); // Set the purchase pass data for the payment modal.
     handleShowPaymentModal(); // Show the payment modal.
     handleClose(); // Close this modal.
@@ -113,26 +148,46 @@ function AddTimeModal({
   }
 
   // Render the modal.
-  // add this in the passCostSection div to have a running total of
-  // the cost when they add time ${passCost.toFixed(2)}
-        
   return (
     <Modal show={show} onHide={handleClose} backdrop="static">
       <Modal.Header closeButton>
-        <Modal.Title>Add Time To Existing Pass</Modal.Title>
+        <Modal.Title>Purchase a Visitor Parking Pass</Modal.Title>
       </Modal.Header>
+
       <Modal.Body>
-
-        
-        {/* This should be recieved from the database */}
+        {/* License plate text input */}
         <h5>License Plate</h5>
-        <p>862-PCG</p>
+        <form>
+          <input
+            type="text"
+            id="licensePlateInput"
+            name="licensePlate"
+            placeholder="ABC1234"
+            value={formData.licensePlate}
+            onChange={handleInputChange}
+          />
+        </form>
+        <br />
 
-        {/* This should be recieved from the database */}
-        <h5>Time Remaining</h5>
-        <p>31:02</p>
-        
-        <h5>How much time would you like to add?</h5>
+        {/* Saved vehicles dropdown
+        Only display saved vehicles if user is logged in.
+        This feature is work in progress and contains placeholder data.
+        TODO: Implement saved vehicles. */}
+        {isLoggedIn && (
+          <>
+            <h5>Saved Vehicles</h5>
+            <select name="vehicle" id="vehicleSelect">
+              <option value="vehicle-1">Vehicle 1</option>
+              <option value="vehicle-2">Vehicle 2</option>
+              <option value="vehicle-3">Vehicle 3</option>
+            </select>
+            <br />
+            <br />
+          </>
+        )}
+
+        {/* Pass duration radio buttons */}
+        <h5>Pass Duration</h5>
         <form>
           <input
             type="radio"
@@ -178,51 +233,53 @@ function AddTimeModal({
               />
             </>
           )}
-          <br /><br />
-
-        <h5>Push Notifications</h5>
-          <input
-            type="checkbox"
-            id="pushNotificationCheckbox"
-            name="notificationsEnabled"
-            checked={formData.notificationsEnabled}
-            onChange={handleInputChange}
-          />
-          <label id="notificationLabel" htmlFor="pushNotificationCheckbox">
-            Enable push notifications
-          </label>
-
-          {/* Only display time selection and email input if notifications have been enabled. */}
-          {formData.notificationsEnabled && (
-            <>
-              <p id="notificationPrompt">
-                How long before your pass expires should we notify you?
-              </p>
-
-              <select
-                name="notificationTime"
-                id="notificationTimeSelector"
-                value={formData.notificationTime}
-                onChange={handleInputChange}
-              >
-                <option value="15min">15 minutes</option>
-                <option value="30min">30 minutes</option>
-                <option value="45min">45 minutes</option>
-                <option value="60min">60 minutes</option>
-              </select>
-              <form>
-                <input
-                  type="text"
-                  id="emailInput"
-                  name="email"
-                  placeholder="Enter your email address"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                />
-              </form>
-            </>
-          )}
         </form>
+        <br />
+
+        {/* Push notifications checkbox 
+        TODO: Setup notification API? */}
+        <h5>Push Notifications</h5>
+        <input
+          type="checkbox"
+          id="pushNotificationCheckbox"
+          name="notificationsEnabled"
+          checked={formData.notificationsEnabled}
+          onChange={handleInputChange}
+        />
+        <label id="notificationLabel" htmlFor="pushNotificationCheckbox">
+          Enable push notifications
+        </label>
+
+        {/* Only display time selection and email input if notifications have been enabled. */}
+        {formData.notificationsEnabled && (
+          <>
+            <p id="notificationPrompt">
+              How long before your pass expires should we notify you?
+            </p>
+
+            <select
+              name="notificationTime"
+              id="notificationTimeSelector"
+              value={formData.notificationTime}
+              onChange={handleInputChange}
+            >
+              <option value="15min">15 minutes</option>
+              <option value="30min">30 minutes</option>
+              <option value="45min">45 minutes</option>
+              <option value="60min">60 minutes</option>
+            </select>
+            <form>
+              <input
+                type="text"
+                id="emailInput"
+                name="email"
+                placeholder="Enter your email address"
+                value={formData.email}
+                onChange={handleInputChange}
+              />
+            </form>
+          </>
+        )}
 
         <div id="passCostSection">
           <br />
@@ -230,7 +287,6 @@ function AddTimeModal({
           <p>${passCost.toFixed(2)}</p>
         </div>
       </Modal.Body>
-
 
       <Modal.Footer>
         <div className="container d-flex justify-content-between">
@@ -246,4 +302,4 @@ function AddTimeModal({
   );
 }
 
-export default AddTimeModal;
+export default PurchasePassModal;

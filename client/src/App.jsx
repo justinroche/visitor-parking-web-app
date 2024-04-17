@@ -4,18 +4,20 @@ import axios from 'axios';
 import './App.css';
 import Button from 'react-bootstrap/Button';
 import DemoModal from './DemoModal';
-import BuyAPassModal from './BuyAPassModal';
 import PaymentModal from './PaymentModal';
 import ParkingInfoModal from './ParkingInfoModal';
 import uww_logo from "./UWWhitewater_logo.png";
 import LoginModal from './LoginModal';
 import AccountSettingsModal from './AccountSettingsModal';
 import AddTimeModal from './AddTimeModal';
+import PurchasePassModal from './PurchasePassModal';
+import DateTime from './DateTime';
 
 function App() {
   /* State */
-  const [showBuyAPassModal, setShowBuyAPassModal] = useState(false); // State for parking info modal
+  const [showPurchasePassModal, setShowPurchasePassModal] = useState(false);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [purchasePassData, setPurchasePassData] = useState(null); // State for purchase pass data (license plate, credit card, etc.)
   const [showParkingInfoModal, setShowParkingInfoModal] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showAccountSettingsModal, setShowAccountSettingsModal] = useState(false);
@@ -24,11 +26,14 @@ function App() {
 
 
   /* Handlers */
-  const handleCloseBuyAPassModal = () => setShowBuyAPassModal(false); 
-  const handleShowBuyAPassModal = () => setShowBuyAPassModal(true);
+  const handleClosePurchasePassModal = () => setShowPurchasePassModal(false); 
+  const handleShowPurchasePassModal = () => {
+    setPurchasePassData(null);
+    setShowPurchasePassModal(true);
+  };
   const handleClosePaymentModal = () => setShowPaymentModal(false);
   const handleShowPaymentModal = () => setShowPaymentModal(true);
-  const handlePaymentModalOpen = () => setShowPaymentModal(true);
+  //const handlePaymentModalOpen = () => setShowPaymentModal(true);
   const handleCloseParkingInfoModal = () => setShowParkingInfoModal(false); 
   const handleShowParkingInfoModal = () => setShowParkingInfoModal(true);
   const handleCloseLoginModal = () => setShowLoginModal(false);
@@ -63,6 +68,14 @@ function App() {
     );
   }
 
+  function getDate() {
+    const today = new Date();
+    const month = today.getMonth() + 1;
+    const year = today.getFullYear();
+    const date = today.getDate();
+    return `${month}/${date}/${year}`;
+  }
+
   function AppMain() {
     return (
       <div className="App-main">
@@ -73,7 +86,7 @@ function App() {
           </Button>
           <br />
           <br />
-          <Button id = 'buy-pass-button' className="modal-button" variant="secondary" onClick={handleShowBuyAPassModal}>
+          <Button id = 'buy-pass-button' className="modal-button" variant="secondary" onClick={handleShowPurchasePassModal}>
             Buy A Pass
           </Button>
           <br/>
@@ -116,6 +129,9 @@ function App() {
             <h5>Welcome test_user!</h5>
           </div>
           <div className='availability'>
+            <DateTime></DateTime>
+          </div>
+          <div className='availability'>
             <h5>Current Availability</h5>
           <p>27 spots remaining</p>
           </div>
@@ -130,9 +146,24 @@ function App() {
       <LoginModal show={showLoginModal} handleClose={handleCloseLoginModal} isLoggedIn={false} />
       <AccountSettingsModal show={showAccountSettingsModal} handleClose={handleCloseAccountSettingsModal} isLoggedIn={true} />
       <ParkingInfoModal show={showParkingInfoModal} handleClose={handleCloseParkingInfoModal} />
-      <BuyAPassModal show={showBuyAPassModal} handleClose={handleCloseBuyAPassModal} handlePaymentModalOpen={handlePaymentModalOpen} />
-      <PaymentModal show={showPaymentModal} handleClose={handleClosePaymentModal} />
-      <AddTimeModal show={showAddTimeModal} handleClose={handleCloseAddTimeModal} />
+      <PurchasePassModal 
+        show={showPurchasePassModal} 
+        handleClose={handleClosePurchasePassModal} 
+        isLoggedIn={true}
+        handleShowPaymentModal={handleShowPaymentModal}
+        setPurchasePassData={setPurchasePassData}
+      />
+      <PaymentModal 
+        show={showPaymentModal} 
+        handleClose={handleClosePaymentModal} 
+        purchasePassData={purchasePassData}
+      />
+      <AddTimeModal 
+        show={showAddTimeModal} 
+        handleClose={handleCloseAddTimeModal}
+        isLoggedIn={true}
+        handleShowPaymentModal={handleShowPaymentModal}
+        setPurchasePassData={setPurchasePassData} />
     </div>
     );
   }
