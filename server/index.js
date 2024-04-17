@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const mysql = require('mysql');
+const util = require('util');
 
 const app = express();
 const PORT = 8080;
@@ -20,63 +21,118 @@ app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}...`);
 });
 
-// Middleware for handling database connection and error
-const withDBConnection = (callback) => {
-  pool.getConnection((err, connection) => {
-    if (err) {
-      console.error('Error connecting to database:', err);
-      return callback(err, null);
+// Promisify pool.getConnection
+const getConnectionAsync = util.promisify(pool.getConnection).bind(pool);
+
+// Promisify connection.query
+const queryAsync = util.promisify(pool.query).bind(pool);
+
+const withDBConnection = async (callback) => {
+  let connection;
+  try {
+    connection = await getConnectionAsync();
+    return await callback(connection);
+  } catch (err) {
+    console.error('Error connecting to database:', err);
+    throw err;
+  } finally {
+    if (connection) {
+      connection.release();
     }
-    callback(null, connection);
-  });
+  }
 };
 
-// Function to execute SQL query
-const executeQuery = (connection, query, values, callback) => {
-  connection.query(query, values, (error, results) => {
-    connection.release();
-    if (error) {
-      console.error('Error executing query:', error);
-      return callback(error, null);
-    }
-    callback(null, results);
-  });
+const executeQuery = async (query, values) => {
+  try {
+    const results = await queryAsync(query, values);
+    return results;
+  } catch (error) {
+    console.error('Error executing query:', error);
+    throw error;
+  }
 };
 
-// Function to handle POST request for purchasing pass
-const purchasePass = (req, res) => {
-  const data = req.body;
-  console.log('Received:', data);
+const insertPass = async (passData) => {
+  // Query to insert pass data into the database
+  const passInsertionQuery =
+    'INSERT INTO justin_passes_test (license, startTime, duration) VALUES (?, ?, ?)';
+  const values = [passData.license, passData.startTime, passData.duration];
 
+  try {
+    const results = await executeQuery(passInsertionQuery, values);
+    console.log('Data inserted:', results);
+    return results;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const preparePurchasePassData = (data) => {
+  // Calculate and return the start time and duration of the pass
   const startTime = new Date();
   const durationHours =
     data.passLengthType === 'days'
       ? data.passLengthValue * 24
       : data.passLengthValue;
 
-  const passData = {
+  return {
     license: data.licensePlate,
     duration: durationHours,
     startTime: startTime,
   };
+};
 
-  withDBConnection((err, connection) => {
-    if (err) {
-      return res.status(500).json({ message: 'Error connecting to database' });
+const livePassExists = async (licensePlate) => {
+  // Query to fetch the most recent pass for the license plate
+  const fetchMostRecentPassQuery =
+    'SELECT * FROM justin_passes_test WHERE license = ? ORDER BY startTime DESC LIMIT 1';
+
+  try {
+    const results = await executeQuery(fetchMostRecentPassQuery, [
+      licensePlate,
+    ]);
+
+    // If a pass exists and the current time is before the pass end time, return true
+    if (results.length > 0) {
+      const mostRecentPass = results[0];
+      const currentTime = new Date();
+      const passEndTime = new Date(mostRecentPass.startTime);
+      passEndTime.setHours(passEndTime.getHours() + mostRecentPass.duration);
+      return currentTime < passEndTime;
+    }
+    return false;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const purchasePass = async (req, res) => {
+  /* In practice, we would verify and charge the user's card here.
+  For the purposes of this project, we assume the entered card information is valid. */
+
+  try {
+    // Prepare data for insertion
+    const data = req.body;
+    console.log('Received:', data);
+    const passData = preparePurchasePassData(data);
+
+    // If a live pass exists for the license plate, let the front end know so it can ask the user if they would like to add time to their pass.
+    const livePass = await withDBConnection(async (connection) => {
+      return await livePassExists(data.licensePlate, connection);
+    });
+    if (livePass) {
+      return res.status(200).json({ message: 'Live pass exists' });
     }
 
-    const query =
-      'INSERT INTO justin_passes_test (license, startTime, duration) VALUES (?, ?, ?)';
-    const values = [passData.license, passData.startTime, passData.duration];
-
-    executeQuery(connection, query, values, (error, results) => {
-      if (error) {
-        return res.status(500).json({ message: 'Error executing query' });
-      }
-      console.log('Data inserted:', results);
-      res.status(200).json({ message: 'purchase-pass data received!' });
+    // Insert pass into database
+    await withDBConnection(async (connection) => {
+      await insertPass(passData, connection);
     });
-  });
+    return res.status(200).json({ message: 'Pass successfully inserted' });
+  } catch (err) {
+    console.error('Error in purchasePass:', err);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
 };
 
 // Routes
