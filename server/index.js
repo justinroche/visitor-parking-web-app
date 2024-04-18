@@ -11,7 +11,7 @@ app.use(cors());
 app.use(bodyParser.json());
 
 const pool = mysql.createPool({
-  host: 'washington',
+  host: 'washington.uww.edu',
   user: 'rochejd20',
   password: 'jr1649',
   database: 'uww-visitor-parking',
