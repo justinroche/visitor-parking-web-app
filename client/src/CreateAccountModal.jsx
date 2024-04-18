@@ -53,24 +53,34 @@ function CreateAccountModal({ show, handleClose }) {
         }
 
         try {
-            // Make POST request to create account
-            const response = await axios.post('http://localhost:8080/create-account', formData);
-            console.log('Account created:', response.data.message);
+            // Sending data to the server
+            const response = await axios.post('http://localhost:8080/insert-user', formData, {
+                withCredentials: true
+            });
 
-            // Notify the user of successful account creation
-            alert('Account created successfully!');
-
-            // Reset form and close modal
+            
+            console.log(response.data);
+            
+            // Success handling (e.g., show success message, reset form data)
+            alert('User data successfully inserted');
+            
+            // Reset the form
             setFormData({
                 firstName: '',
                 lastName: '',
                 email: '',
                 password: '',
+                confirmPassword: ''
             });
+
+            // Close the modal
             handleClose();
+            
         } catch (error) {
-            console.error('Error creating account:', error);
-            alert('An error occurred while creating your account. Please try again.');
+            console.error('Error:', error);
+            
+            // Error handling (e.g., notify the user)
+            alert('Error inserting user data');
         }
     };
 

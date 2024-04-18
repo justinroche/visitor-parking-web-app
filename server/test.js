@@ -1,5 +1,4 @@
 const express = require('express');
-const cors = require('cors');
 const bodyParser = require('body-parser');
 const mysql = require('mysql');
 const util = require('util');
@@ -7,7 +6,13 @@ const util = require('util');
 const app = express();
 const PORT = 8080;
 
-app.use(cors());
+const cors = require('cors');
+app.use(cors({
+    origin: 'http://localhost:5174', // Specify the origin of your React app
+    credentials: true // Allow credentials such as cookies
+}));
+
+
 app.use(bodyParser.json());
 
 const pool = mysql.createPool({
@@ -21,29 +26,9 @@ app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}...`);
 });
 
-// Promisify pool.getConnection
-const getConnectionAsync = util.promisify(pool.getConnection).bind(pool);
-
-// Promisify connection.query
-const queryAsync = util.promisify(pool.query).bind(pool);
-
-const withDBConnection = async (callback) => {
-  let connection;
-  try {
-    connection = await getConnectionAsync();
-    return await callback(connection);
-  } catch (err) {
-    console.error('Error connecting to database:', err);
-    throw err;
-  } finally {
-    if (connection) {
-      connection.release();
-    }
-  }
-};
-
 const executeQuery = async (query, values) => {
   try {
+    const queryAsync = util.promisify(pool.query).bind(pool);
     const results = await queryAsync(query, values);
     return results;
   } catch (error) {
@@ -52,48 +37,28 @@ const executeQuery = async (query, values) => {
   }
 };
 
-const insertAccount = async (passData) => {
-    const accountInsertionQuery = 'INSERT INTO will_test (fname, lname, email, password) VALUES (?, ?, ?, ?)';
-    const values = [passData.fname, passData.lname, passData.email, passData.password];
+const insertUserData = async (userData) => {
+  const insertionQuery =
+    'INSERT INTO will_test (fname, lname, email, password) VALUES (?, ?, ?, ?)';
 
-    try {
-        const results = await executeQuery(accountInsertionQuery, values);
-        console.log('Data inserted:', results);
-        return results;
-    }
-    catch (error) {
-        throw error;
-    }
+  const values = [userData.fname, userData.lname, userData.email, userData.password];
+  const results = await executeQuery(insertionQuery, values);
+  console.log('User data inserted:', results);
+  return results;
 };
 
-const prepareCreateAccount = (data) => {
+// Example usage of the function within an Express route
+app.post('/insert-user', async (req, res) => {
+  const userData = req.body;
 
-    return {
-        fname: data.fname,
-        lname: data.lname,
-        email: data.email,
-        password: data.password,
-    };
-};
-
-const createAccount = async (req, res) => {
-
-    try {
-        const data = req.body;
-        console.log('Received:', data);
-        const createAccount = prepareCreateAccount(data);
-
-        // insert create account into db
-        await withDBConnection(async (connection) => {
-            await insertAccount(passData, connection);
-        });
-        return res.status(200).json({ message: 'Account successfully inserted'});
-    }
-    catch {
-        console.error('Error in createAccount', err);
-        return res.status(500).json({ message: 'Internal server error '});
-    }
-};
+  try {
+    await insertUserData(userData);
+    res.status(200).json({ message: 'User data successfully inserted' });
+  } catch (error) {
+    console.error('Error inserting user data:', error);
+    res.status(500).json({ message: 'Error inserting user data' });
+  }
+});
 
 // Routes
 app.post('/account-settings', createAccount);
