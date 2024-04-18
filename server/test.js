@@ -7,16 +7,12 @@ const app = express();
 const PORT = 8080;
 
 const cors = require('cors');
-app.use(cors({
-    origin: 'http://localhost:5174', // Specify the origin of your React app
-    credentials: true // Allow credentials such as cookies
-}));
-
+app.use(cors());
 
 app.use(bodyParser.json());
 
 const pool = mysql.createPool({
-  host: 'washington',
+  host: 'washington.uww.edu',
   user: 'anthoneywj22',
   password: 'wa4385',
   database: 'uww-visitor-parking',
@@ -41,7 +37,12 @@ const insertUserData = async (userData) => {
   const insertionQuery =
     'INSERT INTO will_test (fname, lname, email, password) VALUES (?, ?, ?, ?)';
 
-  const values = [userData.fname, userData.lname, userData.email, userData.password];
+  const values = [
+    userData.firstName,
+    userData.lastName,
+    userData.email,
+    userData.password,
+  ];
   const results = await executeQuery(insertionQuery, values);
   console.log('User data inserted:', results);
   return results;
@@ -50,6 +51,8 @@ const insertUserData = async (userData) => {
 // Example usage of the function within an Express route
 app.post('/insert-user', async (req, res) => {
   const userData = req.body;
+
+  console.log(userData);
 
   try {
     await insertUserData(userData);
@@ -61,4 +64,4 @@ app.post('/insert-user', async (req, res) => {
 });
 
 // Routes
-app.post('/account-settings', createAccount);
+// app.post('/account-settings', createAccount);

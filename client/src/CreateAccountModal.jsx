@@ -6,171 +6,171 @@ import './CreateAccountModal.css';
 
 // Function to validate email address
 const validateEmail = (email) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
 };
 
 function CreateAccountModal({ show, handleClose }) {
-    const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+  });
+
+  const [passwordVisibility, setPasswordVisibility] = useState(false);
+
+  // Handle input change
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  // Toggle password visibility
+  const togglePasswordVisibility = () => {
+    setPasswordVisibility(!passwordVisibility);
+  };
+
+  // Handle form submission
+  const handleCreateButton = async () => {
+    const { firstName, lastName, email, password, confirmPassword } = formData;
+
+    // Validate inputs
+    if (!firstName || !lastName || !email || !password || !confirmPassword) {
+      alert('Please fill out all required fields.');
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      alert('Passwords do not match. Please try again.');
+      return;
+    }
+
+    if (!validateEmail(email)) {
+      alert('Please enter a valid email address.');
+      return;
+    }
+
+    try {
+      axios
+        .post('http://localhost:8080/insert-user', formData)
+        .then((response) => {
+          console.log(response.data);
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+
+      // Success handling (e.g., show success message, reset form data)
+      alert('User data successfully inserted');
+
+      // Reset the form
+      setFormData({
         firstName: '',
         lastName: '',
         email: '',
         password: '',
-        confirmPassword: ''
-    });
+        confirmPassword: '',
+      });
 
-    const [passwordVisibility, setPasswordVisibility] = useState(false);
+      // Close the modal
+      handleClose();
+    } catch (error) {
+      console.error('Error:', error);
 
-    // Handle input change
-    const handleInputChange = (event) => {
-        const { name, value } = event.target;
-        setFormData({ ...formData, [name]: value });
-    };
+      // Error handling (e.g., notify the user)
+      alert('Error inserting user data');
+    }
+  };
 
-    // Toggle password visibility
-    const togglePasswordVisibility = () => {
-        setPasswordVisibility(!passwordVisibility);
-    };
+  return (
+    <Modal show={show} onHide={handleClose}>
+      <Modal.Header closeButton>
+        <Modal.Title>Create an Account</Modal.Title>
+      </Modal.Header>
 
-    // Handle form submission
-    const handleCreateButton = async () => {
-        const { firstName, lastName, email, password, confirmPassword } = formData;
+      <Modal.Body>
+        <form>
+          {/* First Name Input */}
+          <div className="form-group">
+            <label>First Name</label>
+            <input
+              type="text"
+              name="firstName"
+              value={formData.firstName}
+              onChange={handleInputChange}
+              required
+            />
+          </div>
 
-        // Validate inputs
-        if (!firstName || !lastName || !email || !password || !confirmPassword) {
-            alert('Please fill out all required fields.');
-            return;
-        }
+          {/* Last Name Input */}
+          <div className="form-group">
+            <label>Last Name</label>
+            <input
+              type="text"
+              name="lastName"
+              value={formData.lastName}
+              onChange={handleInputChange}
+              required
+            />
+          </div>
 
-        if (password !== confirmPassword) {
-            alert('Passwords do not match. Please try again.');
-            return;
-        }
+          {/* Email Input */}
+          <div className="form-group">
+            <label>Email</label>
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleInputChange}
+              required
+            />
+          </div>
 
-        if (!validateEmail(email)) {
-            alert('Please enter a valid email address.');
-            return;
-        }
+          {/* Password Input */}
+          <div className="form-group">
+            <label>Password</label>
+            <div className="password-container">
+              <input
+                type={passwordVisibility ? 'text' : 'password'}
+                name="password"
+                value={formData.password}
+                onChange={handleInputChange}
+                required
+              />
+              <button type="button" onClick={togglePasswordVisibility}>
+                {passwordVisibility ? 'Hide' : 'Show'}
+              </button>
+            </div>
+          </div>
 
-        try {
-            // Sending data to the server
-            const response = await axios.post('http://localhost:8080/insert-user', formData, {
-                withCredentials: true
-            });
+          {/* Confirm Password Input */}
+          <div className="form-group">
+            <label>Confirm Password</label>
+            <input
+              type={passwordVisibility ? 'text' : 'password'}
+              name="confirmPassword"
+              value={formData.confirmPassword}
+              onChange={handleInputChange}
+              required
+            />
+          </div>
+        </form>
+      </Modal.Body>
 
-            
-            console.log(response.data);
-            
-            // Success handling (e.g., show success message, reset form data)
-            alert('User data successfully inserted');
-            
-            // Reset the form
-            setFormData({
-                firstName: '',
-                lastName: '',
-                email: '',
-                password: '',
-                confirmPassword: ''
-            });
-
-            // Close the modal
-            handleClose();
-            
-        } catch (error) {
-            console.error('Error:', error);
-            
-            // Error handling (e.g., notify the user)
-            alert('Error inserting user data');
-        }
-    };
-
-    return (
-        <Modal show={show} onHide={handleClose}>
-            <Modal.Header closeButton>
-                <Modal.Title>Create an Account</Modal.Title>
-            </Modal.Header>
-
-            <Modal.Body>
-                <form>
-                    {/* First Name Input */}
-                    <div className="form-group">
-                        <label>First Name</label>
-                        <input
-                            type="text"
-                            name="firstName"
-                            value={formData.firstName}
-                            onChange={handleInputChange}
-                            required
-                        />
-                    </div>
-
-                    {/* Last Name Input */}
-                    <div className="form-group">
-                        <label>Last Name</label>
-                        <input
-                            type="text"
-                            name="lastName"
-                            value={formData.lastName}
-                            onChange={handleInputChange}
-                            required
-                        />
-                    </div>
-
-                    {/* Email Input */}
-                    <div className="form-group">
-                        <label>Email</label>
-                        <input
-                            type="email"
-                            name="email"
-                            value={formData.email}
-                            onChange={handleInputChange}
-                            required
-                        />
-                    </div>
-
-                    {/* Password Input */}
-                    <div className="form-group">
-                        <label>Password</label>
-                        <div className="password-container">
-                            <input
-                                type={passwordVisibility ? 'text' : 'password'}
-                                name="password"
-                                value={formData.password}
-                                onChange={handleInputChange}
-                                required
-                            />
-                            <button type="button" onClick={togglePasswordVisibility}>
-                                {passwordVisibility ? 'Hide' : 'Show'}
-                            </button>
-                        </div>
-                    </div>
-
-                    {/* Confirm Password Input */}
-                    <div className="form-group">
-                        <label>Confirm Password</label>
-                        <input
-                            type={passwordVisibility ? 'text' : 'password'}
-                            name="confirmPassword"
-                            value={formData.confirmPassword}
-                            onChange={handleInputChange}
-                            required
-                        />
-                    </div>
-                </form>
-            </Modal.Body>
-
-            <Modal.Footer>
-                {/* Close Button */}
-                <Button variant="secondary" onClick={handleClose}>
-                    Close
-                </Button>
-                {/* Create Button */}
-                <Button variant="primary" onClick={handleCreateButton}>
-                    Create
-                </Button>
-            </Modal.Footer>
-        </Modal>
-    );
+      <Modal.Footer>
+        {/* Close Button */}
+        <Button variant="secondary" onClick={handleClose}>
+          Close
+        </Button>
+        {/* Create Button */}
+        <Button variant="primary" onClick={handleCreateButton}>
+          Create
+        </Button>
+      </Modal.Footer>
+    </Modal>
+  );
 }
 
 export default CreateAccountModal;
