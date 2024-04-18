@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import React from 'react';
-import axios from 'axios';
 import './App.css';
 import Button from 'react-bootstrap/Button';
 import PurchasePassModal from './PurchasePassModal';
 import PaymentModal from './PaymentModal';
+import PassSearchForm from './PassSearchForm';
 
 function App() {
   /* State */
@@ -39,6 +39,9 @@ function App() {
         <Button variant="primary" onClick={handleShowPurchasePassModal}>
           Purchase a pass
         </Button>
+        <br />
+        <br />
+        <PassSearchForm />
         <PurchasePassModal
           show={showPurchasePassModal}
           handleClose={handleClosePurchasePassModal}

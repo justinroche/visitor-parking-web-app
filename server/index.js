@@ -130,6 +130,10 @@ const passSearch = async (req, res) => {
   // Fetch pass information
   const passInfo = await fetchLivePassInformation(licensePlate);
   if (passInfo) {
+    passInfo.endTime = calculatePassEndTime(
+      passInfo.startTime,
+      passInfo.duration
+    );
     console.log('Found live pass:', passInfo);
     return res.status(200).json({ message: 'Live pass exists', passInfo });
   } else {
