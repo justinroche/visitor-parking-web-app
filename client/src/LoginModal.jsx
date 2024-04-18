@@ -52,20 +52,31 @@ function LoginModal({ show, handleClose, isLoggedIn }) {
             if (response.status === 200) {
                 // Successful login
                 alert('Login successful!');
+                const userData = response.data;
+    
+                // Use the userData as needed in your application
+                // Update state/context as needed
                 handleClose(); // Close the modal on successful login
-                isLoggedIn(); // Call the prop function to update the login state
+                isLoggedIn(); // Update the login state
             } else {
                 // Handle different response status codes
                 alert('Login failed. Please check your credentials.');
             }
         } catch (error) {
             console.error('Login error:', error);
-            alert('An error occurred during login. Please try again later.');
+            if (error.response) {
+                // Server responded with a status other than 200
+                const status = error.response.status;
+                if (status === 401) {
+                    alert('Invalid email or password.');
+                } else {
+                    alert(`Login failed with error code: ${status}`);
+                }
+            } else {
+                alert('An error occurred during login. Please try again later.');
+            }
         }
     };
-    
-
-    
 
     return (
         <Modal show={show} onHide={handleClose} backdrop="static">
@@ -96,6 +107,7 @@ function LoginModal({ show, handleClose, isLoggedIn }) {
                         placeholder='Password'
                         value={formData.password}
                         onChange={handleInputChange}
+                        title='Password should be atleast a length of 6 characters and/or numbers.'
                     />
                     &nbsp;&nbsp;
                     <Button id='password-button' onClick={togglePasswordVisibility}>

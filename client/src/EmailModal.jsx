@@ -1,13 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import './EmailModal.css'; // Adjust the path as needed
 
-function EmailModal({ show, handleClose }) {
+function EmailModal({ show, handleClose, isLoggedIn }) {
     // State for form data and email validity
     const [formData, setFormData] = useState({ email: '' });
     const [isEmailValid, setIsEmailValid] = useState(true);
+    
+    // Fetch email data from the server when the component is mounted
+    useEffect(() => {
+        axios.get('http://localhost:8080/email-data')
+            .then(response => {
+                // Set the fetched email data into formData
+                const emailData = response.data[0]?.email; // Assuming you want the first email only
+                setFormData({ email: emailData });
+            })
+            .catch(error => {
+                console.error('Error fetching email data:', error);
+            });
+    }, []);
     
     // Email validation function
     function validateEmail(email) {
@@ -83,3 +96,4 @@ function EmailModal({ show, handleClose }) {
 }
 
 export default EmailModal;
+ 

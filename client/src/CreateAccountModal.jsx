@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
+import axios from 'axios';
 import './CreateAccountModal.css';
 
 // Function to validate email address
@@ -10,167 +11,153 @@ const validateEmail = (email) => {
 };
 
 function CreateAccountModal({ show, handleClose }) {
-    // State variables
     const [formData, setFormData] = useState({
-        fName: '', lName: '', email: '', password: '', confirmPassword: ''
+        firstName: '',
+        lastName: '',
+        email: '',
+        password: '',
+        confirmPassword: ''
     });
-    const [passwordVisibility, setPasswordVisibility] = useState(false);
-    const [isPasswordStarted, setIsPasswordStarted] = useState(false);
-    const [formSubmitted, setFormSubmitted] = useState(false);
 
-    // Handlers
+    const [passwordVisibility, setPasswordVisibility] = useState(false);
+
+    // Handle input change
     const handleInputChange = (event) => {
         const { name, value } = event.target;
-
-        // Update form data
         setFormData({ ...formData, [name]: value });
-
-        // When user starts typing in password, confirmation input opens
-        if (name === 'password' && value.length > 0) {
-            setIsPasswordStarted(true);
-        }
     };
 
+    // Toggle password visibility
     const togglePasswordVisibility = () => {
         setPasswordVisibility(!passwordVisibility);
     };
 
     // Handle form submission
-    const handleCreateButton = () => {
-        // If any required fields are missing, prevent form submission
-        const requiredFields = ['fName', 'lName', 'email', 'password', 'confirmPassword'];
-        if (requiredFields.some(field => !formData[field])) {
-            alert('Please fill out all required fields before submitting.');
+    const handleCreateButton = async () => {
+        const { firstName, lastName, email, password, confirmPassword } = formData;
+
+        // Validate inputs
+        if (!firstName || !lastName || !email || !password || !confirmPassword) {
+            alert('Please fill out all required fields.');
             return;
         }
 
-        // Check if password and confirmPassword match
-        if (formData.password !== formData.confirmPassword) {
-            alert('Password and Confirm Password do not match. Please try again.');
+        if (password !== confirmPassword) {
+            alert('Passwords do not match. Please try again.');
             return;
         }
 
-        // Validate email address
-        if (!validateEmail(formData.email)) {
+        if (!validateEmail(email)) {
             alert('Please enter a valid email address.');
             return;
         }
 
-        // Notify the user of successful account creation
-        alert('Your account has been registered successfully.');
+        try {
+            // Make POST request to create account
+            const response = await axios.post('http://localhost:8080/create-account', formData);
+            console.log('Account created:', response.data.message);
 
-        // Close modal
-        handleClose();
+            // Notify the user of successful account creation
+            alert('Account created successfully!');
+
+            // Reset form and close modal
+            setFormData({
+                firstName: '',
+                lastName: '',
+                email: '',
+                password: '',
+            });
+            handleClose();
+        } catch (error) {
+            console.error('Error creating account:', error);
+            alert('An error occurred while creating your account. Please try again.');
+        }
     };
 
-    // Function to reset form data
-    const handleResetButton = () => {
-        setFormData({
-            fName: '', lName: '', email: '', password: '', confirmPassword: ''
-        });
-        setIsPasswordStarted(false);
-        setPasswordVisibility(false);
-    };
-
-    // Render
     return (
-        <Modal show={show} onHide={handleClose} backdrop="static">
+        <Modal show={show} onHide={handleClose}>
             <Modal.Header closeButton>
                 <Modal.Title>Create an Account</Modal.Title>
             </Modal.Header>
 
             <Modal.Body>
-                {/* Form fields */}
-                <h5>First Name</h5>
                 <form>
-                    <input
-                        type='text'
-                        id='fNameInput'
-                        name='fName'
-                        placeholder='First name *'
-                        value={formData.fName}
-                        onChange={handleInputChange}
-                    />
-                </form>
-                <br />
-                <h5>Last Name</h5>
-                <form>
-                    <input
-                        type='text'
-                        id='lNameInput'
-                        name='lName'
-                        placeholder='Last name *'
-                        value={formData.lName}
-                        onChange={handleInputChange}
-                    />
-                </form>
-                <br />
-                <h5>Email</h5>
-                <form>
-                    <input
-                        type='email'
-                        id='emailInput'
-                        name='email'
-                        placeholder='Email Address *'
-                        value={formData.email}
-                        onChange={handleInputChange}
-                    />
-                </form>
-                <br />
-                <h5>Choose Password</h5>
-                <div className="password-input-container">
-                    <input
-                        type={passwordVisibility ? 'text' : 'password'}
-                        id='passwordInput'
-                        name='password'
-                        placeholder='Choose Password *'
-                        value={formData.password}
-                        onChange={handleInputChange}
-                    />
-                    <Button variant="primary" id='password-button' onClick={togglePasswordVisibility}>
-                        {passwordVisibility ? 'Hide' : 'Show'}
-                    </Button>
-                </div>
-                <br />
-                {isPasswordStarted && (
-                    <>
-                        <h5>Confirm Password</h5>
-                        <div className="password-input-container">
+                    {/* First Name Input */}
+                    <div className="form-group">
+                        <label>First Name</label>
+                        <input
+                            type="text"
+                            name="firstName"
+                            value={formData.firstName}
+                            onChange={handleInputChange}
+                            required
+                        />
+                    </div>
+
+                    {/* Last Name Input */}
+                    <div className="form-group">
+                        <label>Last Name</label>
+                        <input
+                            type="text"
+                            name="lastName"
+                            value={formData.lastName}
+                            onChange={handleInputChange}
+                            required
+                        />
+                    </div>
+
+                    {/* Email Input */}
+                    <div className="form-group">
+                        <label>Email</label>
+                        <input
+                            type="email"
+                            name="email"
+                            value={formData.email}
+                            onChange={handleInputChange}
+                            required
+                        />
+                    </div>
+
+                    {/* Password Input */}
+                    <div className="form-group">
+                        <label>Password</label>
+                        <div className="password-container">
                             <input
                                 type={passwordVisibility ? 'text' : 'password'}
-                                id='confirmPasswordInput'
-                                name='confirmPassword'
-                                placeholder='Confirm Password *'
-                                value={formData.confirmPassword}
+                                name="password"
+                                value={formData.password}
                                 onChange={handleInputChange}
+                                required
                             />
+                            <button type="button" onClick={togglePasswordVisibility}>
+                                {passwordVisibility ? 'Hide' : 'Show'}
+                            </button>
                         </div>
-                    </>
-                )}
-                <h6 id='error-message'>* indicates required field to fill out.</h6>
+                    </div>
+
+                    {/* Confirm Password Input */}
+                    <div className="form-group">
+                        <label>Confirm Password</label>
+                        <input
+                            type={passwordVisibility ? 'text' : 'password'}
+                            name="confirmPassword"
+                            value={formData.confirmPassword}
+                            onChange={handleInputChange}
+                            required
+                        />
+                    </div>
+                </form>
             </Modal.Body>
 
             <Modal.Footer>
-                <div className="container d-flex justify-content-between">
-                    {/* Close button */}
-                    <Button variant="secondary" onClick={handleClose}>
-                        Close
-                    </Button>
-                    {/* Reset button */}
-                    <Button variant="secondary" onClick={handleResetButton}>
-                        Reset
-                    </Button>
-                    {/* Create button */}
-                    <Button variant="primary" onClick={handleCreateButton}>
-                        Create
-                    </Button>
-                </div>
-                {/* Display confirmation message */}
-                {formSubmitted && (
-                    <div className="confirmation-message">
-                        Your account has been registered successfully.
-                    </div>
-                )}
+                {/* Close Button */}
+                <Button variant="secondary" onClick={handleClose}>
+                    Close
+                </Button>
+                {/* Create Button */}
+                <Button variant="primary" onClick={handleCreateButton}>
+                    Create
+                </Button>
             </Modal.Footer>
         </Modal>
     );
