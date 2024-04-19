@@ -8,7 +8,7 @@ function PassSearchForm() {
   const [endTime, setEndTime] = useState('');
   const [passExists, setPassExists] = useState(false);
   const [searched, setSearched] = useState(false);
-  const [loading, setLoading] = useState(false); // Add loading state
+  const [loading, setLoading] = useState(false);
 
   // Max length for license plate is 7 characters.
   useEffect(() => {
@@ -23,7 +23,7 @@ function PassSearchForm() {
 
   const handleSearchSubmit = async (event) => {
     event.preventDefault();
-    setLoading(true); // Set loading to true when search starts
+    setLoading(true); // Set loading when search starts
 
     await axios
       .post('http://localhost:8080/pass-search', {
@@ -38,12 +38,12 @@ function PassSearchForm() {
           setPassExists(true);
           setEndTime(new Date(response.data.passInfo.endTime).toLocaleString());
         }
-        setSearched(true);
       })
       .catch((error) => {
         console.error('Error:', error);
       })
       .finally(() => {
+        setSearched(true); // Set searched to true when search completes
         setLoading(false); // Set loading to false when search completes
       });
   };
