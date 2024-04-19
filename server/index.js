@@ -36,10 +36,30 @@ const executeQuery = async (query, values) => {
 
 // Insert a pass into the database
 const insertPass = async (passData) => {
-  const passInsertionQuery =
-    'INSERT INTO justin_passes_test (license, startTime, duration) VALUES (?, ?, ?)';
+  let passInsertionQuery;
+  let values;
 
-  const values = [passData.license, passData.startTime, passData.duration];
+  if (passData.notifyEnabled) {
+    passInsertionQuery =
+      'INSERT INTO Passes (license, startTime, duration, email, notifyEnabled, notifyWhen) VALUES (?, ?, ?, ?, ?, ?)';
+    values = [
+      passData.license,
+      passData.startTime,
+      passData.duration,
+      passData.email,
+      passData.notifyEnabled,
+      passData.notifyWhen,
+    ];
+  } else {
+    passInsertionQuery =
+      'INSERT INTO Passes (license, startTime, duration, notifyEnabled) VALUES (?, ?, ?, ?)';
+    values = [
+      passData.license,
+      passData.startTime,
+      passData.duration,
+      passData.notifyEnabled,
+    ];
+  }
   const results = await executeQuery(passInsertionQuery, values);
   console.log('Pass inserted:', results);
   return results;
@@ -53,10 +73,22 @@ const preparePurchasePassData = (data) => {
       ? data.passLengthValue * 24
       : data.passLengthValue;
 
+  if (data.notificationsEnabled) {
+    return {
+      license: data.licensePlate,
+      duration: durationHours,
+      startTime: startTime,
+      email: data.email,
+      notifyEnabled: true,
+      notifyWhen: data.notificationTime,
+    };
+  }
+
   return {
     license: data.licensePlate,
     duration: durationHours,
     startTime: startTime,
+    notifyEnabled: false,
   };
 };
 
@@ -70,7 +102,7 @@ const calculatePassEndTime = (startTime, duration) => {
 // Return if a license plate has a live pass
 const livePassExists = async (licensePlate) => {
   const fetchMostRecentPassQuery =
-    'SELECT * FROM justin_passes_test WHERE license = ? ORDER BY startTime DESC LIMIT 1';
+    'SELECT * FROM Passes WHERE license = ? ORDER BY startTime DESC LIMIT 1';
 
   const results = await executeQuery(fetchMostRecentPassQuery, [licensePlate]);
 
@@ -95,7 +127,7 @@ const fetchLivePassInformation = async (licensePlate) => {
   }
 
   const fetchPassInfoQuery =
-    'SELECT * FROM justin_passes_test WHERE license = ? ORDER BY startTime DESC LIMIT 1';
+    'SELECT * FROM Passes WHERE license = ? ORDER BY startTime DESC LIMIT 1';
   const results = await executeQuery(fetchPassInfoQuery, [licensePlate]);
   return results.length > 0 ? results[0] : null;
 };
