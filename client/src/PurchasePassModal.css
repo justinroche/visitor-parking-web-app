@@ -20,3 +20,30 @@
   #head1{
     background-color: lightgray;
   }
+
+  .passSearchbutton{
+    background-color: purple;
+
+  }
+
+  .passSearchInputContainer {
+    display: flex;
+    align-items: center;
+    background-color: green;
+    border-radius: 5px;
+    padding: 8px;
+  }
+  
+  .passSearchInput {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 16px;
+    margin-left: 8px;
+  }
+  
+  .searchIcon {
+    color: #670808;
+    cursor: pointer;
+  }
