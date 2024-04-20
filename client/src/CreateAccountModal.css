@@ -1,0 +1,29 @@
+.radioButtonLabel {
+    margin-right: 10px;
+    margin-left: 5px;
+  }
+  
+  #notificationLabel {
+    margin-left: 5px;
+  }
+  
+  #notificationTimeSelector {
+    margin-bottom: 5px;
+  }
+  
+  #notificationPrompt {
+    margin: 10px 0 5px;
+  }
+  
+  #h3Font {
+    color: #0d6efd;
+  }
+
+  #password-button {
+    font-size: 0.5em;
+}
+
+.save-button{
+  background-color: rgb(81, 40, 132) !important;
+  border: 3px rgb(81, 40, 132) !important;
+}
