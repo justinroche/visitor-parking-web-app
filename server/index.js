@@ -35,24 +35,27 @@ const executeQuery = async (query, values) => {
 };
 
 // calculates new time for pass
-const addTime = async(duration, licensePlate) => {
-  const fetchActivePassDuration = 'SELECT duration FROM Passes WHERE license = ? ORDER BY startTime DESC LIMIT 1';
+const addTime = async (duration, licensePlate) => {
+  const fetchActivePassDuration =
+    'SELECT duration FROM Passes WHERE license = ? ORDER BY startTime DESC LIMIT 1';
 
   const results = await executeQuery(fetchActivePassDuration, [licensePlate]);
-  console.log('Original time:', results);
+  console.log('Original time:', results[0].duration);
 
-  let newTime = duration + results;
+  let newTime = parseInt(duration) + results[0].duration;
 
   return newTime;
 };
 
 // Updates pass that is currently active
-const updateLivePass = async(passData) => {
-  let newTime = addTime(passData.duration, passData.licensePlate);
+const updateLivePass = async (passData) => {
+  let newTime = await addTime(passData.duration, passData.license);
+  console.log('New time:', newTime);
 
-  const updatePass = 'UPDATE Passes SET duration = ? WHERE license = ?';
+  const updatePass =
+    'UPDATE Passes SET duration = ? WHERE license = ? ORDER BY startTime DESC LIMIT 1';
 
-  const results = await executeQuery(updatePass, [newTime, passData.licensePlate]);
+  const results = await executeQuery(updatePass, [newTime, passData.license]);
   console.log('Updated info:', results);
 
   return results;
@@ -171,6 +174,7 @@ const purchasePass = async (req, res) => {
   if (livePass) {
     console.log('Live pass already exists... responding to front end.');
     //alert("This plate number already has an active pass, if you would like to add more time continue as normal.");
+    console.log(passData);
     await updateLivePass(passData);
     return res.status(200).json({ message: 'Live pass exists' });
   }
