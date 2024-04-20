@@ -34,6 +34,30 @@ const executeQuery = async (query, values) => {
   }
 };
 
+// calculates new time for pass
+const addTime = async(duration, licensePlate) => {
+  const fetchActivePassDuration = 'SELECT duration FROM Passes WHERE license = ? ORDER BY startTime DESC LIMIT 1';
+
+  const results = await executeQuery(fetchActivePassDuration, [licensePlate]);
+  console.log('Original time:', results);
+
+  let newTime = duration + results;
+
+  return newTime;
+};
+
+// Updates pass that is currently active
+const updateLivePass = async(passData) => {
+  let newTime = addTime(passData.duration, passData.licensePlate);
+
+  const updatePass = 'UPDATE Passes SET duration = ? WHERE license = ?';
+
+  const results = await executeQuery(updatePass, [newTime, passData.licensePlate]);
+  console.log('Updated info:', results);
+
+  return results;
+};
+
 // Insert a pass into the database
 const insertPass = async (passData) => {
   let passInsertionQuery;
@@ -146,6 +170,8 @@ const purchasePass = async (req, res) => {
   const livePass = await livePassExists(data.licensePlate);
   if (livePass) {
     console.log('Live pass already exists... responding to front end.');
+    //alert("This plate number already has an active pass, if you would like to add more time continue as normal.");
+    await updateLivePass(passData);
     return res.status(200).json({ message: 'Live pass exists' });
   }
 
