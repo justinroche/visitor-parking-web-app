@@ -89,21 +89,25 @@ function App() {
           <br />
           <br />
           <Button id = 'buy-pass-button' className="modal-button" variant="secondary" onClick={handleShowPurchasePassDemoModal}>
-            Buy A Pass
+           <Button id = 'buy-pass-button' className="modal-button" variant="secondary" onClick={handleShowPurchasePassDemoModal}>
+            Purchase A Pass
           </Button>
           <br/>
           <br/>
 
           </div>
 
-
-        <div className="col">
+          <div className="col">
           <table className="current-passes">
             <thead>
-            <h5 style={{marginBottom: '30px'}} className='user-passes'>User's Current Passes</h5>
+              <tr className="header-row">
+              <th colSpan="6">
+                <h5 style={{marginBottom: '30px'}} className='user-passes'>User's Current Passes</h5>
+              </th>
+              </tr>
               <tr className='header-row'>
-                <th>Plate Identification</th>
-                <th>Make</th>
+                <th scope="col">Plate Identification</th>
+                <th scope="col">Make</th>
                 <th>Model</th>
                 <th>Year</th>
                 <th>Time Remaining</th>
@@ -117,13 +121,40 @@ function App() {
                 <td>Gladiator</td>
                 <td>2024</td>
                 <td>31:02</td>
+                <td>
                 <Button className="add-time-button" variant="secondary" onClick={handleShowAddTimeModal}>
                   Add Time
                 </Button>
+                </td>
+              </tr>
+              <tr>
+              <td>862-PCG</td>
+                <td>Jeep</td>
+                <td>Gladiator</td>
+                <td>2024</td>
+                <td>31:02</td>
+                <td>
+                <Button className="add-time-button" variant="secondary" onClick={handleShowAddTimeModal}>
+                  Add Time
+                </Button>
+                </td>
+              </tr>
+              <tr>
+              <td>862-PCG</td>
+                <td>Jeep</td>
+                <td>Gladiator</td>
+                <td>2024</td>
+                <td>31:02</td>
+                <td>
+                <Button className="add-time-button" variant="secondary" onClick={handleShowAddTimeModal}>
+                  Add Time
+                </Button>
+                </td>
               </tr>
             </tbody>
           </table>
         </div>
+
 
 
         <div className='col'>
