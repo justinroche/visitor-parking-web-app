@@ -62,8 +62,8 @@ function CreateAccountModal({ show, handleClose }) {
           console.error('Error:', error);
         });
 
-      // Success handling (e.g., show success message, reset form data)
-      alert('User data successfully inserted');
+      // Success handling
+      alert('Account created, you may now log in.');
 
       // Reset the form
       setFormData({
@@ -84,6 +84,18 @@ function CreateAccountModal({ show, handleClose }) {
     }
   };
 
+  // Handle form reset
+  const handleReset = () => {
+    setFormData({
+      firstName: '',
+      lastName: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
+    });
+  };
+
+
   return (
     <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
@@ -95,67 +107,91 @@ function CreateAccountModal({ show, handleClose }) {
           {/* First Name Input */}
           <div className="form-group">
             <label>First Name</label>
+            <br/>
             <input
               type="text"
               name="firstName"
               value={formData.firstName}
               onChange={handleInputChange}
+              placeholder='Enter First Name'
+              tabIndex={1}
               required
             />
           </div>
+          <br/>
 
           {/* Last Name Input */}
           <div className="form-group">
             <label>Last Name</label>
+            <br/>
             <input
               type="text"
               name="lastName"
               value={formData.lastName}
               onChange={handleInputChange}
+              placeholder='Enter Last Name'
+              tabIndex={2}
               required
             />
           </div>
+          <br/>
 
           {/* Email Input */}
           <div className="form-group">
             <label>Email</label>
+            <br/>
             <input
               type="email"
               name="email"
               value={formData.email}
               onChange={handleInputChange}
+              placeholder='Enter Email'
+              tabIndex={3}
               required
             />
           </div>
+          <br/>
 
           {/* Password Input */}
           <div className="form-group">
-            <label>Password</label>
+            <label>Password </label>
+            <br/>
             <div className="password-container">
               <input
                 type={passwordVisibility ? 'text' : 'password'}
                 name="password"
                 value={formData.password}
                 onChange={handleInputChange}
+                placeholder='Enter Password'
+                tabIndex={4}
                 required
-              />
-              <button type="button" onClick={togglePasswordVisibility}>
+              /> &nbsp;
+              <Button id='password-button' type="button" onClick={togglePasswordVisibility}>
                 {passwordVisibility ? 'Hide' : 'Show'}
-              </button>
+              </Button>
             </div>
           </div>
+          <br/>
 
           {/* Confirm Password Input */}
-          <div className="form-group">
+          <div>
             <label>Confirm Password</label>
+            <br/>
             <input
               type={passwordVisibility ? 'text' : 'password'}
               name="confirmPassword"
               value={formData.confirmPassword}
               onChange={handleInputChange}
+              placeholder='Confirm Password'
+              tabIndex={5}
               required
             />
           </div>
+          {/* Passwords Match Validation */}
+          {formData.password && formData.confirmPassword && formData.password !== formData.confirmPassword && (
+            <span id='password-alert'>Passwords must match!</span>
+          )}
+          <br/>
         </form>
       </Modal.Body>
 
@@ -163,6 +199,10 @@ function CreateAccountModal({ show, handleClose }) {
         {/* Close Button */}
         <Button variant="secondary" onClick={handleClose}>
           Close
+        </Button>
+        {/* Reset Button */}
+        <Button variant="secondary" onClick={handleReset}>
+          Reset
         </Button>
         {/* Create Button */}
         <Button variant="primary" onClick={handleCreateButton}>

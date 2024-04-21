@@ -4,16 +4,14 @@ import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import './EmailModal.css'; // Adjust the path as needed
 
-function EmailModal({ show, handleClose, isLoggedIn }) {
-    // State for form data and email validity
+function EmailModal({ show, handleClose }) {
     const [formData, setFormData] = useState({ email: '' });
     const [isEmailValid, setIsEmailValid] = useState(true);
     
-    // Fetch email data from the server when the component is mounted
     useEffect(() => {
+        // Fetch the current user's email data from the server
         axios.get('http://localhost:8080/email-data')
             .then(response => {
-                // Set the fetched email data into formData
                 const emailData = response.data[0]?.email; // Assuming you want the first email only
                 setFormData({ email: emailData });
             })
@@ -22,35 +20,32 @@ function EmailModal({ show, handleClose, isLoggedIn }) {
             });
     }, []);
     
-    // Email validation function
     function validateEmail(email) {
-        // Regular expression for validating an email address
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return emailRegex.test(email);
     }
 
-    // handleInputChange updates the form data when the user edits the input field
     function handleInputChange(event) {
         const { name, value } = event.target;
         setFormData({ ...formData, [name]: value });
         
-        // Validate the email address
         if (name === 'email') {
             const isValid = validateEmail(value);
             setIsEmailValid(isValid);
         }
     }
 
-    // handleSaveButton sends a POST request when the modal is saved
     function handleSaveButton() {
         if (isEmailValid) {
-            axios.post('http://localhost:8080/email-modal', { data: formData.email })
+            // Send a POST request to update the email
+            axios.post('http://localhost:8080/update-email', { email: formData.email })
                 .then(response => {
-                    window.alert('Your email address has been updated.');
+                    window.alert('Your email address has been updated successfully.');
                     console.log(response.data);
                 })
                 .catch(error => {
-                    console.error('Error:', error);
+                    console.error('Error updating email:', error);
+                    window.alert('Error updating email. Please try again later.');
                 });
             handleClose();
         } else {
@@ -58,7 +53,6 @@ function EmailModal({ show, handleClose, isLoggedIn }) {
         }
     }
 
-    // Render the modal
     return (
         <Modal show={show} onHide={handleClose}>
             <Modal.Header closeButton>
@@ -69,15 +63,12 @@ function EmailModal({ show, handleClose, isLoggedIn }) {
                 <form>
                     <input 
                         type="email"
-                        id="emailInput"
                         name="email"
-                        placeholder="Email Address *" 
+                        placeholder="Email Address *"
                         value={formData.email}
                         onChange={handleInputChange}
-                        // Add a class if the email is invalid (for styling purposes)
                         className={isEmailValid ? '' : 'invalid-input'}
                     />
-                    {/* Add a message or highlight the input field if the email is invalid */}
                     {!isEmailValid && <p className="error-message">Please enter a valid email address.</p>}
                 </form>
                 <br />
@@ -86,7 +77,6 @@ function EmailModal({ show, handleClose, isLoggedIn }) {
                 <Button variant="secondary" onClick={handleClose}>
                     Close
                 </Button>
-                {/* Disable the Update button if the email is invalid */}
                 <Button variant="primary" onClick={handleSaveButton} disabled={!isEmailValid}>
                     Save Changes
                 </Button>
@@ -96,4 +86,5 @@ function EmailModal({ show, handleClose, isLoggedIn }) {
 }
 
 export default EmailModal;
+
  

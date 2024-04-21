@@ -5,7 +5,7 @@ import axios from 'axios';
 import './LoginModal.css';
 import CreateAccountModal from './CreateAccountModal';
 
-function LoginModal({ show, handleClose, isLoggedIn }) {
+function LoginModal({ show, handleClose, handleLogin }) {
     /* State */
     const [createAccountModalVisible, setCreateAccountModalVisible] = useState(false);
     const [formData, setFormData] = useState({
@@ -32,47 +32,27 @@ function LoginModal({ show, handleClose, isLoggedIn }) {
         setCreateAccountModalVisible(false);
     };
 
-    const handleLogin = async () => {
-        // Validate email and password
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(formData.email)) {
-            alert('Please enter a valid email address.');
-            return;
-        }
-        
-        if (formData.password.length < 6) {
-            alert('Password must be at least 6 characters long.');
-            return;
-        }
-    
+    const handleLoginAttempt = async () => {
         try {
-            // Make API request to login
-            const response = await axios.post('/api/login', formData);
-            
+            const response = await axios.post('http://localhost:8080/login-user', formData);
             if (response.status === 200) {
-                // Successful login
-                alert('Login successful!');
                 const userData = response.data;
-    
-                // Use the userData as needed in your application
-                // Update state/context as needed
                 handleClose(); // Close the modal on successful login
-                isLoggedIn(); // Update the login state
-            } else {
-                // Handle different response status codes
-                alert('Login failed. Please check your credentials.');
-            }
+                handleLogin(formData.email); // Update the login state
+            } 
         } catch (error) {
             console.error('Login error:', error);
+        
             if (error.response) {
-                // Server responded with a status other than 200
                 const status = error.response.status;
                 if (status === 401) {
                     alert('Invalid email or password.');
-                } else {
+                } 
+                else {
                     alert(`Login failed with error code: ${status}`);
                 }
-            } else {
+            } 
+            else {
                 alert('An error occurred during login. Please try again later.');
             }
         }
@@ -94,6 +74,8 @@ function LoginModal({ show, handleClose, isLoggedIn }) {
                         placeholder='Email Address'
                         value={formData.email}
                         onChange={handleInputChange}
+                        tabIndex={1}
+                        required
                     />
                 </form>
                 <br />
@@ -107,7 +89,8 @@ function LoginModal({ show, handleClose, isLoggedIn }) {
                         placeholder='Password'
                         value={formData.password}
                         onChange={handleInputChange}
-                        title='Password should be atleast a length of 6 characters and/or numbers.'
+                        tabIndex={2}
+                        required
                     />
                     &nbsp;&nbsp;
                     <Button id='password-button' onClick={togglePasswordVisibility}>
@@ -115,12 +98,9 @@ function LoginModal({ show, handleClose, isLoggedIn }) {
                     </Button>
                 </div>
                 <br />
-
-                {/* CreateAccountModal */}
-                <p id='footer-text'>Don't have an account?&nbsp;&nbsp;
-                    <Button id='register-button' variant="primary" onClick={handleOpenCreateAccountModal}>
-                        Register
-                    </Button>
+                 {/* CreateAccountModal */}
+                 <p>Don't have an account? &nbsp;
+                    <button id ='register-button'onClick={handleOpenCreateAccountModal}>Sign Up</button>
                 </p>
 
                 <CreateAccountModal
@@ -131,11 +111,12 @@ function LoginModal({ show, handleClose, isLoggedIn }) {
             </Modal.Body>
 
             <Modal.Footer>
-                <div className="container d-flex justify-content-between">
+                <div>
                     <Button variant="secondary" onClick={handleClose}>
                         Close
                     </Button>
-                    <Button variant="primary" onClick={handleLogin}>
+                    &nbsp;&nbsp;
+                    <Button variant="primary" onClick={handleLoginAttempt}>
                         Login
                     </Button>
                 </div>
@@ -145,3 +126,4 @@ function LoginModal({ show, handleClose, isLoggedIn }) {
 }
 
 export default LoginModal;
+

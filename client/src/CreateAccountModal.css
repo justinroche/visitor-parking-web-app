@@ -15,14 +15,16 @@
   margin: 10px 0 5px;
 }
 
-#h3Font {
-  color: #0d6efd;
-}
-
 #password-button {
   font-size: 0.5em;
 }
+
 #error-message{
 color: red;
 font-size: 0.75em;
+}
+
+#password-alert {
+  color: red;
+  font-size: 0.75em;
 }
