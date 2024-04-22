@@ -1,51 +1,53 @@
-.radio{ /*time buttons*/
+.radio {
+  /*time buttons*/
   margin-right: 10px;
   margin-left: 5px;
 }
 
-.notification{ /*text of push notifications*/
+.notification {
+  /*text of push notifications*/
   margin-left: 10px;
 }
 
-.radio{
+.radio {
   margin-right: 10px;
   margin-left: 5px;
 }
 
-.notification{
+.notification {
   margin-left: 10px;
 }
 
-.phone{
+.phone {
   margin-top: 5px;
 }
 
-#info-button{
+#info-button {
   margin-left: 85px;
-  margin-top: 40px;  
+  margin-top: 40px;
   width: 55%;
   height: 25%;
   white-space: nowrap;
 }
 
-#buy-pass-button{
+#buy-pass-button {
   margin-left: 85px;
   width: 55%;
   height: 25%;
   white-space: nowrap;
 }
 
-.modal-button{
+.modal-button {
   background-color: rgb(81, 40, 132) !important;
   border: 3px rgb(81, 40, 132) !important;
   margin-left: 40px;
- }
+}
 
 .App-header {
   border-width: 20px !important;
   max-width: 100% !important;
   border-bottom-style: outset;
-  border-bottom-width: .43in !important;
+  border-bottom-width: 0.43in !important;
   border-bottom-color: lightgray;
   margin: 0 auto;
   padding: 40px;
@@ -57,35 +59,33 @@
   overflow-x: hidden;
 }
 
-.campus-map{
+.campus-map {
   flex: 0 0 auto; /* Prevent the container from stretching */
-  margin-left: 70px;/* Add margin to create space between text and image */
+  margin-left: 70px; /* Add margin to create space between text and image */
   max-width: 100%; /* Ensure the image doesn't exceed container width */
   max-height: 100%; /* Ensure the image doesn't exceed container height */
-   
-  }
+}
 
-
-.whitewater-logo{
+.whitewater-logo {
   max-width: 100%;
   max-height: 100%;
 }
 
 .top-bar {
   display: grid;
-  align-items: center; 
+  align-items: center;
   grid-template-columns: 1fr 1fr 1fr;
   column-gap: 5px;
 }
 
-.login-button{
+.login-button {
   width: 50%;
   max-width: 100% !important;
   /*background-color: rgb(106, 105, 107) !important;*/
   /*border-color: rgb(106, 105, 107) !important;*/
 }
 
-.logout-button{
+.logout-button {
   width: 50%;
   max-width: 100% !important;
   margin-top: 10px;
@@ -93,9 +93,9 @@
   /*border-color: rgb(106, 105, 107) !important;*/
 }
 
-.account-settings{
+.account-settings {
   width: 50%;
-  margin-bottom: 10px; 
+  margin-bottom: 10px;
   max-width: 100% !important;
   /*background-color: rgb(106, 105, 107) !important;*/
   /*border-color: rgb(106, 105, 107) !important;*/
@@ -107,7 +107,7 @@
   align-items: flex-end;
 }
 
-.text-container h5{
+.text-container h5 {
   text-align: center;
   font-size: x-large;
   font-style: bold;
@@ -115,10 +115,10 @@
 }
 
 .text-container h6 {
-font-size: large;
+  font-size: large;
 }
 
-.current-passes{
+.current-passes {
   align-items: center !important;
   margin-left: 50px;
   margin-right: 40px;
@@ -126,39 +126,46 @@ font-size: large;
   width: 25%;
 }
 
-.current-passes th{
+.log-in-message {
+  align-items: center !important;
+  margin-left: 50px;
+  margin-right: 40px;
+  margin-top: 40px;
+}
+
+.current-passes th {
   white-space: nowrap;
   padding-right: 20px;
 }
 
-.current-passes td{
+.current-passes td {
   white-space: nowrap;
   padding-right: 20px;
 }
 
-.add-time-button{
+.add-time-button {
   font-size: 15px !important;
   background-color: rgb(81, 40, 132) !important;
   border-color: rgb(81, 40, 132) !important ;
 }
 
-.availability{
+.availability {
   margin-left: 120px;
   margin-top: 40px;
 }
 
-.user-passes{
+.user-passes {
   white-space: nowrap;
 }
 
-.row{
+.row {
   max-width: 100% !important;
 }
 
-.col{
+.col {
   max-width: 100% !important;
 }
 
-.header-row{
+.header-row {
   padding-right: 100px !important;
 }
