@@ -45,8 +45,6 @@ function LoginModal({ show, handleClose, handleLogin, fetchPasses }) {
         handleLogin(formData.email); // Update the login state
       }
     } catch (error) {
-      console.error('Login error:', error);
-
       if (error.response) {
         const status = error.response.status;
         if (status === 401) {

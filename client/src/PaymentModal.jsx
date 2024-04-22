@@ -149,7 +149,11 @@ function PaymentModal({
   return (
     <Modal show={show} onHide={handleClose} backdrop="static">
       <Modal.Header>
-        <Modal.Title>Purchase a Visitor Parking Pass</Modal.Title>
+        <Modal.Title>
+          {purchasePassData.licensePlate
+            ? 'Purchase a Visitor Parking Pass'
+            : 'Add Time to a Pass'}
+        </Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form>

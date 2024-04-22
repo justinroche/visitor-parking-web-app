@@ -93,7 +93,7 @@ function PurchasePassModal({
     }
 
     // If notifications are enabled but email is missing, prevent form submission.
-    if (formData.notificationsEnabled && !formData.email) {
+    if (formData.notificationsEnabled && !formData.email && email == '') {
       alert('Please enter your email address to enable notifications.');
       return;
     }
@@ -107,7 +107,11 @@ function PurchasePassModal({
     }
 
     /* Verify email format */
-    if (formData.notificationsEnabled && !isValidEmail(formData.email)) {
+    if (
+      formData.notificationsEnabled &&
+      !isValidEmail(formData.email) &&
+      email == ''
+    ) {
       alert('Please enter a valid email address to enable notifications.');
       return;
     }
@@ -175,10 +179,8 @@ function PurchasePassModal({
         <br />
 
         {/* Saved vehicles dropdown
-        Only display saved vehicles if user is logged in.
-        This feature is work in progress and contains placeholder data.
         TODO: Implement saved vehicles. */}
-        {isLoggedIn && (
+        {false && isLoggedIn && (
           <>
             <h5>Saved Vehicles</h5>
             <select name="vehicle" id="vehicleSelect">

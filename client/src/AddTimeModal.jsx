@@ -98,7 +98,7 @@ function AddTimeModal({
   return (
     <Modal show={show} onHide={handleClose} backdrop="static">
       <Modal.Header closeButton>
-        <Modal.Title>Add Time To Existing Pass</Modal.Title>
+        <Modal.Title>Add Time to a Pass</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         {/* This should be recieved from the database */}
