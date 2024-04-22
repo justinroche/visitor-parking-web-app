@@ -175,9 +175,22 @@ font-size: large;
   border: 3px rgb(81, 40, 132) !important;
   margin-top: 30px;
 }
+
 .passSearchInput {
-  width: 220px;
- 
+ box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+ }
+
+
+passSeachInputContainer{
+  position: relative;
+}
+
+.search-icon {
+ position:absolute;
+ left: 7.5%;
+ bottom: 19%; 
+ transform: translateY(-200%);
+ color:#420d6e;
 }
 
 #passSearchForm h3 {
