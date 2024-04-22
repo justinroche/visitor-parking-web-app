@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mysql = require('mysql');
 const util = require('util');
+const moment = require('moment');
 
 const app = express();
 const PORT = 8080;
@@ -85,6 +86,18 @@ app.post('/login-user', async (req, res) => {
   }
 });
 
+// Function to check if a pass is live
+function isPassLive(pass) {
+  // Extract startTime and duration from the pass object
+  const { startTime, duration } = pass;
+
+  // Calculate the end time of the pass by adding duration hours to startTime
+  const endTime = moment(startTime).add(duration, 'hours');
+
+  // Check if the current time is between startTime and endTime
+  return moment().isBetween(startTime, endTime);
+}
+
 // Endpoint to fetch passes based on email
 app.post('/passes', async (req, res) => {
   const { email } = req.body; // Extract email from request body
@@ -100,7 +113,10 @@ app.post('/passes', async (req, res) => {
       return res.status(200).json({ message: 'No passes found' });
     }
 
-    res.status(200).json({ passes: results });
+    // Filter live passes
+    const livePasses = results.filter((pass) => isPassLive(pass));
+
+    res.status(200).json({ passes: livePasses });
   } catch (error) {
     console.error('Error fetching passes:', error);
     res.status(500).json({ message: 'Error fetching passes' });
