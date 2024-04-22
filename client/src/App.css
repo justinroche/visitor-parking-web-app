@@ -25,16 +25,17 @@
 #info-button {
   margin-left: 85px;
   margin-top: 40px;
-  width: 55%;
-  height: 25%;
+  width: 45%;
+  height: 20%;
   white-space: nowrap;
 }
 
 #buy-pass-button {
   margin-left: 85px;
-  width: 55%;
-  height: 25%;
+  width: 45%;
+  height: 20%;
   white-space: nowrap;
+  font-size: 20px;
 }
 
 .modal-button {

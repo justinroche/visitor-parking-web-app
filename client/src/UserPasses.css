@@ -22,3 +22,7 @@
 .fetch-passes-button {
   margin-bottom: 30px;
 }
+
+.pass-row td {
+  padding: 5px 0;
+}

@@ -77,6 +77,7 @@ function UserPasses({ email, handleShowAddTimeModal, passes, fetchPasses }) {
           .map((pass) => (
             <tr
               key={pass.passID ? `pass-${pass.passID}` : `pass-${pass.license}`}
+              className="pass-row"
             >
               <td className="license-plate">{pass.license}</td>
               <td>{timeRemaining[pass.passID] || 'Calculating...'}</td>
