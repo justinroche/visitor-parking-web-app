@@ -12,6 +12,7 @@ import AccountSettingsModal from './AccountSettingsModal';
 import AddTimeModal from './AddTimeModal';
 import PurchasePassModal from './PurchasePassModal';
 import DateTime from './DateTime';
+import UserPasses from './UserPasses';
 
 function App() {
   /* State */
@@ -25,6 +26,7 @@ function App() {
   const [showAddTimeModal, setShowAddTimeModal] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userEmail, setUserEmail] = useState('');
+  const [passes, setPasses] = useState([]);
 
   /* Handlers */
   const handleClosePurchasePassModal = () => setShowPurchasePassModal(false);
@@ -106,6 +108,32 @@ function App() {
     return `${month}/${date}/${year}`;
   }
 
+  async function fetchPasses(email) {
+    try {
+      console.log('Fetching passes...');
+      axios
+        .post('http://localhost:8080/passes', {
+          email,
+        })
+        .then((response) => {
+          if (response.data.message === 'No passes found') {
+            console.log('No passes found');
+            setPasses([]);
+            return;
+          }
+          console.log(response);
+          setPasses(response.data.passes);
+        })
+        .catch((error) => {
+          console.error(error);
+          // Handle error
+        });
+    } catch (error) {
+      console.error(error);
+      // Handle error
+    }
+  }
+
   function AppMain() {
     return (
       <div className="App-main">
@@ -134,52 +162,16 @@ function App() {
           </div>
 
           <div className="col">
-            {!isLoggedIn && (
+            {isLoggedIn ? (
+              <UserPasses
+                email={userEmail}
+                passes={passes}
+                handleShowAddTimeModal={handleShowAddTimeModal}
+              />
+            ) : (
               <h5 className="log-in-message">
                 Please sign in or create an account to view your passes.
               </h5>
-            )}
-            {isLoggedIn && (
-              <table className="current-passes">
-                <thead>
-                  <tr>
-                    <th>
-                      <h5
-                        style={{ marginBottom: '30px' }}
-                        className="user-passes"
-                      >
-                        User's Current Passes
-                      </h5>
-                    </th>
-                  </tr>
-                  <tr className="header-row">
-                    <th>Plate Identification</th>
-                    <th>Make</th>
-                    <th>Model</th>
-                    <th>Year</th>
-                    <th>Time Remaining</th>
-                    <th>Add Time</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>862-PCG</td>
-                    <td>Jeep</td>
-                    <td>Gladiator</td>
-                    <td>2024</td>
-                    <td>31:02</td>
-                    <td>
-                      <Button
-                        className="add-time-button"
-                        variant="secondary"
-                        onClick={handleShowAddTimeModal}
-                      >
-                        Add Time
-                      </Button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
             )}
           </div>
 
@@ -204,6 +196,7 @@ function App() {
           show={showLoginModal}
           handleClose={handleCloseLoginModal}
           handleLogin={handleLogin}
+          fetchPasses={fetchPasses}
         />
         <AccountSettingsModal
           show={showAccountSettingsModal}

@@ -85,6 +85,28 @@ app.post('/login-user', async (req, res) => {
   }
 });
 
+// Endpoint to fetch passes based on email
+app.post('/passes', async (req, res) => {
+  const { email } = req.body; // Extract email from request body
+
+  // Query to fetch passes based on email
+  const query = 'SELECT * FROM Passes WHERE email = ?';
+
+  try {
+    const results = await executeQuery(query, [email]);
+
+    if (results.length === 0) {
+      // No passes found for the provided email
+      return res.status(200).json({ message: 'No passes found' });
+    }
+
+    res.status(200).json({ passes: results });
+  } catch (error) {
+    console.error('Error fetching passes:', error);
+    res.status(500).json({ message: 'Error fetching passes' });
+  }
+});
+
 /* Fetch user information template ////////////////////////////
 app.post('/get-user-data', async (req, res) => {
   const { column } = req.body;

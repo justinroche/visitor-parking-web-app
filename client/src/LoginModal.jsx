@@ -5,7 +5,7 @@ import axios from 'axios';
 import './LoginModal.css';
 import CreateAccountModal from './CreateAccountModal';
 
-function LoginModal({ show, handleClose, handleLogin }) {
+function LoginModal({ show, handleClose, handleLogin, fetchPasses }) {
   /* State */
   const [createAccountModalVisible, setCreateAccountModalVisible] =
     useState(false);
@@ -40,7 +40,7 @@ function LoginModal({ show, handleClose, handleLogin }) {
         formData
       );
       if (response.status === 200) {
-        const userData = response.data;
+        await fetchPasses(formData.email); // Fetch user passes on successful login
         handleClose(); // Close the modal on successful login
         handleLogin(formData.email); // Update the login state
       }
