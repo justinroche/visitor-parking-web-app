@@ -3,8 +3,6 @@ import axios from 'axios';
 
 import './PurchasePassModal.css';
 import { Form, FormControl, Button, Spinner, Alert, InputGroup } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
 
 
@@ -63,7 +61,7 @@ function PassSearchForm() {
           value={plateSearch}
           onChange={handleSearchChange}
           />
-          <FontAwesomeIcon icon={faSearch} className="search-icon" />
+         
               
         
         </div>
