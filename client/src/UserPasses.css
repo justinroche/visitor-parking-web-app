@@ -1,0 +1,24 @@
+.current-passes {
+  width: 100%; /* Set width of the table */
+}
+
+.header-row th {
+  padding: 10px 0; /* Add padding to header cells */
+}
+
+.license-plate {
+  width: 40%; /* Set width for license plate column */
+}
+
+.add-time-button {
+  font-size: 12px;
+}
+
+.add-time-cell,
+.fetch-passes-cell {
+  text-align: center;
+}
+
+.fetch-passes-button {
+  margin-bottom: 30px;
+}

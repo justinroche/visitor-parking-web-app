@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
+import './UserPasses.css';
 
 function UserPasses({ email, handleShowAddTimeModal, passes, fetchPasses }) {
   const [timeRemaining, setTimeRemaining] = useState({});
@@ -29,12 +30,11 @@ function UserPasses({ email, handleShowAddTimeModal, passes, fetchPasses }) {
 
     calculateTimeRemaining();
 
-    const interval = setInterval(() => {
-      calculateTimeRemaining();
-    }, 60000); // Update every minute
+    const intervalId = setInterval(calculateTimeRemaining, 60000); // Update every minute
 
-    return () => clearInterval(interval);
-  }, [passes]);
+    // Clear interval on component unmount
+    return () => clearInterval(intervalId);
+  }, []);
 
   if (!passes) {
     return <h5>Loading passes...</h5>;
@@ -54,18 +54,19 @@ function UserPasses({ email, handleShowAddTimeModal, passes, fetchPasses }) {
             </h5>
           </th>
           <th></th>
-          <th style={{ textAlign: 'right' }}>
+          <th className="fetch-passes-cell">
             <Button
+              className="fetch-passes-button"
               variant="secondary"
               onClick={() => fetchPasses(email)}
-              style={{ fontSize: '12px', marginBottom: '30px' }}
+              style={{ fontSize: '12px' }}
             >
               Refresh
             </Button>
           </th>
         </tr>
         <tr className="header-row">
-          <th>License Plate</th>
+          <th className="license-plate">License Plate</th>
           <th>Time Remaining</th>
           <th></th>
         </tr>
@@ -77,9 +78,9 @@ function UserPasses({ email, handleShowAddTimeModal, passes, fetchPasses }) {
             <tr
               key={pass.passID ? `pass-${pass.passID}` : `pass-${pass.license}`}
             >
-              <td>{pass.license}</td>
+              <td className="license-plate">{pass.license}</td>
               <td>{timeRemaining[pass.passID] || 'Calculating...'}</td>
-              <td>
+              <td className="add-time-cell">
                 <Button
                   className="add-time-button"
                   variant="secondary"
