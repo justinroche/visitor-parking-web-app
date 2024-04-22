@@ -11,6 +11,7 @@ function PurchasePassModal({
   isLoggedIn, // Boolean to determine if the user is logged in. This displays the saved vehicles feature.
   handleShowPaymentModal, // Function to show the payment modal.
   setPurchasePassData, // Function to set the purchase pass data when the user continues to payment.
+  email, // If the user is logged in, their email is passed to the modal.
 }) {
   /* State */
   // formData is sent to the backend when the user pays.
@@ -20,7 +21,7 @@ function PurchasePassModal({
     passLengthValue: '1',
     notificationsEnabled: false,
     notificationTime: '15min',
-    email: '',
+    formEmail: '',
     passCost: 0,
   });
 
@@ -92,7 +93,7 @@ function PurchasePassModal({
     }
 
     // If notifications are enabled but email is missing, prevent form submission.
-    if (formData.notificationsEnabled && !formData.email) {
+    if (formData.notificationsEnabled && !formData.formEmail && !email) {
       alert('Please enter your email address to enable notifications.');
       return;
     }
@@ -106,7 +107,11 @@ function PurchasePassModal({
     }
 
     /* Verify email format */
-    if (formData.notificationsEnabled && !isValidEmail(formData.email)) {
+    if (
+      formData.notificationsEnabled &&
+      !isValidEmail(formData.formEmail) &&
+      !email
+    ) {
       alert('Please enter a valid email address to enable notifications.');
       return;
     }
@@ -133,9 +138,16 @@ function PurchasePassModal({
     // Include additional fields if notifications are enabled.
     if (formData.notificationsEnabled) {
       formDataToSend.notificationTime = formData.notificationTime;
-      formDataToSend.email = formData.email;
+      if (!isLoggedIn) {
+        formDataToSend.email = formData.formEmail;
+      }
     }
 
+    if (isLoggedIn) {
+      formDataToSend.email = email;
+    }
+
+    console.log(formDataToSend);
     setPurchasePassData(formDataToSend); // Set the purchase pass data for the payment modal.
     handleShowPaymentModal(); // Show the payment modal.
     handleClose(); // Close this modal.
@@ -269,14 +281,27 @@ function PurchasePassModal({
               <option value="60min">60 minutes</option>
             </select>
             <form>
-              <input
-                type="text"
-                id="emailInput"
-                name="email"
-                placeholder="Enter your email address"
-                value={formData.email}
-                onChange={handleInputChange}
-              />
+              {email == '' && (
+                <input
+                  type="text"
+                  id="emailInput"
+                  name="formEmail"
+                  placeholder="Enter your email address"
+                  value={formData.formEmail}
+                  onChange={handleInputChange}
+                />
+              )}
+              {email && (
+                <input
+                  type="text"
+                  id="emailInput"
+                  name="formEmail"
+                  placeholder="Enter your email address"
+                  value={email}
+                  onChange={handleInputChange}
+                  disabled
+                />
+              )}
             </form>
           </>
         )}
@@ -293,7 +318,11 @@ function PurchasePassModal({
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button className='save-button' variant="primary" onClick={handleContinueButton}>
+          <Button
+            className="save-button"
+            variant="primary"
+            onClick={handleContinueButton}
+          >
             Continue to Payment
           </Button>
         </div>
