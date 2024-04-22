@@ -64,7 +64,8 @@ function App() {
           <h1>Visitor Parking</h1>
 
           <div className="button-container">
-            {isLoggedIn && (
+            {/* Hide account settings window for the time being */}
+            {false && isLoggedIn && (
               <Button
                 className="account-settings"
                 variant="secondary"
@@ -219,6 +220,7 @@ function App() {
           isLoggedIn={isLoggedIn}
           handleShowPaymentModal={handleShowPaymentModal}
           setPurchasePassData={setPurchasePassData}
+          email={userEmail}
         />
         <PaymentModal
           show={showPaymentModal}
