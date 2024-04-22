@@ -110,7 +110,6 @@ function App() {
 
   async function fetchPasses(email) {
     try {
-      console.log('Fetching passes...');
       axios
         .post('http://localhost:8080/passes', {
           email,
@@ -166,7 +165,7 @@ function App() {
                 email={userEmail}
                 passes={passes}
                 handleShowAddTimeModal={handleShowAddTimeModal}
-                setPasses={setPasses}
+                fetchPasses={fetchPasses}
               />
             ) : (
               <h5 className="log-in-message">
@@ -219,6 +218,8 @@ function App() {
           show={showPaymentModal}
           handleClose={handleClosePaymentModal}
           purchasePassData={purchasePassData}
+          fetchPasses={fetchPasses}
+          isLoggedIn={isLoggedIn}
         />
         <AddTimeModal
           show={showAddTimeModal}

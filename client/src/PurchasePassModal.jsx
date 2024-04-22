@@ -21,7 +21,7 @@ function PurchasePassModal({
     passLengthValue: '1',
     notificationsEnabled: false,
     notificationTime: '15',
-    formEmail: '',
+    email: '',
     passCost: 0,
   });
 
@@ -93,7 +93,7 @@ function PurchasePassModal({
     }
 
     // If notifications are enabled but email is missing, prevent form submission.
-    if (formData.notificationsEnabled && !formData.formEmail && !email) {
+    if (formData.notificationsEnabled && !formData.email) {
       alert('Please enter your email address to enable notifications.');
       return;
     }
@@ -107,11 +107,7 @@ function PurchasePassModal({
     }
 
     /* Verify email format */
-    if (
-      formData.notificationsEnabled &&
-      !isValidEmail(formData.formEmail) &&
-      !email
-    ) {
+    if (formData.notificationsEnabled && !isValidEmail(formData.email)) {
       alert('Please enter a valid email address to enable notifications.');
       return;
     }
@@ -138,16 +134,13 @@ function PurchasePassModal({
     // Include additional fields if notifications are enabled.
     if (formData.notificationsEnabled) {
       formDataToSend.notificationTime = formData.notificationTime;
-      if (!isLoggedIn) {
-        formDataToSend.email = formData.formEmail;
-      }
+      formDataToSend.email = formData.email;
     }
 
     if (isLoggedIn) {
       formDataToSend.email = email;
     }
 
-    console.log(formDataToSend);
     setPurchasePassData(formDataToSend); // Set the purchase pass data for the payment modal.
     handleShowPaymentModal(); // Show the payment modal.
     handleClose(); // Close this modal.
@@ -285,9 +278,9 @@ function PurchasePassModal({
                 <input
                   type="text"
                   id="emailInput"
-                  name="formEmail"
+                  name="email"
                   placeholder="Enter your email address"
-                  value={formData.formEmail}
+                  value={formData.email}
                   onChange={handleInputChange}
                 />
               )}
@@ -318,11 +311,7 @@ function PurchasePassModal({
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button
-            className="save-button"
-            variant="primary"
-            onClick={handleContinueButton}
-          >
+          <Button variant="primary" onClick={handleContinueButton}>
             Continue to Payment
           </Button>
         </div>

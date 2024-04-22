@@ -5,7 +5,13 @@ import Form from 'react-bootstrap/Form';
 import axios from 'axios';
 import './PaymentModal.css';
 
-function PaymentModal({ show, handleClose, purchasePassData }) {
+function PaymentModal({
+  show,
+  handleClose,
+  purchasePassData,
+  fetchPasses,
+  isLoggedIn,
+}) {
   /* State */
   const [paymentData, setPaymentData] = useState({
     nameOnCard: '',
@@ -110,6 +116,10 @@ function PaymentModal({ show, handleClose, purchasePassData }) {
       .post('http://localhost:8080/purchase-pass', mergedData)
       .then((response) => {
         console.log(response.data);
+
+        if (isLoggedIn) {
+          fetchPasses(mergedData.email);
+        }
       })
       .catch((error) => {
         console.error('Error:', error);

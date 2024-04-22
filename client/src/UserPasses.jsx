@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
 
-function UserPasses({ email, handleShowAddTimeModal, passes, setPasses }) {
+function UserPasses({ email, handleShowAddTimeModal, passes, fetchPasses }) {
   const [timeRemaining, setTimeRemaining] = useState({});
 
   useEffect(() => {
@@ -17,7 +17,7 @@ function UserPasses({ email, handleShowAddTimeModal, passes, setPasses }) {
         );
         acc[pass.passID] = `${hoursRemaining}h ${minutesRemaining}m`;
 
-        if (acc[pass.passID] === '0h 0m') {
+        if (hoursRemaining <= 0 && minutesRemaining <= 0) {
           // Pass has expired
           acc[pass.passID] = 'Expired';
         }
@@ -52,6 +52,16 @@ function UserPasses({ email, handleShowAddTimeModal, passes, setPasses }) {
             <h5 style={{ marginBottom: '30px' }} className="user-passes">
               Your Passes
             </h5>
+          </th>
+          <th></th>
+          <th style={{ textAlign: 'right' }}>
+            <Button
+              variant="secondary"
+              onClick={() => fetchPasses(email)}
+              style={{ fontSize: '12px', marginBottom: '30px' }}
+            >
+              Refresh
+            </Button>
           </th>
         </tr>
         <tr className="header-row">
