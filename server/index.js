@@ -126,7 +126,7 @@ app.post('/passes', async (req, res) => {
 });
 
 // calculates new time for pass
-const addTime = async (duration, licensePlate) => {
+const addTimeFromLicense = async (duration, licensePlate) => {
   const fetchActivePassDuration =
     'SELECT duration FROM Passes WHERE license = ? ORDER BY startTime DESC LIMIT 1';
 
@@ -140,7 +140,7 @@ const addTime = async (duration, licensePlate) => {
 
 // Updates pass that is currently active
 const updateLivePass = async (passData) => {
-  let newTime = await addTime(passData.duration, passData.license);
+  let newTime = await addTimeFromLicense(passData.duration, passData.license);
   console.log('New time:', newTime);
 
   const updatePass =
@@ -315,9 +315,32 @@ const passSearch = async (req, res) => {
   }
 };
 
+const addTime = async (req, res) => {
+  const passData = req.body;
+  console.log('Add time initiated. Received:', passData);
+
+  const addHours =
+    passData.passLengthType === 'days'
+      ? passData.passLengthValue * 24
+      : passData.passLengthValue;
+  const passID = passData.passID;
+
+  try {
+    // Call the addTimeToPass stored procedure
+    await executeQuery('CALL addTimeToPass(?, ?)', [addHours, passID]);
+    return res.status(200).json({ message: 'Time successfully added' });
+  } catch (error) {
+    console.error('Error adding time:', error);
+    return res
+      .status(500)
+      .json({ error: 'An error occurred while adding time' });
+  }
+};
+
 /* Routes */
 app.post('/purchase-pass', purchasePass);
 app.post('/pass-search', passSearch);
+app.post('/add-time', addTime);
 
 /* Fetch user information template ////////////////////////////
 app.post('/get-user-data', async (req, res) => {

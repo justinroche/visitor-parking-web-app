@@ -11,6 +11,7 @@ function PaymentModal({
   purchasePassData,
   fetchPasses,
   isLoggedIn,
+  email,
 }) {
   /* State */
   const [paymentData, setPaymentData] = useState({
@@ -112,18 +113,34 @@ function PaymentModal({
 
     const mergedData = { ...purchasePassData, ...paymentData };
 
-    axios
-      .post('http://localhost:8080/purchase-pass', mergedData)
-      .then((response) => {
-        console.log(response.data);
+    if (purchasePassData.licensePlate) {
+      // If the data contains a license plate, the user is buying a new pass.
+      axios
+        .post('http://localhost:8080/purchase-pass', mergedData)
+        .then((response) => {
+          console.log(response.data);
 
-        if (isLoggedIn) {
-          fetchPasses(mergedData.email);
-        }
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
+          if (isLoggedIn) {
+            fetchPasses(email);
+          }
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+    } else {
+      // If the data does not contain a license plate, the user is adding time to an existing pass.
+      axios
+        .post('http://localhost:8080/add-time', mergedData)
+        .then((response) => {
+          console.log(response.data);
+          if (isLoggedIn) {
+            fetchPasses(email);
+          }
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+    }
 
     handleClose();
   }

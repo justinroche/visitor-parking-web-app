@@ -25,15 +25,15 @@
 #info-button {
   margin-left: 85px;
   margin-top: 40px;
-  width: 45%;
-  height: 20%;
+  width: 250px;
+  height: 70px;
   white-space: nowrap;
 }
 
 #buy-pass-button {
   margin-left: 85px;
-  width: 45%;
-  height: 20%;
+  width: 250px;
+  height: 70px;
   white-space: nowrap;
   font-size: 20px;
 }

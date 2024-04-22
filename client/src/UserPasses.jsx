@@ -85,7 +85,12 @@ function UserPasses({ email, handleShowAddTimeModal, passes, fetchPasses }) {
                 <Button
                   className="add-time-button"
                   variant="secondary"
-                  onClick={() => handleShowAddTimeModal(pass.passID)}
+                  onClick={() =>
+                    handleShowAddTimeModal(
+                      pass.passID,
+                      timeRemaining[pass.passID]
+                    )
+                  }
                 >
                   Add Time
                 </Button>

@@ -27,6 +27,8 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userEmail, setUserEmail] = useState('');
   const [passes, setPasses] = useState([]);
+  const [addTimePass, setAddTimePass] = useState(null);
+  const [addTimePassRemaining, setAddTimePassRemaining] = useState(null);
 
   /* Handlers */
   const handleClosePurchasePassModal = () => setShowPurchasePassModal(false);
@@ -46,7 +48,11 @@ function App() {
   const handleShowAccountSettingsModal = () =>
     setShowAccountSettingsModal(true);
   const handleCloseAddTimeModal = () => setShowAddTimeModal(false);
-  const handleShowAddTimeModal = () => setShowAddTimeModal(true);
+  const handleShowAddTimeModal = (passID, remaining) => {
+    setAddTimePass(passID);
+    setAddTimePassRemaining(remaining);
+    setShowAddTimeModal(true);
+  };
   const handleLogin = (email) => {
     setIsLoggedIn(true);
     setUserEmail(email);
@@ -220,6 +226,7 @@ function App() {
           purchasePassData={purchasePassData}
           fetchPasses={fetchPasses}
           isLoggedIn={isLoggedIn}
+          email={userEmail}
         />
         <AddTimeModal
           show={showAddTimeModal}
@@ -227,6 +234,8 @@ function App() {
           isLoggedIn={isLoggedIn}
           handleShowPaymentModal={handleShowPaymentModal}
           setPurchasePassData={setPurchasePassData}
+          pass={passes.find((pass) => pass.passID === addTimePass)}
+          remaining={addTimePassRemaining}
         />
       </div>
     );
