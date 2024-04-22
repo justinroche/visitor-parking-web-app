@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
 
-function UserPasses({ email, handleShowAddTimeModal, passes }) {
+function UserPasses({ email, handleShowAddTimeModal, passes, setPasses }) {
   const [timeRemaining, setTimeRemaining] = useState({});
 
   useEffect(() => {
     const calculateTimeRemaining = () => {
       const now = new Date();
-      const remaining = {};
-      passes.forEach((pass) => {
+      const remaining = passes.reduce((acc, pass) => {
         const endTime = new Date(pass.startTime);
         endTime.setHours(endTime.getHours() + pass.duration);
         const diff = endTime - now;
@@ -16,8 +15,15 @@ function UserPasses({ email, handleShowAddTimeModal, passes }) {
         const minutesRemaining = Math.floor(
           (diff % (1000 * 60 * 60)) / (1000 * 60)
         );
-        remaining[pass.id] = `${hoursRemaining}h ${minutesRemaining}m`;
-      });
+        acc[pass.passID] = `${hoursRemaining}h ${minutesRemaining}m`;
+
+        if (acc[pass.passID] === '0h 0m') {
+          // Pass has expired
+          acc[pass.passID] = 'Expired';
+        }
+
+        return acc;
+      }, {});
       setTimeRemaining(remaining);
     };
 
@@ -29,6 +35,10 @@ function UserPasses({ email, handleShowAddTimeModal, passes }) {
 
     return () => clearInterval(interval);
   }, [passes]);
+
+  if (!passes) {
+    return <h5>Loading passes...</h5>;
+  }
 
   if (passes.length === 0) {
     return <h5>No passes found</h5>;
@@ -51,21 +61,25 @@ function UserPasses({ email, handleShowAddTimeModal, passes }) {
         </tr>
       </thead>
       <tbody>
-        {passes.map((pass) => (
-          <tr key={`pass-${pass.id}`}>
-            <td key={`license-${pass.id}`}>{pass.license}</td>
-            <td key={`time-${pass.id}`}>{timeRemaining[pass.id]}</td>
-            <td key={`button-${pass.id}`}>
-              <Button
-                className="add-time-button"
-                variant="secondary"
-                onClick={() => handleShowAddTimeModal(pass.id)}
-              >
-                Add Time
-              </Button>
-            </td>
-          </tr>
-        ))}
+        {passes
+          .filter((pass) => timeRemaining[pass.passID] !== 'Expired')
+          .map((pass) => (
+            <tr
+              key={pass.passID ? `pass-${pass.passID}` : `pass-${pass.license}`}
+            >
+              <td>{pass.license}</td>
+              <td>{timeRemaining[pass.passID] || 'Calculating...'}</td>
+              <td>
+                <Button
+                  className="add-time-button"
+                  variant="secondary"
+                  onClick={() => handleShowAddTimeModal(pass.passID)}
+                >
+                  Add Time
+                </Button>
+              </td>
+            </tr>
+          ))}
       </tbody>
     </table>
   );

@@ -121,7 +121,6 @@ function App() {
             setPasses([]);
             return;
           }
-          console.log(response);
           setPasses(response.data.passes);
         })
         .catch((error) => {
@@ -167,6 +166,7 @@ function App() {
                 email={userEmail}
                 passes={passes}
                 handleShowAddTimeModal={handleShowAddTimeModal}
+                setPasses={setPasses}
               />
             ) : (
               <h5 className="log-in-message">
