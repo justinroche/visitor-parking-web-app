@@ -12,7 +12,10 @@ function VehicleModal({ show, handleClose, userEmail }) {
   // Function to fetch user's vehicles information
   const fetchUserVehiclesInformation = async (email) => {
     try {
-      const response = await axios.post('http://localhost:8080/get-user-vehicles', { email });
+      const response = await axios.post(
+        'http://localhost:8080/get-user-vehicles',
+        { email }
+      );
       setVehicles(response.data.vehicles);
     } catch (error) {
       console.error('Error fetching user vehicles information:', error);
@@ -55,37 +58,50 @@ function VehicleModal({ show, handleClose, userEmail }) {
       </Modal.Header>
       <Modal.Body>
         {/* Display user's vehicles */}
-        <h5>Your Vehicles</h5>
-        <div className='table-container'>
-          <table>
-            <thead>
-              <tr>
-                <th>License Plate</th>
-                <th>Make</th>
-                <th>Model</th>
-                <th>Year</th>
-              </tr>
-            </thead>
-            <tbody>
-              {vehicles.map((vehicle, index) => (
-                <tr key={vehicle.license}>
-                  <td>{vehicle.license}</td>
-                  <td>{vehicle.make}</td>
-                  <td>{vehicle.model}</td>
-                  <td>{vehicle.year}</td>
-                  <td>
-                    <Button className='delete-button' variant="secondary" onClick={() => handleDeleteVehicle(vehicle.license)}>
-                      Delete
-                    </Button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        {vehicles.length === 0 && <h5>No saved vehicles</h5>}
+        {vehicles.length > 0 && (
+          <>
+            <h5>Your Vehicles</h5>
+            <div className="table-container">
+              <table>
+                <thead>
+                  <tr>
+                    <th>License Plate</th>
+                    <th>Make</th>
+                    <th>Model</th>
+                    <th>Year</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {vehicles.map((vehicle, index) => (
+                    <tr key={vehicle.license}>
+                      <td>{vehicle.license}</td>
+                      <td>{vehicle.make}</td>
+                      <td>{vehicle.model}</td>
+                      <td>{vehicle.year}</td>
+                      <td>
+                        <Button
+                          className="delete-button"
+                          variant="secondary"
+                          onClick={() => handleDeleteVehicle(vehicle.license)}
+                        >
+                          Delete
+                        </Button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </>
+        )}
       </Modal.Body>
       <Modal.Footer>
-        <Button className='add-button' type="button" onClick={handleOpenAddVehicleModal}>
+        <Button
+          className="add-button"
+          type="button"
+          onClick={handleOpenAddVehicleModal}
+        >
           Add Vehicle
         </Button>
         {/* AddVehicleModal */}
@@ -93,6 +109,7 @@ function VehicleModal({ show, handleClose, userEmail }) {
           show={addVehicleModalVisible}
           handleClose={handleCloseAddVehicleModal}
           userEmail={userEmail}
+          fetchUserVehiclesInformation={fetchUserVehiclesInformation}
         />
         <Button variant="secondary" onClick={handleClose}>
           Close
@@ -103,5 +120,3 @@ function VehicleModal({ show, handleClose, userEmail }) {
 }
 
 export default VehicleModal;
-
-

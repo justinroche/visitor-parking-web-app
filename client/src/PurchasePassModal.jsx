@@ -35,7 +35,10 @@ function PurchasePassModal({
   useEffect(() => {
     const fetchUserVehicles = async () => {
       try {
-        const response = await axios.post('http://localhost:8080/get-user-vehicles', { email });
+        const response = await axios.post(
+          'http://localhost:8080/get-user-vehicles',
+          { email }
+        );
         setSavedVehicles(response.data.vehicles);
       } catch (error) {
         console.error('Error fetching user vehicles:', error);
@@ -184,35 +187,41 @@ function PurchasePassModal({
 
       <Modal.Body>
         {/* License plate text input */}
-        {!isLoggedIn && (
-          <>
-            <h5>License Plate</h5>
-            <form>
-              <input
-                type="text"
-                id="licensePlateInput"
-                name="licensePlate"
-                placeholder="ABC1234"
-                value={formData.licensePlate}
-                onChange={handleInputChange}
-              />
-            </form>
-            <br />
-          </>
-        )}
+        <h5>License Plate</h5>
+        <form>
+          <input
+            type="text"
+            id="licensePlateInput"
+            name="licensePlate"
+            placeholder="ABC1234"
+            value={formData.licensePlate}
+            onChange={handleInputChange}
+          />
+        </form>
+        <br />
 
         {/* Saved vehicles dropdown */}
-        {isLoggedIn && (
+        {savedVehicles.length > 0 && (
           <>
             <h5>Saved Vehicles</h5>
-            <select name="vehicle" id="vehicleSelect">
+            <select
+              name="vehicle"
+              id="vehicleSelect"
+              value={formData.licensePlate}
+              onChange={(e) => {
+                console.log(e.target.value);
+                setFormData({ ...formData, licensePlate: e.target.value });
+              }}
+            >
+              <option value="">Select a saved vehicle</option>
               {savedVehicles.map((vehicle, index) => (
-                <option key={index} value={vehicle.id}>
+                <option key={index} value={vehicle.license}>
                   {vehicle.make} {vehicle.model} - {vehicle.license}
                 </option>
               ))}
             </select>
-            <br /><br />
+            <br />
+            <br />
           </>
         )}
 

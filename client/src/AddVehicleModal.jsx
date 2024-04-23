@@ -1,10 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import './AddVehicleModal.css';
 
-function AddVehicleModal({ show, handleClose, userEmail }) {
+function AddVehicleModal({
+  show,
+  handleClose,
+  userEmail,
+  fetchUserVehiclesInformation,
+}) {
   const [formData, setFormData] = useState({
     license: '',
     make: '',
@@ -12,11 +17,25 @@ function AddVehicleModal({ show, handleClose, userEmail }) {
     year: '',
     email: userEmail,
   });
-  
+
+  // Max length for license plate is 7 characters.
+  useEffect(() => {
+    if (formData.license.length > 7) {
+      setFormData({
+        ...formData,
+        license: formData.license.substring(0, 7),
+      });
+    }
+  }, [formData.license]);
 
   // Handle input change
   const handleInputChange = (event) => {
-    const { name, value } = event.target;
+    let { name, value } = event.target;
+
+    // Convert license plate to uppercase if it's the license plate input
+    if (name === 'license') {
+      value = value.toUpperCase();
+    }
     setFormData({ ...formData, [name]: value });
   };
 
@@ -24,8 +43,23 @@ function AddVehicleModal({ show, handleClose, userEmail }) {
   const validateInput = (license, make, model, year) => {
     // Check if any of the fields are empty
     if (!license || !make || !model || !year) {
+      alert('Please fill out all required fields.');
       return false;
     }
+
+    /* Verify license plate length */
+    if (formData.license.length < 1 || formData.license.length > 7) {
+      alert(
+        'Please enter a valid license plate (e.g., "123ABC" or "ABC1234").'
+      );
+      return;
+    }
+
+    if (isNaN(year)) {
+      alert('Please enter a valid year.');
+      return false;
+    }
+
     return true;
   };
 
@@ -37,7 +71,6 @@ function AddVehicleModal({ show, handleClose, userEmail }) {
 
     // Validate inputs
     if (!validateInput(license, make, model, year)) {
-      alert('Please fill out all required fields.');
       return;
     }
 
@@ -53,13 +86,12 @@ function AddVehicleModal({ show, handleClose, userEmail }) {
         .post('http://localhost:8080/insert-vehicle', formDataWithUserEmail)
         .then((response) => {
           console.log(response.data);
+          fetchUserVehiclesInformation(userEmail);
         })
         .catch((error) => {
           console.error('Error:', error);
+          alert('Error adding vehicle.');
         });
-
-      // Success handling
-      alert('Vehicle added successfully.');
 
       // Reset the form
       setFormData({
@@ -101,7 +133,7 @@ function AddVehicleModal({ show, handleClose, userEmail }) {
         <form>
           <div className="form-group">
             <label>License</label>
-            <br/>
+            <br />
             <input
               type="text"
               id="licenseInput"
@@ -112,11 +144,12 @@ function AddVehicleModal({ show, handleClose, userEmail }) {
               required
               tabIndex={1}
             />
-            <br/><br/>
+            <br />
+            <br />
           </div>
           <div className="form-group">
             <label>Make</label>
-            <br/>
+            <br />
             <input
               type="text"
               id="makeInput"
@@ -127,11 +160,12 @@ function AddVehicleModal({ show, handleClose, userEmail }) {
               required
               tabIndex={2}
             />
-            <br/><br/>
+            <br />
+            <br />
           </div>
           <div className="form-group">
             <label>Model</label>
-            <br/>
+            <br />
             <input
               type="text"
               id="modelInput"
@@ -142,13 +176,14 @@ function AddVehicleModal({ show, handleClose, userEmail }) {
               required
               tabIndex={3}
             />
-            <br/><br/>
+            <br />
+            <br />
           </div>
           <div className="form-group">
             <label>Year</label>
-            <br/>
+            <br />
             <input
-              type='text'
+              type="text"
               id="yearInput"
               name="year"
               placeholder="Enter Year"
@@ -157,7 +192,8 @@ function AddVehicleModal({ show, handleClose, userEmail }) {
               required
               tabIndex={4}
             />
-            <br/><br/>
+            <br />
+            <br />
           </div>
         </form>
       </Modal.Body>
