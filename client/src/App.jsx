@@ -18,7 +18,10 @@ function App() {
   /* State */
   const [showPurchasePassModal, setShowPurchasePassModal] = useState(false);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
-  const [purchasePassData, setPurchasePassData] = useState(null); // State for purchase pass data (license plate, credit card, etc.)
+  const [purchasePassData, setPurchasePassData] = useState({
+    licensePlate: '',
+    passCost: 0,
+  });
   const [showParkingInfoModal, setShowParkingInfoModal] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showAccountSettingsModal, setShowAccountSettingsModal] =
@@ -33,7 +36,10 @@ function App() {
   /* Handlers */
   const handleClosePurchasePassModal = () => setShowPurchasePassModal(false);
   const handleShowPurchasePassModal = () => {
-    setPurchasePassData(null);
+    setPurchasePassData({
+      licensePlate: '',
+      passCost: 0,
+    });
     setShowPurchasePassModal(true);
   };
   const handleClosePaymentModal = () => setShowPaymentModal(false);
