@@ -3,6 +3,8 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import './CreateAccountModal.css';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 function CreateAccountModal({ show, handleClose, isLoggedIn }) {
     /* State */
@@ -97,6 +99,7 @@ function CreateAccountModal({ show, handleClose, isLoggedIn }) {
                 {/* Password input */}
                 <h5>Password</h5>
                 <div className="password-input-container">
+               
                     <input
                         type={passwordVisibility ? 'text' : 'password'}
                         id='passwordInput'
@@ -107,7 +110,7 @@ function CreateAccountModal({ show, handleClose, isLoggedIn }) {
                     />
                     &nbsp;&nbsp;
                     <Button className='save-button' variant="primary" id='password-button' onClick={togglePasswordVisibility}>
-                        {passwordVisibility ? 'Hide' : 'Show'}
+                    <FontAwesomeIcon icon={passwordVisibility ? faEyeSlash : faEye} />  
                     </Button>
                 </div>
                 <br />
