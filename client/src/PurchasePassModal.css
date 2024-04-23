@@ -41,9 +41,14 @@
     background: transparent;
     font-size: 16px;
     margin-left: 8px;
+    
   }
   
-  .searchIcon {
-    color: #670808;
-    cursor: pointer;
-  }
+
+ #pay-button{
+  background-color: rgb(81, 40, 132) !important;
+  border: 3px rgb(81, 40, 132) !important;
+}
+ 
+
+ 
