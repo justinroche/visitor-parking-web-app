@@ -216,7 +216,8 @@ function PurchasePassModal({
               <option value="">Select a saved vehicle</option>
               {savedVehicles.map((vehicle, index) => (
                 <option key={index} value={vehicle.license}>
-                  {vehicle.make} {vehicle.model} - {vehicle.license}
+                  {vehicle.year} {vehicle.make} {vehicle.model} -{' '}
+                  {vehicle.license}
                 </option>
               ))}
             </select>
