@@ -73,7 +73,6 @@ function App() {
   const handleShowVehicleModal = () => setShowVehicleModal(true);
   const handleCloseVehicleModal = () => setShowVehicleModal(false);
 
-
   /* Components */
   function AppHeader() {
     return (
@@ -169,16 +168,16 @@ function App() {
             <br />
             {isLoggedIn && (
               <Button
-                id='add-vehicle-button'
-                className='modal-button'
-                variant='secondary'
+                id="add-vehicle-button"
+                className="modal-button"
+                variant="secondary"
                 onClick={handleShowVehicleModal}
               >
                 Add/Update Vehicles
               </Button>
             )}
           </div>
-  
+
           <div className="col">
             {isLoggedIn ? (
               <UserPasses
@@ -193,7 +192,7 @@ function App() {
               </h5>
             )}
           </div>
-  
+
           <div className="col">
             <div className="availability">
               <h5>{isLoggedIn && `Welcome, ${userEmail}`}</h5>
@@ -207,7 +206,7 @@ function App() {
             </div>
           </div>
         </div>
-  
+
         <br />
         <br />
 
@@ -246,10 +245,10 @@ function App() {
           pass={passes.find((pass) => pass.passID === addTimePass)}
           remaining={addTimePassRemaining}
         />
-        <VehicleModal 
-          show={showVehicleModal} 
-          handleClose={handleCloseVehicleModal} 
-          userEmail={userEmail} // Pass user's email as a prop
+        <VehicleModal
+          show={showVehicleModal}
+          handleClose={handleCloseVehicleModal}
+          userEmail={userEmail}
         />
       </div>
     );

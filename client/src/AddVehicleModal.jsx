@@ -10,9 +10,9 @@ function AddVehicleModal({ show, handleClose, userEmail }) {
     make: '',
     model: '',
     year: 0,
-    email: userEmail, // Initialize email with the passed user email
+    email: userEmail,
   });
-  
+
   // Handle input change
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -28,57 +28,56 @@ function AddVehicleModal({ show, handleClose, userEmail }) {
     return true;
   };
 
-// Inside the AddVehicleModal component
+  // Inside the AddVehicleModal component
 
-// Handle form submission
-const handleCreateButton = async () => {
-  const { license, make, model, year } = formData;
+  // Handle form submission
+  const handleCreateButton = async () => {
+    const { license, make, model, year } = formData;
 
-  // Validate inputs
-  if (!validateInput(license, make, model, year)) {
-    alert('Please fill out all required fields.');
-    return;
-  }
+    // Validate inputs
+    if (!validateInput(license, make, model, year)) {
+      alert('Please fill out all required fields.');
+      return;
+    }
 
-  try {
-    // Create a new object with all form data and add userEmail to it
-    const formDataWithUserEmail = {
-      ...formData,
-      email: userEmail, // Assign userEmail to the email field
-    };
+    try {
+      // Create a new object with all form data and add userEmail to it
+      const formDataWithUserEmail = {
+        ...formData,
+        email: userEmail, // Assign userEmail to the email field
+      };
 
-    // Post the formDataWithUserEmail to the backend
-    await axios
-    .post('http://localhost:8080/insert-vehicle', formDataWithUserEmail)
-    .then((response) => {
-      console.log(response.data);
-    })
-    .catch((error) => {
+      // Post the formDataWithUserEmail to the backend
+      await axios
+        .post('http://localhost:8080/insert-vehicle', formDataWithUserEmail)
+        .then((response) => {
+          console.log(response.data);
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+
+      // Success handling
+      alert('Vehicle added successfully.');
+
+      // Reset the form
+      setFormData({
+        license: '',
+        make: '',
+        model: '',
+        year: 0,
+        email: userEmail, // Reset email back to the logged-in user's email
+      });
+
+      // Close the modal
+      handleClose();
+    } catch (error) {
       console.error('Error:', error);
-    });
 
-    // Success handling
-    alert('Vehicle added successfully.');
-
-    // Reset the form
-    setFormData({
-      license: '',
-      make: '',
-      model: '',
-      year: 0,
-      email: userEmail, // Reset email back to the logged-in user's email
-    });
-
-    // Close the modal
-    handleClose();
-  } catch (error) {
-    console.error('Error:', error);
-
-    // Error handling (e.g., notify the user)
-    alert('Error inserting vehicle data');
-  }
-};
-
+      // Error handling (e.g., notify the user)
+      alert('Error inserting vehicle data');
+    }
+  };
 
   // Handle form reset
   const handleReset = () => {
@@ -102,10 +101,10 @@ const handleCreateButton = async () => {
           <div className="form-group">
             <label>License</label>
             <input
-              type='text'
-              id='licenseInput'
-              name='license'
-              placeholder='License'
+              type="text"
+              id="licenseInput"
+              name="license"
+              placeholder="License"
               value={formData.license}
               onChange={handleInputChange}
               required
@@ -114,10 +113,10 @@ const handleCreateButton = async () => {
           <div className="form-group">
             <label>Make</label>
             <input
-              type='text'
-              id='makeInput'
-              name='make'
-              placeholder='Make'
+              type="text"
+              id="makeInput"
+              name="make"
+              placeholder="Make"
               value={formData.make}
               onChange={handleInputChange}
               required
@@ -126,10 +125,10 @@ const handleCreateButton = async () => {
           <div className="form-group">
             <label>Model</label>
             <input
-              type='text'
-              id='modelInput'
-              name='model'
-              placeholder='Model'
+              type="text"
+              id="modelInput"
+              name="model"
+              placeholder="Model"
               value={formData.model}
               onChange={handleInputChange}
               required
@@ -138,10 +137,10 @@ const handleCreateButton = async () => {
           <div className="form-group">
             <label>Year</label>
             <input
-              type='number'
-              id='yearInput'
-              name='year'
-              placeholder='Year'
+              type="number"
+              id="yearInput"
+              name="year"
+              placeholder="Year"
               value={formData.year}
               onChange={handleInputChange}
               required
@@ -151,7 +150,7 @@ const handleCreateButton = async () => {
       </Modal.Body>
       <Modal.Footer>
         {/* Close Button */}
-        <Button variant='secondary' onClick={handleClose}>
+        <Button variant="secondary" onClick={handleClose}>
           Close
         </Button>
         {/* Reset Button */}
@@ -159,7 +158,11 @@ const handleCreateButton = async () => {
           Reset
         </Button>
         {/* Save & Add Button */}
-        <Button className='save-button' variant="primary" onClick={handleCreateButton}>
+        <Button
+          className="save-button"
+          variant="primary"
+          onClick={handleCreateButton}
+        >
           Save & Add
         </Button>
       </Modal.Footer>
@@ -168,4 +171,3 @@ const handleCreateButton = async () => {
 }
 
 export default AddVehicleModal;
-

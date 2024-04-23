@@ -5,7 +5,7 @@ import axios from 'axios';
 import './VehicleModal.css';
 import AddVehicleModal from './AddVehicleModal';
 
-function VehicleModal({ show, handleClose }) {
+function VehicleModal({ show, handleClose, userEmail }) {
   const [vehicles, setVehicles] = useState([]);
   const [addVehicleModalVisible, setAddVehicleModalVisible] = useState(false);
 
@@ -63,13 +63,14 @@ function VehicleModal({ show, handleClose }) {
         </ul>
         <br />
         <h5>Add a new vehicle</h5>
-        <button type='button' onClick={handleOpenAddVehicleModal}>
+        <button type="button" onClick={handleOpenAddVehicleModal}>
           Add Vehicle
         </button>
         {/* AddVehicleModal */}
         <AddVehicleModal
           show={addVehicleModalVisible}
           handleClose={handleCloseAddVehicleModal}
+          userEmail={userEmail}
         />
         <br />
         <br />
@@ -78,7 +79,11 @@ function VehicleModal({ show, handleClose }) {
         <Button variant="secondary" onClick={handleCloseButton}>
           Close
         </Button>
-        <Button className='save-button' variant="primary" onClick={handleSaveButton}>
+        <Button
+          className="save-button"
+          variant="primary"
+          onClick={handleSaveButton}
+        >
           Save
         </Button>
       </Modal.Footer>
