@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
@@ -6,8 +6,8 @@ import './VehicleModal.css';
 import AddVehicleModal from './AddVehicleModal';
 
 function VehicleModal({ show, handleClose }) {
-    // AddVehicleModal state
-    const [addVehicleModalVisible, setAddVehicleModalVisible] = useState(false);
+  const [vehicles, setVehicles] = useState([]);
+  const [addVehicleModalVisible, setAddVehicleModalVisible] = useState(false);
 
   // Function to handle opening AddVehicleModal
   const handleOpenAddVehicleModal = () => {
@@ -18,7 +18,7 @@ function VehicleModal({ show, handleClose }) {
   const handleCloseAddVehicleModal = () => {
     setAddVehicleModalVisible(false);
   };
-  
+
   // Send a POST request to the server when the modal is closed.
   function handleCloseButton() {
     axios
@@ -35,7 +35,7 @@ function VehicleModal({ show, handleClose }) {
   // Send a POST request to the server when the modal is saved.
   function handleSaveButton() {
     axios
-      .post('http://localhost:8080/email-modal', { data: 'modal saved' })
+      .post('http://localhost:8080/add-vehicle-modal', { data: 'modal saved' })
       .then((response) => {
         console.log(response.data);
       })
@@ -45,13 +45,6 @@ function VehicleModal({ show, handleClose }) {
     handleClose();
   }
 
-  // handleInputChange updates the form data when the user edits an input field.
-  function handleInputChange(event) {
-    const { name, value, type, checked } = event.target;
-    const newValue = type === 'checkbox' ? checked : value;
-    setFormData({ ...formData, [name]: newValue });
-  }
-
   // Render the modal.
   return (
     <Modal show={show} onHide={handleCloseButton}>
@@ -59,21 +52,27 @@ function VehicleModal({ show, handleClose }) {
         <Modal.Title>Vehicles</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-
         <h5>Vehicles</h5>
         <p>Model, Color, License Plate</p>
-        <br/>
-
+        <ul>
+          {vehicles.map((vehicle) => (
+            <li key={vehicle.id}>
+              {vehicle.model}, {vehicle.color}, {vehicle.licensePlate}
+            </li>
+          ))}
+        </ul>
+        <br />
         <h5>Add a new vehicle</h5>
-        <button type='button' onClick={handleOpenAddVehicleModal}>Add Vehicle</button>
-
+        <button type='button' onClick={handleOpenAddVehicleModal}>
+          Add Vehicle
+        </button>
         {/* AddVehicleModal */}
         <AddVehicleModal
           show={addVehicleModalVisible}
           handleClose={handleCloseAddVehicleModal}
         />
-        <br/><br/>
-
+        <br />
+        <br />
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={handleCloseButton}>

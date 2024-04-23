@@ -88,6 +88,36 @@ app.post('/login-user', async (req, res) => {
   }
 });
 
+const insertVehicleData = async (userData) => {
+  const insertionQuery =
+    'INSERT INTO Vehicles (license, make, model, year, email) VALUES (?, ?, ?, ?, ?)';
+
+  const values = [
+    userData.license,
+    userData.make,
+    userData.model,
+    userData.year,
+	  userData.email,
+  ];
+  const results = await executeQuery(insertionQuery, values);
+  console.log('User vehicle inserted:', results);
+  return results;
+};
+
+app.post('/insert-vehicle', async (req, res) => {
+  const userData = req.body;
+
+  console.log(userData);
+
+  try {
+    await insertVehicleData(userData);
+    res.status(200).json({ message: 'User vehicle successfully inserted' });
+  } catch (error) {
+    console.error('Error inserting user vehicle:', error);
+    res.status(500).json({ message: 'Error inserting user vehicle' });
+  }
+});
+
 // Function to check if a pass is live
 function isPassLive(pass) {
   // Extract startTime and duration from the pass object
