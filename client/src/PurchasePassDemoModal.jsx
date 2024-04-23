@@ -149,11 +149,12 @@ function PurchasePassDemoModal({
 
   // Render the modal.
   return (
+   
     <Modal show={show} onHide={handleClose} backdrop="static">
       <Modal.Header closeButton>
         <Modal.Title>Purchase a Visitor Parking Pass</Modal.Title>
       </Modal.Header>
-
+      
       <Modal.Body>
         {/* License plate text input */}
         <h5>License Plate</h5>
@@ -290,15 +291,16 @@ function PurchasePassDemoModal({
 
       <Modal.Footer>
         <div className="container d-flex justify-content-between">
-          <Button variant="secondary" onClick={handleClose}>
+          <Button id='close-button' variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleContinueButton}>
+          <Button id='pay-button' variant="primary" onClick={handleContinueButton}>
             Continue to Payment
           </Button>
         </div>
       </Modal.Footer>
     </Modal>
+    
   );
 }
 
