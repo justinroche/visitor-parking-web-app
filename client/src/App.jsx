@@ -89,7 +89,7 @@ function App() {
           <br />
           <br />
           <Button id = 'buy-pass-button' className="modal-button" variant="secondary" onClick={handleShowPurchasePassDemoModal}>
-          Purchase A Pass
+            Purchase A Pass
           </Button>
           <br/>
           <br/>
@@ -153,7 +153,6 @@ function App() {
             </tbody>
           </table>
         </div>
-
 
 
         <div className='col'>
