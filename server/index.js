@@ -118,6 +118,39 @@ app.post('/insert-vehicle', async (req, res) => {
   }
 });
 
+// Endpoint to fetch user's vehicles based on email
+app.post('/get-user-vehicles', async (req, res) => {
+  const { email } = req.body; // Extract email from request body
+
+  // Query to fetch vehicles based on email
+  const query = 'SELECT * FROM Vehicles WHERE email = ?';
+
+  try {
+    const results = await executeQuery(query, [email]);
+    res.status(200).json({ vehicles: results });
+  } catch (error) {
+    console.error('Error fetching user vehicles:', error);
+    res.status(500).json({ message: 'Error fetching user vehicles' });
+  }
+});
+
+// Endpoint to delete a vehicle
+app.delete('/delete-vehicle/:licensePlate', async (req, res) => {
+  const licensePlate = req.params.licensePlate; // Extract license plate from request parameters
+
+  // Query to delete vehicle based on license plate
+  const deleteQuery = 'DELETE FROM Vehicles WHERE license = ?';
+
+  try {
+    await executeQuery(deleteQuery, [licensePlate]);
+    res.status(200).json({ message: 'Vehicle successfully deleted' });
+  } catch (error) {
+    console.error('Error deleting vehicle:', error);
+    res.status(500).json({ message: 'Error deleting vehicle' });
+  }
+});
+
+
 // Function to check if a pass is live
 function isPassLive(pass) {
   // Extract startTime and duration from the pass object

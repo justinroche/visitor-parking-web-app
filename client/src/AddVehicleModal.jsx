@@ -9,9 +9,10 @@ function AddVehicleModal({ show, handleClose, userEmail }) {
     license: '',
     make: '',
     model: '',
-    year: 0,
+    year: '',
     email: userEmail,
   });
+  
 
   // Handle input change
   const handleInputChange = (event) => {
@@ -65,7 +66,7 @@ function AddVehicleModal({ show, handleClose, userEmail }) {
         license: '',
         make: '',
         model: '',
-        year: 0,
+        year: '',
         email: userEmail, // Reset email back to the logged-in user's email
       });
 
@@ -100,51 +101,63 @@ function AddVehicleModal({ show, handleClose, userEmail }) {
         <form>
           <div className="form-group">
             <label>License</label>
+            <br/>
             <input
               type="text"
               id="licenseInput"
               name="license"
-              placeholder="License"
+              placeholder="Enter License"
               value={formData.license}
               onChange={handleInputChange}
               required
+              tabIndex={1}
             />
+            <br/><br/>
           </div>
           <div className="form-group">
             <label>Make</label>
+            <br/>
             <input
               type="text"
               id="makeInput"
               name="make"
-              placeholder="Make"
+              placeholder="Enter Make"
               value={formData.make}
               onChange={handleInputChange}
               required
+              tabIndex={2}
             />
+            <br/><br/>
           </div>
           <div className="form-group">
             <label>Model</label>
+            <br/>
             <input
               type="text"
               id="modelInput"
               name="model"
-              placeholder="Model"
+              placeholder="Enter Model"
               value={formData.model}
               onChange={handleInputChange}
               required
+              tabIndex={3}
             />
+            <br/><br/>
           </div>
           <div className="form-group">
             <label>Year</label>
+            <br/>
             <input
-              type="number"
+              type='text'
               id="yearInput"
               name="year"
-              placeholder="Year"
+              placeholder="Enter Year"
               value={formData.year}
               onChange={handleInputChange}
               required
+              tabIndex={4}
             />
+            <br/><br/>
           </div>
         </form>
       </Modal.Body>
