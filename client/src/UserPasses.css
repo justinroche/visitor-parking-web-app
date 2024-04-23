@@ -26,3 +26,10 @@
 .pass-row td {
   padding: 5px 0;
 }
+
+.none-found-text {
+  align-items: center !important;
+  margin-left: 50px;
+  margin-right: 40px;
+  margin-top: 40px;
+}

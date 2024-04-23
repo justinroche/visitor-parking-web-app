@@ -41,7 +41,7 @@ function UserPasses({ email, handleShowAddTimeModal, passes, fetchPasses }) {
   }
 
   if (passes.length === 0) {
-    return <h5>No passes found</h5>;
+    return <h5 className="none-found-text">No passes found</h5>;
   }
 
   return (
