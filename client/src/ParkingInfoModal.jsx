@@ -1,8 +1,8 @@
 import React from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
-import axios from 'axios';
-import leftImage from './CampusMap.jpg';
+import './ParkingInfoModal.css';
+import mapImage from './media/uwwmap.png';
 
 // This modal is a DEMO component. Use it as a reference.
 function CampusParkingInfoModal({ show, handleClose }) {
@@ -15,7 +15,7 @@ function CampusParkingInfoModal({ show, handleClose }) {
   return (
     <Modal show={show} onHide={handleClose} size="lg">
       <Modal.Header closeButton>
-        <Modal.Title>Parking On Campus</Modal.Title>
+        <Modal.Title>Visitor Parking on Campus</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <div className="container">
@@ -23,40 +23,47 @@ function CampusParkingInfoModal({ show, handleClose }) {
             <h5>General Parking Information</h5>
 
             <p>
-              Parking Passes are required 24/7 with the following exceptions
+              Visitor parking passes are required 24/7 with the following
+              exceptions:
             </p>
-            <p> * Starting 5 p.m. Fridays through 11 p.m. Sundays</p>
-            <p> * University recognized Holidays</p>
+            <ul>
+              <li>5 p.m. Fridays through 11 p.m. Sundays</li>
+              <li>University recognized Holidays</li>
+            </ul>
+            <br />
             <p>
-              University of Wisconsin uses License Plate Recognition software to
-              enforce parking regulations, therefor it is important that you
-              enter your liecnse plate correctly when purchasing your pass.
+              Parking Enforcement uses License Plate Recognition software to
+              enforce parking regulations, so it is important that you enter
+              your license plate correctly when purchasing a pass.
             </p>
             <p>
-              You may purchase a daily permit. The daily permits are valid in
-              commuter parking lots except between the hours of 2 am to 5 am.
-              These permits are not valid in parking stalls with signs saying
+              Visitor permits are valid in all commuter parking lots. However,
+              permits are not valid in parking stalls with signs indicating
               "Restricted", "Reserved", "No Parking", or "Passport Metered
-              Stalls". In addition you are not allowed to park overnight with
-              this permit. The cost is $5.00 per day.{' '}
+              Stalls".
             </p>
             <p>
-              We offer daily and multi-day permits (up to 1 week) at $5.00 per
-              day. In addition we also offer hourly parking (1 to 4 hours).{' '}
+              Overnight parking (between 2 a.m. and 5 a.m.) is permitted{' '}
+              <strong>only in Lot 19</strong>.
             </p>
-            <h6>Hourly Rates</h6>
-            <p>1 Hour $1.65</p>
-            <p>2 Hours $3.05</p>
-            <p>3 Hours $4.45</p>
-            <p>4 Hours $5.85</p>
+            <br />
+            <h6>Rates</h6>
+            <p>Daily visitor passes are $5.00 per day.</p>
+            <p>Hourly visitor pass rates are as follows:</p>
+            <ul>
+              <li>1 hour - $1.65</li>
+              <li>2 hours - $3.05</li>
+              <li>3 hours - $4.45</li>
+            </ul>
+            <br />
 
+            <h5>Map</h5>
             <p>
-              {' '}
-              Please refer to map below to see which lots you can park in
+              Please refer to map below to determine which lots you may use
               (Visitor and Commuter parking)
             </p>
             <div className="campus-map-container">
-              <img src={leftImage} alt="Left Image" className="campus-map" />
+              <img src={mapImage} className="campus-map" />
             </div>
           </div>
         </div>

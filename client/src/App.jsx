@@ -5,7 +5,7 @@ import './App.css';
 import Button from 'react-bootstrap/Button';
 import PaymentModal from './PaymentModal';
 import ParkingInfoModal from './ParkingInfoModal';
-import uww_logo from './UWWhitewater_logo.png';
+import uww_logo from './media/UWWhitewater_logo.png';
 import LoginModal from './LoginModal';
 import AddTimeModal from './AddTimeModal';
 import PurchasePassModal from './PurchasePassModal';
