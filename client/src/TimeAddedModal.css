@@ -1,0 +1,21 @@
+.confirm {
+  background-color: rgb(138, 43, 226);
+  color: white;
+  width: 100px;
+  height: 35px;
+  margin: 5px;
+  border: 0px;
+  border-radius: 5px;
+  float: right;
+}
+
+.cancel {
+  background-color: rgb(128, 128, 128);
+  color: white;
+  width: 100px;
+  height: 35px;
+  margin: 5px;
+  border: 0px;
+  border-radius: 5px;
+  float: right;
+}
