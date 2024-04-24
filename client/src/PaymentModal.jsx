@@ -124,8 +124,6 @@ function PaymentModal({
       axios
         .post('http://localhost:8080/purchase-pass', mergedData)
         .then((response) => {
-          console.log(response.data);
-
           if (isLoggedIn) {
             fetchPasses(email);
             setSuccessMessage('Payment successful!');
@@ -139,7 +137,6 @@ function PaymentModal({
       axios
         .post('http://localhost:8080/add-time', mergedData)
         .then((response) => {
-          console.log(response.data);
           if (isLoggedIn) {
             fetchPasses(email);
             setSuccessMessage('Payment successful!');

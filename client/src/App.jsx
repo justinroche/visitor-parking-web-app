@@ -90,25 +90,22 @@ function App() {
 
   // Fetch number of avilable spots every minute
   useEffect(() => {
-    const fetchAvailability = async () => {
-      try {
-        const response = await axios.get('http://localhost:8080/availability');
-        console.log(response.data);
-        setCurrentAvailability(response.data.availability);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    // Initially fetch data
     fetchAvailability();
 
-    // Set up interval to fetch data every minute
     const intervalId = setInterval(fetchAvailability, 60000);
 
-    // Cleanup function to clear interval when component unmounts
+    // Clear interval when component unmounts
     return () => clearInterval(intervalId);
   });
+
+  const fetchAvailability = async () => {
+    try {
+      const response = await axios.get('http://localhost:8080/availability');
+      setCurrentAvailability(response.data.availability);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   /* Components */
   function AppHeader() {
@@ -167,7 +164,6 @@ function App() {
         email,
       });
       if (response.data.message === 'No passes found') {
-        console.log('No passes found');
         setPasses([]);
         return;
       }
@@ -228,6 +224,7 @@ function App() {
                   passes={passes}
                   handleShowAddTimeModal={handleShowAddTimeModal}
                   fetchPasses={fetchPasses}
+                  fetchAvailability={fetchAvailability}
                 />
               </>
             ) : (

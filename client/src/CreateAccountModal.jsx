@@ -5,6 +5,8 @@ import axios from 'axios';
 import './CreateAccountModal.css';
 import Alert from '@mui/material/Alert';
 import { AlertTitle } from '@mui/material';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 // Function to validate email address
 const validateEmail = (email) => {
@@ -23,6 +25,11 @@ function CreateAccountModal({ show, handleClose }) {
 
   const [passwordVisibility, setPasswordVisibility] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
+
+  const handleCloseButton = () => {
+    handleReset();
+    handleClose();
+  };
 
   // Handle input change
   const handleInputChange = (event) => {
@@ -59,9 +66,7 @@ function CreateAccountModal({ show, handleClose }) {
     try {
       axios
         .post('http://localhost:8080/insert-user', formData)
-        .then((response) => {
-          console.log(response.data);
-        })
+        .then((response) => {})
         .catch((error) => {
           console.error('Error:', error);
         });
@@ -79,7 +84,7 @@ function CreateAccountModal({ show, handleClose }) {
       });
 
       // Close the modal
-      handleClose();
+      handleCloseButton();
     } catch (error) {
       console.error('Error:', error);
 
@@ -100,7 +105,7 @@ function CreateAccountModal({ show, handleClose }) {
   };
 
   return (
-    <Modal show={show} onHide={handleClose}>
+    <Modal show={show} onHide={handleCloseButton}>
       <Modal.Header closeButton>
         <Modal.Title>Create an Account</Modal.Title>
       </Modal.Header>
@@ -108,16 +113,18 @@ function CreateAccountModal({ show, handleClose }) {
       <Modal.Body>
         {/* Alert */}
         {alertMessage && (
-          <Alert style={{marginBottom: '10px'}} severity="error">
+          <Alert style={{ marginBottom: '10px' }} severity="error">
             <AlertTitle>{alertMessage}</AlertTitle>
           </Alert>
         )}
         <form>
           {/* First Name Input */}
           <div className="form-group">
-            <label>First Name</label>
+            <label htmlFor="createAccountFirstNameInput">First Name</label>
             <br />
             <input
+              id="createAccountFirstNameInput"
+              className="create-account-input-box"
               type="text"
               name="firstName"
               value={formData.firstName}
@@ -131,9 +138,11 @@ function CreateAccountModal({ show, handleClose }) {
 
           {/* Last Name Input */}
           <div className="form-group">
-            <label>Last Name</label>
+            <label htmlFor="createAccountLastNameInput">Last Name</label>
             <br />
             <input
+              id="createAccountFastNameInput"
+              className="create-account-input-box"
               type="text"
               name="lastName"
               value={formData.lastName}
@@ -147,9 +156,11 @@ function CreateAccountModal({ show, handleClose }) {
 
           {/* Email Input */}
           <div className="form-group">
-            <label>Email</label>
+            <label htmlFor="createAccountEmailInput">Email</label>
             <br />
             <input
+              id="createAccountEmailInput"
+              className="create-account-input-box"
               type="email"
               name="email"
               value={formData.email}
@@ -163,10 +174,12 @@ function CreateAccountModal({ show, handleClose }) {
 
           {/* Password Input */}
           <div className="form-group">
-            <label>Password </label>
+            <label htmlFor="createAccountPasswordInput">Password </label>
             <br />
             <div className="password-container">
               <input
+                id="createAccountPasswordInput"
+                className="create-account-input-box"
                 type={passwordVisibility ? 'text' : 'password'}
                 name="password"
                 value={formData.password}
@@ -174,14 +187,15 @@ function CreateAccountModal({ show, handleClose }) {
                 placeholder="Enter Password"
                 tabIndex={4}
                 required
-              />{' '}
-              &nbsp;
+              />
               <Button
                 id="password-button"
                 type="button"
                 onClick={togglePasswordVisibility}
               >
-                {passwordVisibility ? 'Hide' : 'Show'}
+                <FontAwesomeIcon
+                  icon={passwordVisibility ? faEyeSlash : faEye}
+                />
               </Button>
             </div>
           </div>
@@ -189,10 +203,14 @@ function CreateAccountModal({ show, handleClose }) {
 
           {/* Confirm Password Input */}
           <div>
-            <label>Confirm Password</label>
+            <label htmlFor="createAccountConfirmPasswordInput">
+              Confirm Password
+            </label>
             <br />
             <input
-              type={passwordVisibility ? 'text' : 'password'}
+              id="createAccountConfirmPasswordInput"
+              className="create-account-input-box"
+              type="password"
               name="confirmPassword"
               value={formData.confirmPassword}
               onChange={handleInputChange}
@@ -207,21 +225,29 @@ function CreateAccountModal({ show, handleClose }) {
             formData.password !== formData.confirmPassword && (
               <span id="password-alert">Passwords must match!</span>
             )}
-          <br />
         </form>
       </Modal.Body>
 
-      <Modal.Footer>
-        {/* Close Button */}
-        <Button variant="secondary" onClick={handleClose}>
-          Close
-        </Button>
-        {/* Reset Button */}
-        <Button variant="secondary" onClick={handleReset}>
-          Reset
-        </Button>
+      <Modal.Footer className="d-flex justify-content-between">
+        <div>
+          {/* Close and Reset Buttons */}
+          <Button
+            variant="secondary"
+            onClick={handleCloseButton}
+            id="close-button"
+          >
+            Close
+          </Button>
+          <Button variant="secondary" onClick={handleReset}>
+            Reset
+          </Button>
+        </div>
         {/* Create Button */}
-        <Button className='save-button' variant="primary" onClick={handleCreateButton}>
+        <Button
+          className="primary-button"
+          variant="primary"
+          onClick={handleCreateButton}
+        >
           Create
         </Button>
       </Modal.Footer>

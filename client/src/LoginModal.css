@@ -25,10 +25,6 @@
   border: 3px rgb(81, 40, 132) !important;
 }
 
-.emailform {
-  box-shadow: 2px;
-}
-
 #no-account-text {
   display: inline;
   margin: 0 10px 0 0;

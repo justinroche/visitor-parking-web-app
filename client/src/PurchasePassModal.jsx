@@ -222,7 +222,6 @@ function PurchasePassModal({
               id="vehicleSelect"
               value={formData.licensePlate}
               onChange={(e) => {
-                console.log(e.target.value);
                 setFormData({ ...formData, licensePlate: e.target.value });
               }}
             >

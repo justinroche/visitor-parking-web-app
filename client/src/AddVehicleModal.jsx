@@ -85,7 +85,6 @@ function AddVehicleModal({
       await axios
         .post('http://localhost:8080/insert-vehicle', formDataWithUserEmail)
         .then((response) => {
-          console.log(response.data.message);
           fetchUserVehiclesInformation(userEmail);
         })
         .catch((error) => {

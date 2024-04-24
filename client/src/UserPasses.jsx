@@ -2,8 +2,19 @@ import React, { useState, useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
 import './UserPasses.css';
 
-function UserPasses({ email, handleShowAddTimeModal, passes, fetchPasses }) {
+function UserPasses({
+  email,
+  handleShowAddTimeModal,
+  passes,
+  fetchPasses,
+  fetchAvailability,
+}) {
   const [timeRemaining, setTimeRemaining] = useState({});
+
+  function refreshPassesAndAvailability() {
+    fetchPasses(email);
+    fetchAvailability();
+  }
 
   useEffect(() => {
     const calculateTimeRemaining = () => {
@@ -58,7 +69,7 @@ function UserPasses({ email, handleShowAddTimeModal, passes, fetchPasses }) {
             <Button
               className="fetch-passes-button"
               variant="secondary"
-              onClick={() => fetchPasses(email)}
+              onClick={() => refreshPassesAndAvailability()}
               style={{ fontSize: '12px' }}
             >
               Refresh

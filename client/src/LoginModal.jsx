@@ -134,20 +134,17 @@ function LoginModal({ show, handleClose, handleLogin, fetchPasses }) {
           </Button>
         </Modal.Body>
 
-        <Modal.Footer>
-          <div>
-            <Button id="closebutton" variant="secondary" onClick={handleClose}>
-              Close
-            </Button>
-            &nbsp;&nbsp;
-            <Button
-              className="primary-button"
-              variant="primary"
-              onClick={handleLoginAttempt}
-            >
-              Log In
-            </Button>
-          </div>
+        <Modal.Footer className="d-flex justify-content-between">
+          <Button id="closebutton" variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+          <Button
+            className="primary-button"
+            variant="primary"
+            onClick={handleLoginAttempt}
+          >
+            Log In
+          </Button>
         </Modal.Footer>
       </Modal>
       <CreateAccountModal
