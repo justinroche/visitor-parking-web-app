@@ -6,7 +6,7 @@ import './LoginModal.css';
 import CreateAccountModal from './CreateAccountModal';
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
-import {faLock} from '@fortawesome/free-solid-svg-icons';
+import { faLock } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Alert from '@mui/material/Alert';
 import { AlertTitle } from '@mui/material';
@@ -61,97 +61,102 @@ function LoginModal({ show, handleClose, handleLogin, fetchPasses }) {
           setAlertMessage(`Login failed with error code: ${status}`);
         }
       } else {
-        setAlertMessage('An error occurred during login. Please try again later.');
+        setAlertMessage(
+          'An error occurred during login. Please try again later.'
+        );
       }
     }
   };
 
   return (
-    <Modal show={show} onHide={handleClose} backdrop="static">
-      <Modal.Header closeButton>
-        <Modal.Title>Login</Modal.Title>
-      </Modal.Header>
+    <>
+      <Modal show={show} onHide={handleClose} backdrop="static">
+        <Modal.Header closeButton>
+          <Modal.Title>Log In</Modal.Title>
+        </Modal.Header>
 
-      <Modal.Body>
-        {/* Alert */}
-        {alertMessage && (
-          <Alert style={{marginBottom: '10px'}} severity="error">
-            <AlertTitle>{alertMessage}</AlertTitle>
-          </Alert>
-        )}
-        {/* Email input */}
-        <form>   
-            <div className='input-group'>
+        <Modal.Body>
+          {/* Alert */}
+          {alertMessage && (
+            <Alert style={{ marginBottom: '10px' }} severity="error">
+              <AlertTitle>{alertMessage}</AlertTitle>
+            </Alert>
+          )}
+          {/* Email input */}
+          <form>
+            <div className="input-group">
+              <span className="input-group-text">
+                <FontAwesomeIcon icon={faEnvelope} />
+              </span>
+              <input
+                type="email"
+                id="emailInput"
+                name="email"
+                placeholder="Email Address"
+                value={formData.email}
+                onChange={handleInputChange}
+                tabIndex={1}
+                required
+              />
+            </div>
+          </form>
+          <br />
+
+          {/* Password input */}
+          <div className="input-group">
             <span className="input-group-text">
-            <FontAwesomeIcon icon={faEnvelope} />
-                </span>        
-         <input
-                    
-            type="email"
-            id="emailInput"
-            name="email"
-            placeholder="Email Address"
-            value={formData.email}
-            onChange={handleInputChange}
-            tabIndex={1}
-            required
-          />
+              <FontAwesomeIcon icon={faLock} />
+            </span>
+
+            <input
+              type={passwordVisibility ? 'text' : 'password'}
+              id="passwordInput"
+              name="password"
+              placeholder="Password"
+              value={formData.password}
+              onChange={handleInputChange}
+              tabIndex={2}
+              required
+            />
+            <Button id="password-button" onClick={togglePasswordVisibility}>
+              <FontAwesomeIcon icon={passwordVisibility ? faEyeSlash : faEye} />
+            </Button>
           </div>
-        </form>
-        <br />
 
-        {/* Password input */}
-        <div className='input-group'>
-          <span className="input-group-text">
-            <FontAwesomeIcon icon={faLock} />
-          </span>   
-        
-          <input
-            type={passwordVisibility ? 'text' : 'password'}
-            id="passwordInput"
-            name="password"
-            placeholder="Password"
-            value={formData.password}
-            onChange={handleInputChange}
-            tabIndex={2}
-            required
-            
-          />
-          &nbsp;&nbsp;
-          <Button id="password-button" onClick={togglePasswordVisibility}>
-            <FontAwesomeIcon icon={passwordVisibility ? faEyeSlash : faEye} />
-          </Button>
-        </div>
-        
-        <br />
-        {/* CreateAccountModal */}
-        <p>
-          Don't have an account? &nbsp;
-          <button id="register-button" onClick={handleOpenCreateAccountModal}>
+          <br />
+          <p style={{ display: 'inline', margin: '0 10px 0 0' }}>
+            Don't have an account?
+          </p>
+          <Button
+            id="register-button"
+            variant="primary"
+            onClick={handleOpenCreateAccountModal}
+          >
             Sign Up
-          </button>
-        </p>
-
-        <CreateAccountModal
-          show={createAccountModalVisible}
-          handleClose={handleCloseCreateAccountModal}
-        />
-        <br />
-        <br />
-      </Modal.Body>
-
-      <Modal.Footer>
-        <div>
-          <Button id='closebutton' variant="secondary" onClick={handleClose}>
-            Close
           </Button>
-          &nbsp;&nbsp;
-          <Button id = 'loginbutton' variant="primary" onClick={handleLoginAttempt}>
-            Login
-          </Button>
-        </div>
-      </Modal.Footer>
-    </Modal>
+        </Modal.Body>
+
+        <Modal.Footer>
+          <div>
+            <Button id="closebutton" variant="secondary" onClick={handleClose}>
+              Close
+            </Button>
+            &nbsp;&nbsp;
+            <Button
+              id="loginbutton"
+              variant="primary"
+              onClick={handleLoginAttempt}
+            >
+              Login
+            </Button>
+          </div>
+        </Modal.Footer>
+      </Modal>
+      <CreateAccountModal
+        show={createAccountModalVisible}
+        handleClose={handleCloseCreateAccountModal}
+      />
+    </>
   );
 }
 

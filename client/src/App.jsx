@@ -112,7 +112,7 @@ function App() {
                 variant="secondary"
                 onClick={handleShowLoginModal}
               >
-                Login
+                Log In
               </Button>
             )}
             {isLoggedIn && (
@@ -162,7 +162,7 @@ function App() {
           <div className="col">
             <Button
               id="info-button"
-              className="modal-button"
+              className="primary-button"
               variant="primary"
               onClick={handleShowParkingInfoModal}
             >
@@ -172,7 +172,7 @@ function App() {
             <br />
             <Button
               id="buy-pass-button"
-              className="modal-button"
+              className="primary-button"
               variant="secondary"
               onClick={handleShowPurchasePassModal}
             >
@@ -183,7 +183,7 @@ function App() {
             {isLoggedIn && (
               <Button
                 id="add-vehicle-button"
-                className="modal-button"
+                className="primary-button"
                 variant="secondary"
                 onClick={handleShowVehicleModal}
               >
@@ -193,26 +193,26 @@ function App() {
           </div>
 
           <div className="col">
-          {isLoggedIn ? (
-            <>
-              {successMessage && (
-                <Alert className = 'alert' severity="success">
-                  <AlertTitle>{successMessage}</AlertTitle>
-                </Alert>
-              )}
-              <UserPasses
-                email={userEmail}
-                passes={passes}
-                handleShowAddTimeModal={handleShowAddTimeModal}
-                fetchPasses={fetchPasses}
-              />
-            </>
-          ) : (
-            <h5 className="log-in-message">
-              Please sign in or create an account to view your passes.
-            </h5>
-          )}
-        </div>
+            {isLoggedIn ? (
+              <>
+                {successMessage && (
+                  <Alert className="alert" severity="success">
+                    <AlertTitle>{successMessage}</AlertTitle>
+                  </Alert>
+                )}
+                <UserPasses
+                  email={userEmail}
+                  passes={passes}
+                  handleShowAddTimeModal={handleShowAddTimeModal}
+                  fetchPasses={fetchPasses}
+                />
+              </>
+            ) : (
+              <h5 className="log-in-message">
+                Please sign in or create an account to view your passes.
+              </h5>
+            )}
+          </div>
 
           <div className="col">
             <div className="availability">

@@ -119,7 +119,9 @@ function PurchasePassModal({
 
     // If notifications are enabled but email is missing, prevent form submission.
     if (formData.notificationsEnabled && !formData.email && email == '') {
-      alert('Please enter your email address to enable notifications.');
+      setAlertMessage(
+        'Please enter your email address to enable notifications.'
+      );
       return;
     }
 
@@ -323,7 +325,7 @@ function PurchasePassModal({
               {email == '' && (
                 <input
                   type="text"
-                  id="emailInput"
+                  id="passEmailInput"
                   name="email"
                   placeholder="Enter your email address"
                   value={formData.email}
@@ -333,7 +335,7 @@ function PurchasePassModal({
               {email && (
                 <input
                   type="text"
-                  id="emailInput"
+                  id="passEmailInput"
                   name="formEmail"
                   placeholder="Enter your email address"
                   value={email}
@@ -357,7 +359,7 @@ function PurchasePassModal({
           Close
         </Button>
         <Button
-          className="modal-button"
+          className="primary-button purchase-button"
           variant="primary"
           onClick={handleContinueButton}
         >

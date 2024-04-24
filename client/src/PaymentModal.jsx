@@ -166,7 +166,7 @@ function PaymentModal({
       <Modal.Body>
         {/* Alert */}
         {alertMessage && (
-          <Alert style={{marginBottom: '10px'}} severity="error">
+          <Alert style={{ marginBottom: '10px' }} severity="error">
             <AlertTitle>{alertMessage}</AlertTitle>
           </Alert>
         )}
@@ -227,20 +227,18 @@ function PaymentModal({
           </div>
         )}
       </Modal.Body>
-      <Modal.Footer>
-        <div className="container d-flex justify-content-between">
-          <Button variant="secondary" onClick={handleCloseButton}>
-            Close
-          </Button>
-          <Button
-            className="modal-button"
-            variant="primary"
-            onClick={handleSubmitButton}
-          >
-            Submit Payment
-            {/* when this button is clicked successfuly display success message*/}
-          </Button>
-        </div>
+      <Modal.Footer className="d-flex justify-content-between">
+        <Button variant="secondary" onClick={handleCloseButton}>
+          Close
+        </Button>
+        <Button
+          className="primary-button"
+          variant="primary"
+          onClick={handleSubmitButton}
+        >
+          Submit Payment
+          {/* when this button is clicked successfuly display success message*/}
+        </Button>
       </Modal.Footer>
     </Modal>
   );

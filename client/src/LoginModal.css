@@ -1,78 +1,61 @@
 #button-size {
-    font-size: 0.75em;
+  font-size: 0.75em;
 }
 
 #footer-text {
-    font-size: 0.75em;
+  font-size: 0.75em;
 }
 
 #password-button {
-    font-size: 0.5em;
-    background-color: rgb(81, 40, 132) !important;
-    border: 3px rgb(81, 40, 132) !important;
+  font-size: 0.5em;
+  background-color: rgb(81, 40, 132) !important;
+  border: 0 !important;
+  width: 35px;
+  align-items: center;
+  display: flex;
+  justify-content: center;
 }
 
-#save-button{
-    background-color: rgb(81, 40, 132) !important;
-    border: 3px rgb(81, 40, 132) !important;
+#password-button svg {
+  height: 14px;
 }
 
-.emailform{
-    box-shadow: 2px;
+#save-button {
+  background-color: rgb(81, 40, 132) !important;
+  border: 3px rgb(81, 40, 132) !important;
 }
 
-
-
-#loginbutton{
-    border: 3px rgb(81, 40, 132) !important;
-    background-color: rgb(81, 40, 132)
-
-    
+.emailform {
+  box-shadow: 2px;
 }
 
-
-#register-button{
-    background-color: rgb(81, 40, 132) !important;
-    border: 3px rgb(81, 40, 132) !important;
-    color: white;
-    padding-left: 10px;
-    padding-right: 10px;
+#loginbutton {
+  border: 3px rgb(81, 40, 132) !important;
+  background-color: rgb(81, 40, 132);
 }
 
-#emailInput{
-    border-radius: 5px;
-    border: 1px solid #131111;
-    padding: 2px; 
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      
+#register-button {
+  background-color: rgb(81, 40, 132) !important;
+  border-radius: 5px;
+  border: 3px rgb(81, 40, 132) !important;
+  color: white;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
-#passwordInput{
-    border-radius: 5px;
-    border: 1px solid #131111;
-    padding: 2px; 
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      
+#emailInput {
+  border: 1px solid #131111;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  padding: 2px;
 }
 
-.password-toggle {
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-  }
-  
-  /* Adjust icon size and color as needed */
-  .password-toggle svg {
-    width: 100px;
-    height: auto;
-    color: #555; 
-  }
-  
-  .password-toggle:focus {
-    outline: none; 
-  }
+#passwordInput {
+  border: 1px solid #131111;
+  padding: 2px;
+}
 
-  .modal-button {
-    background-color: rgb(81, 40, 132) !important;
-    border: 3px rgb(81, 40, 132) !important;
-  }
+.primary-button {
+  background-color: rgb(81, 40, 132) !important;
+  border: 3px rgb(81, 40, 132) !important;
+}
