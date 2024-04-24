@@ -5,7 +5,7 @@ import Form from 'react-bootstrap/Form';
 import axios from 'axios';
 import './PaymentModal.css';
 
-function PaymentModal({ show, handleClose, purchasePassData }) {
+function PaymentModal({ show, handleClose, purchasePassData, handleShowTimeAddedModal }) {
   /* State */
   const [paymentData, setPaymentData] = useState({
     nameOnCard: '',
@@ -110,6 +110,10 @@ function PaymentModal({ show, handleClose, purchasePassData }) {
       .post('http://localhost:8080/purchase-pass', mergedData)
       .then((response) => {
         console.log(response.data);
+        // insert code here to check if a live pass exists
+        if (response.data.message = "Live pass exists") {
+          handleShowTimeAddedModal();
+        }
       })
       .catch((error) => {
         console.error('Error:', error);
