@@ -1,13 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import './VehicleModal.css';
 import AddVehicleModal from './AddVehicleModal';
 
-function VehicleModal({ show, handleClose }) {
-    // AddVehicleModal state
-    const [addVehicleModalVisible, setAddVehicleModalVisible] = useState(false);
+function VehicleModal({ show, handleClose, userEmail }) {
+  const [vehicles, setVehicles] = useState([]);
+  const [addVehicleModalVisible, setAddVehicleModalVisible] = useState(false);
+
+  // Function to fetch user's vehicles information
+  const fetchUserVehiclesInformation = async (email) => {
+    try {
+      const response = await axios.post(
+        'http://localhost:8080/get-user-vehicles',
+        { email }
+      );
+      setVehicles(response.data.vehicles);
+    } catch (error) {
+      console.error('Error fetching user vehicles information:', error);
+    }
+  };
+
+  // Fetch user's vehicles when the component mounts or when the modal is opened
+  useEffect(() => {
+    if (show) {
+      fetchUserVehiclesInformation(userEmail);
+    }
+  }, [show, userEmail]);
 
   // Function to handle opening AddVehicleModal
   const handleOpenAddVehicleModal = () => {
@@ -18,69 +38,81 @@ function VehicleModal({ show, handleClose }) {
   const handleCloseAddVehicleModal = () => {
     setAddVehicleModalVisible(false);
   };
-  
-  // Send a POST request to the server when the modal is closed.
-  function handleCloseButton() {
-    axios
-      .post('http://localhost:8080/email-modal', { data: 'modal closed' })
-      .then((response) => {
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
-    handleClose();
-  }
 
-  // Send a POST request to the server when the modal is saved.
-  function handleSaveButton() {
-    axios
-      .post('http://localhost:8080/email-modal', { data: 'modal saved' })
-      .then((response) => {
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
-    handleClose();
-  }
-
-  // handleInputChange updates the form data when the user edits an input field.
-  function handleInputChange(event) {
-    const { name, value, type, checked } = event.target;
-    const newValue = type === 'checkbox' ? checked : value;
-    setFormData({ ...formData, [name]: newValue });
-  }
+  // Function to delete a vehicle
+  const handleDeleteVehicle = async (license) => {
+    try {
+      await axios.delete(`http://localhost:8080/delete-vehicle/${license}`);
+      // After successful deletion, fetch updated user's vehicles
+      fetchUserVehiclesInformation(userEmail);
+    } catch (error) {
+      console.error('Error deleting vehicle:', error);
+    }
+  };
 
   // Render the modal.
   return (
-    <Modal show={show} onHide={handleCloseButton}>
+    <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
         <Modal.Title>Vehicles</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-
-        <h5>Vehicles</h5>
-        <p>Model, Color, License Plate</p>
-        <br/>
-
-        <h5>Add a new vehicle</h5>
-        <button type='button' onClick={handleOpenAddVehicleModal}>Add Vehicle</button>
-
+        {/* Display user's vehicles */}
+        {vehicles.length === 0 && <h5>No saved vehicles</h5>}
+        {vehicles.length > 0 && (
+          <>
+            <h5>Your Vehicles</h5>
+            <div className="table-container">
+              <table>
+                <thead>
+                  <tr>
+                    <th>License Plate</th>
+                    <th>Make</th>
+                    <th>Model</th>
+                    <th>Year</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {vehicles.map((vehicle, index) => (
+                    <tr key={vehicle.license}>
+                      <td>{vehicle.license}</td>
+                      <td>{vehicle.make}</td>
+                      <td>{vehicle.model}</td>
+                      <td>{vehicle.year}</td>
+                      <td>
+                        <Button
+                          className="delete-button"
+                          variant="secondary"
+                          onClick={() => handleDeleteVehicle(vehicle.license)}
+                        >
+                          Delete
+                        </Button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </>
+        )}
+      </Modal.Body>
+      <Modal.Footer>
+        <Button
+          className="add-button"
+          type="button"
+          onClick={handleOpenAddVehicleModal}
+        >
+          Add Vehicle
+        </Button>
         {/* AddVehicleModal */}
         <AddVehicleModal
           show={addVehicleModalVisible}
           handleClose={handleCloseAddVehicleModal}
+          userEmail={userEmail}
+          fetchUserVehiclesInformation={fetchUserVehiclesInformation}
         />
-        <br/><br/>
-
-      </Modal.Body>
-      <Modal.Footer>
-        <Button variant="secondary" onClick={handleCloseButton}>
+        <Button variant="secondary" onClick={handleClose}>
           Close
-        </Button>
-        <Button className='save-button' variant="primary" onClick={handleSaveButton}>
-          Save
         </Button>
       </Modal.Footer>
     </Modal>

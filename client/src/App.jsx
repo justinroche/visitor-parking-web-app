@@ -3,14 +3,13 @@ import React from 'react';
 import axios from 'axios';
 import './App.css';
 import Button from 'react-bootstrap/Button';
-import DemoModal from './DemoModal';
 import PaymentModal from './PaymentModal';
 import ParkingInfoModal from './ParkingInfoModal';
 import uww_logo from './UWWhitewater_logo.png';
 import LoginModal from './LoginModal';
-import AccountSettingsModal from './AccountSettingsModal';
 import AddTimeModal from './AddTimeModal';
 import PurchasePassModal from './PurchasePassModal';
+import VehicleModal from './VehicleModal';
 import DateTime from './DateTime';
 import UserPasses from './UserPasses';
 import Alert from '@mui/material/Alert';
@@ -33,6 +32,7 @@ function App() {
   const [passes, setPasses] = useState([]);
   const [addTimePass, setAddTimePass] = useState(null);
   const [addTimePassRemaining, setAddTimePassRemaining] = useState(null);
+  const [showVehicleModal, setShowVehicleModal] = useState(false);
 
   /* Handlers */
   const handleClosePurchasePassModal = () => setShowPurchasePassModal(false);
@@ -63,12 +63,16 @@ function App() {
   const handleLogin = (email) => {
     setIsLoggedIn(true);
     setUserEmail(email);
+    fetchPasses(email); // Fetch passes when user logs in
   };
 
   const handleLogout = () => {
     setIsLoggedIn(false);
     setUserEmail('');
+    setPasses([]); // Clear passes when user logs out
   };
+  const handleShowVehicleModal = () => setShowVehicleModal(true);
+  const handleCloseVehicleModal = () => setShowVehicleModal(false);
 
   /* Components */
   function AppHeader() {
@@ -123,22 +127,15 @@ function App() {
 
   async function fetchPasses(email) {
     try {
-      axios
-        .post('http://localhost:8080/passes', {
-          email,
-        })
-        .then((response) => {
-          if (response.data.message === 'No passes found') {
-            console.log('No passes found');
-            setPasses([]);
-            return;
-          }
-          setPasses(response.data.passes);
-        })
-        .catch((error) => {
-          console.error(error);
-          // Handle error
-        });
+      const response = await axios.post('http://localhost:8080/passes', {
+        email,
+      });
+      if (response.data.message === 'No passes found') {
+        console.log('No passes found');
+        setPasses([]);
+        return;
+      }
+      setPasses(response.data.passes);
     } catch (error) {
       console.error(error);
       // Handle error
@@ -170,6 +167,16 @@ function App() {
             </Button>
             <br />
             <br />
+            {isLoggedIn && (
+              <Button
+                id="add-vehicle-button"
+                className="modal-button"
+                variant="secondary"
+                onClick={handleShowVehicleModal}
+              >
+                Add/Update Vehicles
+              </Button>
+            )}
           </div>
 
           <div className="col">
@@ -210,11 +217,6 @@ function App() {
           handleLogin={handleLogin}
           fetchPasses={fetchPasses}
         />
-        <AccountSettingsModal
-          show={showAccountSettingsModal}
-          handleClose={handleCloseAccountSettingsModal}
-          isLoggedIn={isLoggedIn}
-        />
         <ParkingInfoModal
           show={showParkingInfoModal}
           handleClose={handleCloseParkingInfoModal}
@@ -243,6 +245,11 @@ function App() {
           setPurchasePassData={setPurchasePassData}
           pass={passes.find((pass) => pass.passID === addTimePass)}
           remaining={addTimePassRemaining}
+        />
+        <VehicleModal
+          show={showVehicleModal}
+          handleClose={handleCloseVehicleModal}
+          userEmail={userEmail}
         />
       </div>
     );

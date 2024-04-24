@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
+import axios from 'axios';
 import './PurchasePassModal.css';
 import Alert from '@mui/material/Alert';
 import { AlertTitle } from '@mui/material';
@@ -29,9 +30,29 @@ function PurchasePassModal({
   });
 
   const [passCost, setPassCost] = useState(0);
+  const [savedVehicles, setSavedVehicles] = useState([]);
   const [alertMessage, setAlertMessage] = useState('');
-
   /* Effects */
+
+  // Fetch user's vehicles from the backend
+  useEffect(() => {
+    const fetchUserVehicles = async () => {
+      try {
+        const response = await axios.post(
+          'http://localhost:8080/get-user-vehicles',
+          { email }
+        );
+        setSavedVehicles(response.data.vehicles);
+      } catch (error) {
+        console.error('Error fetching user vehicles:', error);
+      }
+    };
+
+    if (isLoggedIn && email) {
+      fetchUserVehicles();
+    }
+  }, [isLoggedIn, email]); // Call this effect whenever isLoggedIn or email changes
+
   // Calculate pass cost
   useEffect(() => {
     function calculatePassCost() {
@@ -190,15 +211,26 @@ function PurchasePassModal({
         </form>
         <br />
 
-        {/* Saved vehicles dropdown
-        TODO: Implement saved vehicles. */}
-        {false && isLoggedIn && (
+        {/* Saved vehicles dropdown */}
+        {savedVehicles.length > 0 && (
           <>
             <h5>Saved Vehicles</h5>
-            <select name="vehicle" id="vehicleSelect">
-              <option value="vehicle-1">Vehicle 1</option>
-              <option value="vehicle-2">Vehicle 2</option>
-              <option value="vehicle-3">Vehicle 3</option>
+            <select
+              name="vehicle"
+              id="vehicleSelect"
+              value={formData.licensePlate}
+              onChange={(e) => {
+                console.log(e.target.value);
+                setFormData({ ...formData, licensePlate: e.target.value });
+              }}
+            >
+              <option value="">Select a saved vehicle</option>
+              {savedVehicles.map((vehicle, index) => (
+                <option key={index} value={vehicle.license}>
+                  {vehicle.year} {vehicle.make} {vehicle.model} -{' '}
+                  {vehicle.license}
+                </option>
+              ))}
             </select>
             <br />
             <br />

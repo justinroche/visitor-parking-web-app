@@ -1,116 +1,217 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import './AddVehicleModal.css';
 
-function AddVehicleModal({ show, handleClose }) {
+function AddVehicleModal({
+  show,
+  handleClose,
+  userEmail,
+  fetchUserVehiclesInformation,
+}) {
   const [formData, setFormData] = useState({
-    carModel: '',
-    carYear: '',
-    carColor: '',
-    licensePlate: ''
+    license: '',
+    make: '',
+    model: '',
+    year: '',
+    email: userEmail,
   });
 
-  // Send a POST request to the server when the modal is closed.
-  function handleCloseButton() {
-    axios
-      .post('http://localhost:8080/email-modal', { data: 'modal closed' })
-      .then((response) => {
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.error('Error:', error);
+  // Max length for license plate is 7 characters.
+  useEffect(() => {
+    if (formData.license.length > 7) {
+      setFormData({
+        ...formData,
+        license: formData.license.substring(0, 7),
       });
-    handleClose();
-  }
+    }
+  }, [formData.license]);
 
-  // Send a POST request to the server when the modal is saved.
-  function handleSaveButton() {
-    axios
-      .post('http://localhost:8080/email-modal', { data: 'modal saved' })
-      .then((response) => {
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
-    handleClose();
-  }
+  // Handle input change
+  const handleInputChange = (event) => {
+    let { name, value } = event.target;
 
-  // handleInputChange updates the form data when the user edits an input field.
-  function handleInputChange(event) {
-    const { name, value } = event.target;
+    // Convert license plate to uppercase if it's the license plate input
+    if (name === 'license') {
+      value = value.toUpperCase();
+    }
     setFormData({ ...formData, [name]: value });
-  }
+  };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    handleSaveButton();
+  // Function to validate input fields for adding a vehicle
+  const validateInput = (license, make, model, year) => {
+    // Check if any of the fields are empty
+    if (!license || !make || !model || !year) {
+      alert('Please fill out all required fields.');
+      return false;
+    }
+
+    /* Verify license plate length */
+    if (formData.license.length < 1 || formData.license.length > 7) {
+      alert(
+        'Please enter a valid license plate (e.g., "123ABC" or "ABC1234").'
+      );
+      return;
+    }
+
+    if (isNaN(year)) {
+      alert('Please enter a valid year.');
+      return false;
+    }
+
+    return true;
+  };
+
+  // Inside the AddVehicleModal component
+
+  // Handle form submission
+  const handleCreateButton = async () => {
+    const { license, make, model, year } = formData;
+
+    // Validate inputs
+    if (!validateInput(license, make, model, year)) {
+      return;
+    }
+
+    try {
+      // Create a new object with all form data and add userEmail to it
+      const formDataWithUserEmail = {
+        ...formData,
+        email: userEmail, // Assign userEmail to the email field
+      };
+
+      // Post the formDataWithUserEmail to the backend
+      await axios
+        .post('http://localhost:8080/insert-vehicle', formDataWithUserEmail)
+        .then((response) => {
+          console.log(response.data);
+          fetchUserVehiclesInformation(userEmail);
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+          alert('Error adding vehicle.');
+        });
+
+      // Reset the form
+      setFormData({
+        license: '',
+        make: '',
+        model: '',
+        year: '',
+        email: userEmail, // Reset email back to the logged-in user's email
+      });
+
+      // Close the modal
+      handleClose();
+    } catch (error) {
+      console.error('Error:', error);
+
+      // Error handling (e.g., notify the user)
+      alert('Error inserting vehicle data');
+    }
+  };
+
+  // Handle form reset
+  const handleReset = () => {
+    setFormData({
+      license: '',
+      make: '',
+      model: '',
+      year: 0,
+      email: userEmail, // Reset email back to the logged-in user's email
+    });
   };
 
   // Render the modal.
   return (
-    <Modal show={show} onHide={handleCloseButton}>
+    <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
         <Modal.Title>Add Vehicles</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <h5>New Vehicle</h5>
-        <form onSubmit={handleSubmit}>
-          <input
-            type='text'
-            id='carModelInput'
-            name='carModel'
-            placeholder='Car Model'
-            value={formData.carModel}
-            onChange={handleInputChange}
-          />
-          <br/><br/>
-          <input
-            type='number'
-            id='carYearInput'
-            name='carYear'
-            placeholder='Car Year'
-            value={formData.carYear}
-            onChange={handleInputChange}
-          />
-          <br/><br/>
-          <select name='carColor' id='carColorSelect'>
-            <option value="" disabled selected>Select a color</option>
-            <option value="black">Black</option>
-            <option value="white">White</option>
-            <option value="silver">Silver</option>
-            <option value="gray">Gray</option>
-            <option value="blue">Blue</option>
-            <option value="red">Red</option>
-            <option value="green">Green</option>
-            <option value="yellow">Yellow</option>
-            <option value="orange">Orange</option>
-            <option value="brown">Brown</option>
-            <option value="beige">Beige</option>
-            <option value="gold">Gold</option>
-            <option value="bronze">Bronze</option>
-            <option value="purple">Purple</option>
-            <option value="pink">Pink</option>
-          </select>
-          <br/><br/>
-          <input
-            type='text'
-            id='licensePlateInput'
-            name='licensePlate'
-            placeholder='ABC-1234'
-            value={formData.licensePlate}
-            onChange={handleInputChange}
-          />
-          <br/>
+        <form>
+          <div className="form-group">
+            <label>License</label>
+            <br />
+            <input
+              type="text"
+              id="licenseInput"
+              name="license"
+              placeholder="Enter License"
+              value={formData.license}
+              onChange={handleInputChange}
+              required
+              tabIndex={1}
+            />
+            <br />
+            <br />
+          </div>
+          <div className="form-group">
+            <label>Make</label>
+            <br />
+            <input
+              type="text"
+              id="makeInput"
+              name="make"
+              placeholder="Enter Make"
+              value={formData.make}
+              onChange={handleInputChange}
+              required
+              tabIndex={2}
+            />
+            <br />
+            <br />
+          </div>
+          <div className="form-group">
+            <label>Model</label>
+            <br />
+            <input
+              type="text"
+              id="modelInput"
+              name="model"
+              placeholder="Enter Model"
+              value={formData.model}
+              onChange={handleInputChange}
+              required
+              tabIndex={3}
+            />
+            <br />
+            <br />
+          </div>
+          <div className="form-group">
+            <label>Year</label>
+            <br />
+            <input
+              type="text"
+              id="yearInput"
+              name="year"
+              placeholder="Enter Year"
+              value={formData.year}
+              onChange={handleInputChange}
+              required
+              tabIndex={4}
+            />
+            <br />
+            <br />
+          </div>
         </form>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant='secondary' onClick={handleCloseButton}>
+        {/* Close Button */}
+        <Button variant="secondary" onClick={handleClose}>
           Close
         </Button>
-        <Button className='save-button' variant="primary" onClick={handleSubmit}>
+        {/* Reset Button */}
+        <Button variant="secondary" onClick={handleReset}>
+          Reset
+        </Button>
+        {/* Save & Add Button */}
+        <Button
+          className="save-button"
+          variant="primary"
+          onClick={handleCreateButton}
+        >
           Save & Add
         </Button>
       </Modal.Footer>
@@ -119,4 +220,3 @@ function AddVehicleModal({ show, handleClose }) {
 }
 
 export default AddVehicleModal;
-
