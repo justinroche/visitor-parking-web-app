@@ -4,6 +4,12 @@ import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import './LoginModal.css';
 import CreateAccountModal from './CreateAccountModal';
+import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import {faLock} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Alert from '@mui/material/Alert';
+import { AlertTitle } from '@mui/material';
 
 function LoginModal({ show, handleClose, handleLogin, fetchPasses }) {
   /* State */
@@ -14,6 +20,7 @@ function LoginModal({ show, handleClose, handleLogin, fetchPasses }) {
     password: '',
   });
   const [passwordVisibility, setPasswordVisibility] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
 
   /* Handlers */
   const handleInputChange = (event) => {
@@ -34,6 +41,7 @@ function LoginModal({ show, handleClose, handleLogin, fetchPasses }) {
   };
 
   const handleLoginAttempt = async () => {
+    setAlertMessage(''); // Clear previous alert message
     try {
       const response = await axios.post(
         'http://localhost:8080/login-user',
@@ -48,12 +56,12 @@ function LoginModal({ show, handleClose, handleLogin, fetchPasses }) {
       if (error.response) {
         const status = error.response.status;
         if (status === 401) {
-          alert('Invalid email or password.');
+          setAlertMessage('Invalid email or password.');
         } else {
-          alert(`Login failed with error code: ${status}`);
+          setAlertMessage(`Login failed with error code: ${status}`);
         }
       } else {
-        alert('An error occurred during login. Please try again later.');
+        setAlertMessage('An error occurred during login. Please try again later.');
       }
     }
   };
@@ -65,9 +73,20 @@ function LoginModal({ show, handleClose, handleLogin, fetchPasses }) {
       </Modal.Header>
 
       <Modal.Body>
+        {/* Alert */}
+        {alertMessage && (
+          <Alert style={{marginBottom: '10px'}} severity="error">
+            <AlertTitle>{alertMessage}</AlertTitle>
+          </Alert>
+        )}
         {/* Email input */}
-        <form>
-          <input
+        <form>   
+            <div className='input-group'>
+            <span className="input-group-text">
+            <FontAwesomeIcon icon={faEnvelope} />
+                </span>        
+         <input
+                    
             type="email"
             id="emailInput"
             name="email"
@@ -77,11 +96,16 @@ function LoginModal({ show, handleClose, handleLogin, fetchPasses }) {
             tabIndex={1}
             required
           />
+          </div>
         </form>
         <br />
 
         {/* Password input */}
-        <div>
+        <div className='input-group'>
+          <span className="input-group-text">
+            <FontAwesomeIcon icon={faLock} />
+          </span>   
+        
           <input
             type={passwordVisibility ? 'text' : 'password'}
             id="passwordInput"
@@ -91,12 +115,14 @@ function LoginModal({ show, handleClose, handleLogin, fetchPasses }) {
             onChange={handleInputChange}
             tabIndex={2}
             required
+            
           />
           &nbsp;&nbsp;
           <Button id="password-button" onClick={togglePasswordVisibility}>
-            {passwordVisibility ? 'Hide' : 'Show'}
+            <FontAwesomeIcon icon={passwordVisibility ? faEyeSlash : faEye} />
           </Button>
         </div>
+        
         <br />
         {/* CreateAccountModal */}
         <p>
@@ -116,11 +142,11 @@ function LoginModal({ show, handleClose, handleLogin, fetchPasses }) {
 
       <Modal.Footer>
         <div>
-          <Button variant="secondary" onClick={handleClose}>
+          <Button id='closebutton' variant="secondary" onClick={handleClose}>
             Close
           </Button>
           &nbsp;&nbsp;
-          <Button variant="primary" onClick={handleLoginAttempt}>
+          <Button id = 'loginbutton' variant="primary" onClick={handleLoginAttempt}>
             Login
           </Button>
         </div>

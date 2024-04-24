@@ -3,6 +3,8 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import './CreateAccountModal.css';
+import Alert from '@mui/material/Alert';
+import { AlertTitle } from '@mui/material';
 
 // Function to validate email address
 const validateEmail = (email) => {
@@ -20,6 +22,7 @@ function CreateAccountModal({ show, handleClose }) {
   });
 
   const [passwordVisibility, setPasswordVisibility] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
 
   // Handle input change
   const handleInputChange = (event) => {
@@ -34,21 +37,22 @@ function CreateAccountModal({ show, handleClose }) {
 
   // Handle form submission
   const handleCreateButton = async () => {
+    setAlertMessage(''); // Clear previous alert message
     const { firstName, lastName, email, password, confirmPassword } = formData;
 
     // Validate inputs
     if (!firstName || !lastName || !email || !password || !confirmPassword) {
-      alert('Please fill out all required fields.');
+      setAlertMessage('Please fill out all required fields.');
       return;
     }
 
     if (password !== confirmPassword) {
-      alert('Passwords do not match. Please try again.');
+      setAlertMessage('Passwords do not match. Please try again.');
       return;
     }
 
     if (!validateEmail(email)) {
-      alert('Please enter a valid email address.');
+      setAlertMessage('Please enter a valid email address.');
       return;
     }
 
@@ -102,6 +106,12 @@ function CreateAccountModal({ show, handleClose }) {
       </Modal.Header>
 
       <Modal.Body>
+        {/* Alert */}
+        {alertMessage && (
+          <Alert style={{marginBottom: '10px'}} severity="error">
+            <AlertTitle>{alertMessage}</AlertTitle>
+          </Alert>
+        )}
         <form>
           {/* First Name Input */}
           <div className="form-group">
@@ -211,7 +221,7 @@ function CreateAccountModal({ show, handleClose }) {
           Reset
         </Button>
         {/* Create Button */}
-        <Button variant="primary" onClick={handleCreateButton}>
+        <Button className='save-button' variant="primary" onClick={handleCreateButton}>
           Create
         </Button>
       </Modal.Footer>

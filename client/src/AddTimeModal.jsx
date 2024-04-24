@@ -3,6 +3,8 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import './AddTimeModal';
+import Alert from '@mui/material/Alert';
+import { AlertTitle } from '@mui/material';
 
 function AddTimeModal({
   show, // Boolean to determine if the modal is visible.
@@ -20,6 +22,7 @@ function AddTimeModal({
   });
 
   const [passCost, setPassCost] = useState(0);
+  const [alertMessage, setAlertMessage] = useState('');
 
   /* Effects */
   // Calculate pass cost
@@ -64,20 +67,21 @@ function AddTimeModal({
   // handleContinueButton validates user inputs and continues to the payment modal.
   // This system uses alerts for error messages. We might want to change this to a more user-friendly system in the future.
   function handleContinueButton() {
+    setAlertMessage(''); // Clear previous alert message
     /* Verify that necessary fields are present */
     // If any required fields are missing, prevent form submission.
     if (!formData.passLengthType || !formData.passLengthValue) {
-      alert('Please set a duration.');
+      setAlertMessage('Please set a duration.');
       return;
     }
 
     if (formData.passLengthType === 'hours' && formData.passLengthValue > 3) {
-      alert('The maximum duration for an hourly pass is 3 hours.');
+      setAlertMessage('The maximum duration for an hourly pass is 3 hours.');
       return;
     }
 
     if (formData.passLengthType === 'days' && formData.passLengthValue > 7) {
-      alert('The maximum duration for an daily pass is one week.');
+      setAlertMessage('The maximum duration for an daily pass is one week.');
       return;
     }
 
@@ -101,6 +105,12 @@ function AddTimeModal({
         <Modal.Title>Add Time to a Pass</Modal.Title>
       </Modal.Header>
       <Modal.Body>
+        {/* Alert */}
+        {alertMessage && (
+          <Alert style={{marginBottom: '10px'}} severity="error">
+            <AlertTitle>{alertMessage}</AlertTitle>
+          </Alert>
+        )}
         {/* This should be recieved from the database */}
         <h5>License Plate</h5>
         <p>{pass ? pass.license : ''}</p>

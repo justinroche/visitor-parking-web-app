@@ -13,6 +13,7 @@ import AddTimeModal from './AddTimeModal';
 import PurchasePassModal from './PurchasePassModal';
 import DateTime from './DateTime';
 import UserPasses from './UserPasses';
+import Alert from '@mui/material/Alert';
 
 function App() {
   /* State */
@@ -252,6 +253,8 @@ function App() {
     <>
       <AppHeader />
       <AppMain />
+      {/*<Alert severity="success">Sample Success Message</Alert>
+      <Alert severity="error">Sample Error Message</Alert>*/}
     </>
   );
 }

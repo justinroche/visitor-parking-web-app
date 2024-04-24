@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import './PurchasePassModal.css';
+import Alert from '@mui/material/Alert';
+import { AlertTitle } from '@mui/material';
+
 
 /* React Bootstrap has a whole system for handling forms: https://react-bootstrap.netlify.app/docs/forms/overview/
 We might want to rewrite this to fit their outline in the future, but this works well enough for now. */
@@ -26,6 +29,7 @@ function PurchasePassModal({
   });
 
   const [passCost, setPassCost] = useState(0);
+  const [alertMessage, setAlertMessage] = useState('');
 
   /* Effects */
   // Calculate pass cost
@@ -81,6 +85,7 @@ function PurchasePassModal({
   // handleContinueButton validates user inputs and continues to the payment modal.
   // This system uses alerts for error messages. We might want to change this to a more user-friendly system in the future.
   function handleContinueButton() {
+    setAlertMessage(''); // Clear previous alert message
     /* Verify that necessary fields are present */
     // If any required fields are missing, prevent form submission.
     if (
@@ -88,7 +93,8 @@ function PurchasePassModal({
       !formData.passLengthType ||
       !formData.passLengthValue
     ) {
-      alert('Please enter your license plate and set a duration.');
+        
+      setAlertMessage('Please fill in all required fields.');
       return;
     }
 
@@ -100,7 +106,7 @@ function PurchasePassModal({
 
     /* Verify license plate length */
     if (formData.licensePlate.length < 1 || formData.licensePlate.length > 7) {
-      alert(
+      setAlertMessage(
         'Please enter a valid license plate (e.g., "123ABC" or "ABC1234").'
       );
       return;
@@ -112,17 +118,17 @@ function PurchasePassModal({
       !isValidEmail(formData.email) &&
       email == ''
     ) {
-      alert('Please enter a valid email address to enable notifications.');
+      setAlertMessage('Please enter a valid email address to enable notifications.');
       return;
     }
 
     if (formData.passLengthType === 'hours' && formData.passLengthValue > 3) {
-      alert('The maximum duration for an hourly pass is 3 hours.');
+      setAlertMessage('The maximum duration for an hourly pass is 3 hours.');
       return;
     }
 
     if (formData.passLengthType === 'days' && formData.passLengthValue > 7) {
-      alert('The maximum duration for an daily pass is one week.');
+      setAlertMessage('The maximum duration for an daily pass is one week.');
       return;
     }
 
@@ -164,6 +170,12 @@ function PurchasePassModal({
       </Modal.Header>
 
       <Modal.Body>
+        {/* Alert */}
+        {alertMessage && (
+          <Alert style={{marginBottom: '10px'}} severity="error">
+            <AlertTitle>{alertMessage}</AlertTitle>
+          </Alert>
+        )}
         {/* License plate text input */}
         <h5>License Plate</h5>
         <form>
@@ -313,7 +325,7 @@ function PurchasePassModal({
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleContinueButton}>
+          <Button className='modal-button' variant="primary" onClick={handleContinueButton}>
             Continue to Payment
           </Button>
         </div>
