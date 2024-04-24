@@ -124,11 +124,9 @@ function LoginModal({ show, handleClose, handleLogin, fetchPasses }) {
           </div>
 
           <br />
-          <p style={{ display: 'inline', margin: '0 10px 0 0' }}>
-            Don't have an account?
-          </p>
+          <p id="no-account-text">Don't have an account?</p>
           <Button
-            id="register-button"
+            className="primary-button"
             variant="primary"
             onClick={handleOpenCreateAccountModal}
           >
@@ -143,11 +141,11 @@ function LoginModal({ show, handleClose, handleLogin, fetchPasses }) {
             </Button>
             &nbsp;&nbsp;
             <Button
-              id="loginbutton"
+              className="primary-button"
               variant="primary"
               onClick={handleLoginAttempt}
             >
-              Login
+              Log In
             </Button>
           </div>
         </Modal.Footer>

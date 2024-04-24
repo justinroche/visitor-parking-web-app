@@ -359,7 +359,7 @@ function PurchasePassModal({
           Close
         </Button>
         <Button
-          className="primary-button purchase-button"
+          className="primary-button"
           variant="primary"
           onClick={handleContinueButton}
         >

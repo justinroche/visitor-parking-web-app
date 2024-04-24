@@ -29,18 +29,9 @@
   box-shadow: 2px;
 }
 
-#loginbutton {
-  border: 3px rgb(81, 40, 132) !important;
-  background-color: rgb(81, 40, 132);
-}
-
-#register-button {
-  background-color: rgb(81, 40, 132) !important;
-  border-radius: 5px;
-  border: 3px rgb(81, 40, 132) !important;
-  color: white;
-  padding-left: 10px;
-  padding-right: 10px;
+#no-account-text {
+  display: inline;
+  margin: 0 10px 0 0;
 }
 
 #emailInput {
@@ -48,14 +39,11 @@
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
   padding: 2px;
+  width: 250px;
 }
 
 #passwordInput {
   border: 1px solid #131111;
   padding: 2px;
-}
-
-.primary-button {
-  background-color: rgb(81, 40, 132) !important;
-  border: 3px rgb(81, 40, 132) !important;
+  width: 250px;
 }
