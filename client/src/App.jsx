@@ -12,7 +12,7 @@ function App() {
   const [showPurchasePassModal, setShowPurchasePassModal] = useState(false);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [purchasePassData, setPurchasePassData] = useState(null); // State for purchase pass data (license plate, credit card, etc.)
-  const [showTimeAddedModal, setShowTimeAddedModal] = useState(false);
+  const [showTimeAddedModal, setShowTimeAddedModal] = useState(true);
 
   /* Handlers */
   const handleClosePurchasePassModal = () => setShowPurchasePassModal(false);
