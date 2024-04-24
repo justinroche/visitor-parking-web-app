@@ -7,6 +7,7 @@ import Alert from '@mui/material/Alert';
 import { AlertTitle } from '@mui/material';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { serverURL } from './host.json';
 
 // Function to validate email address
 const validateEmail = (email) => {
@@ -65,7 +66,7 @@ function CreateAccountModal({ show, handleClose }) {
 
     try {
       axios
-        .post('http://localhost:8080/insert-user', formData)
+        .post(serverURL + '/insert-user', formData)
         .then((response) => {})
         .catch((error) => {
           console.error('Error:', error);

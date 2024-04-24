@@ -10,6 +10,7 @@ import { faLock } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Alert from '@mui/material/Alert';
 import { AlertTitle } from '@mui/material';
+import { serverURL } from './host.json';
 
 function LoginModal({ show, handleClose, handleLogin, fetchPasses }) {
   /* State */
@@ -43,10 +44,7 @@ function LoginModal({ show, handleClose, handleLogin, fetchPasses }) {
   const handleLoginAttempt = async () => {
     setAlertMessage(''); // Clear previous alert message
     try {
-      const response = await axios.post(
-        'http://localhost:8080/login-user',
-        formData
-      );
+      const response = await axios.post(serverURL + '/login-user', formData);
       if (response.status === 200) {
         await fetchPasses(formData.email); // Fetch user passes on successful login
         handleClose(); // Close the modal on successful login

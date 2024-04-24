@@ -12,10 +12,9 @@ function VehicleModal({ show, handleClose, userEmail }) {
   // Function to fetch user's vehicles information
   const fetchUserVehiclesInformation = async (email) => {
     try {
-      const response = await axios.post(
-        'http://localhost:8080/get-user-vehicles',
-        { email }
-      );
+      const response = await axios.post(serverURL + '/get-user-vehicles', {
+        email,
+      });
       setVehicles(response.data.vehicles);
     } catch (error) {
       console.error('Error fetching user vehicles information:', error);
@@ -42,7 +41,7 @@ function VehicleModal({ show, handleClose, userEmail }) {
   // Function to delete a vehicle
   const handleDeleteVehicle = async (license) => {
     try {
-      await axios.delete(`http://localhost:8080/delete-vehicle/${license}`);
+      await axios.delete(serverURL + `/delete-vehicle/${license}`);
       // After successful deletion, fetch updated user's vehicles
       fetchUserVehiclesInformation(userEmail);
     } catch (error) {

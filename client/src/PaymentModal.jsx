@@ -6,6 +6,7 @@ import axios from 'axios';
 import './PaymentModal.css';
 import Alert from '@mui/material/Alert';
 import { AlertTitle } from '@mui/material';
+import { serverURL } from './host.json';
 
 function PaymentModal({
   show,
@@ -122,7 +123,7 @@ function PaymentModal({
     if (purchasePassData.licensePlate) {
       // If the data contains a license plate, the user is buying a new pass.
       axios
-        .post('http://localhost:8080/purchase-pass', mergedData)
+        .post(serverURL + '/purchase-pass', mergedData)
         .then((response) => {
           if (isLoggedIn) {
             fetchPasses(email);
@@ -135,7 +136,7 @@ function PaymentModal({
     } else {
       // If the data does not contain a license plate, the user is adding time to an existing pass.
       axios
-        .post('http://localhost:8080/add-time', mergedData)
+        .post(serverURL + '/add-time', mergedData)
         .then((response) => {
           if (isLoggedIn) {
             fetchPasses(email);

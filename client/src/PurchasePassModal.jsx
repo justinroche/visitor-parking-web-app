@@ -5,6 +5,7 @@ import axios from 'axios';
 import './PurchasePassModal.css';
 import Alert from '@mui/material/Alert';
 import { AlertTitle } from '@mui/material';
+import { serverURL } from './host.json';
 
 /* React Bootstrap has a whole system for handling forms: https://react-bootstrap.netlify.app/docs/forms/overview/
 We might want to rewrite this to fit their outline in the future, but this works well enough for now. */
@@ -37,10 +38,9 @@ function PurchasePassModal({
   useEffect(() => {
     const fetchUserVehicles = async () => {
       try {
-        const response = await axios.post(
-          'http://localhost:8080/get-user-vehicles',
-          { email }
-        );
+        const response = await axios.post(serverURL + '/get-user-vehicles', {
+          email,
+        });
         setSavedVehicles(response.data.vehicles);
       } catch (error) {
         console.error('Error fetching user vehicles:', error);

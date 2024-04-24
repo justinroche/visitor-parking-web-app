@@ -15,6 +15,7 @@ import UserPasses from './UserPasses';
 import Alert from '@mui/material/Alert';
 import { AlertTitle } from '@mui/material';
 import Availability from './Availability';
+import { serverURL } from './host.json';
 
 function App() {
   /* State */
@@ -100,7 +101,7 @@ function App() {
 
   const fetchAvailability = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/availability');
+      const response = await axios.get(serverURL + '/availability');
       setCurrentAvailability(response.data.availability);
     } catch (error) {
       console.error(error);
@@ -160,7 +161,7 @@ function App() {
 
   async function fetchPasses(email) {
     try {
-      const response = await axios.post('http://localhost:8080/passes', {
+      const response = await axios.post(serverURL + '/passes', {
         email,
       });
       if (response.data.message === 'No passes found') {

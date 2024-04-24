@@ -3,6 +3,7 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import './AddVehicleModal.css';
+import { serverURL } from './host.json';
 
 function AddVehicleModal({
   show,
@@ -83,7 +84,7 @@ function AddVehicleModal({
 
       // Post the formDataWithUserEmail to the backend
       await axios
-        .post('http://localhost:8080/insert-vehicle', formDataWithUserEmail)
+        .post(serverURL + '/insert-vehicle', formDataWithUserEmail)
         .then((response) => {
           fetchUserVehiclesInformation(userEmail);
         })
