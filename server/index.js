@@ -97,7 +97,7 @@ const insertVehicleData = async (userData) => {
     userData.make,
     userData.model,
     userData.year,
-	  userData.email,
+    userData.email,
   ];
   const results = await executeQuery(insertionQuery, values);
   console.log('User vehicle inserted:', results);
@@ -149,7 +149,6 @@ app.delete('/delete-vehicle/:licensePlate', async (req, res) => {
     res.status(500).json({ message: 'Error deleting vehicle' });
   }
 });
-
 
 // Function to check if a pass is live
 function isPassLive(pass) {
@@ -400,10 +399,19 @@ const addTime = async (req, res) => {
   }
 };
 
+const getAvailability = async (req, res) => {
+  const maxLivePasses = 100;
+
+  const results = await executeQuery('CALL getCurrentPasses()', []);
+  const availability = maxLivePasses - results[0].length;
+  res.status(200).json({ availability: availability });
+};
+
 /* Routes */
 app.post('/purchase-pass', purchasePass);
 app.post('/pass-search', passSearch);
 app.post('/add-time', addTime);
+app.get('/availability', getAvailability);
 
 /* Fetch user information template ////////////////////////////
 app.post('/get-user-data', async (req, res) => {

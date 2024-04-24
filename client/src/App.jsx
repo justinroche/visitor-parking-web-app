@@ -14,6 +14,7 @@ import DateTime from './DateTime';
 import UserPasses from './UserPasses';
 import Alert from '@mui/material/Alert';
 import { AlertTitle } from '@mui/material';
+import Availability from './Availability';
 
 function App() {
   /* State */
@@ -35,7 +36,7 @@ function App() {
   const [addTimePassRemaining, setAddTimePassRemaining] = useState(null);
   const [showVehicleModal, setShowVehicleModal] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
-
+  const [currentAvailability, setCurrentAvailability] = useState(null);
   /* Handlers */
   const handleClosePurchasePassModal = () => setShowPurchasePassModal(false);
   const handleShowPurchasePassModal = () => {
@@ -86,6 +87,28 @@ function App() {
       clearTimeout(timer); // Clear the timer when the component unmounts
     };
   }, [successMessage]);
+
+  // Fetch number of avilable spots every minute
+  useEffect(() => {
+    const fetchAvailability = async () => {
+      try {
+        const response = await axios.get('http://localhost:8080/availability');
+        console.log(response.data);
+        setCurrentAvailability(response.data.availability);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    // Initially fetch data
+    fetchAvailability();
+
+    // Set up interval to fetch data every minute
+    const intervalId = setInterval(fetchAvailability, 60000);
+
+    // Cleanup function to clear interval when component unmounts
+    return () => clearInterval(intervalId);
+  });
 
   /* Components */
   function AppHeader() {
@@ -214,18 +237,10 @@ function App() {
             )}
           </div>
 
-          <div className="col">
-            <div className="availability">
-              <h5>{isLoggedIn && `Welcome, ${userEmail}`}</h5>
-            </div>
-            <div className="availability">
-              <DateTime />
-            </div>
-            <div className="availability">
-              <h5>Current Availability</h5>
-              <p>27 spots remaining</p>
-            </div>
-          </div>
+          <Availability
+            userEmail={userEmail}
+            currentAvailability={currentAvailability}
+          />
         </div>
 
         <br />
