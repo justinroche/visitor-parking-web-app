@@ -6,7 +6,6 @@ import './PurchasePassModal.css';
 import Alert from '@mui/material/Alert';
 import { AlertTitle } from '@mui/material';
 
-
 /* React Bootstrap has a whole system for handling forms: https://react-bootstrap.netlify.app/docs/forms/overview/
 We might want to rewrite this to fit their outline in the future, but this works well enough for now. */
 function PurchasePassModal({
@@ -114,7 +113,6 @@ function PurchasePassModal({
       !formData.passLengthType ||
       !formData.passLengthValue
     ) {
-        
       setAlertMessage('Please fill in all required fields.');
       return;
     }
@@ -139,7 +137,9 @@ function PurchasePassModal({
       !isValidEmail(formData.email) &&
       email == ''
     ) {
-      setAlertMessage('Please enter a valid email address to enable notifications.');
+      setAlertMessage(
+        'Please enter a valid email address to enable notifications.'
+      );
       return;
     }
 
@@ -193,7 +193,7 @@ function PurchasePassModal({
       <Modal.Body>
         {/* Alert */}
         {alertMessage && (
-          <Alert style={{marginBottom: '10px'}} severity="error">
+          <Alert style={{ marginBottom: '10px' }} severity="error">
             <AlertTitle>{alertMessage}</AlertTitle>
           </Alert>
         )}
@@ -352,15 +352,17 @@ function PurchasePassModal({
         </div>
       </Modal.Body>
 
-      <Modal.Footer>
-        <div className="container d-flex justify-content-between">
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-          <Button className='modal-button' variant="primary" onClick={handleContinueButton}>
-            Continue to Payment
-          </Button>
-        </div>
+      <Modal.Footer className="d-flex justify-content-between">
+        <Button variant="secondary" onClick={handleClose}>
+          Close
+        </Button>
+        <Button
+          className="modal-button"
+          variant="primary"
+          onClick={handleContinueButton}
+        >
+          Continue to Payment
+        </Button>
       </Modal.Footer>
     </Modal>
   );

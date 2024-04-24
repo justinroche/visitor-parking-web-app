@@ -55,7 +55,7 @@ function AddVehicleModal({
       return;
     }
 
-    if (isNaN(year)) {
+    if (isNaN(year) || year.length !== 4) {
       alert('Please enter a valid year.');
       return false;
     }
@@ -85,7 +85,7 @@ function AddVehicleModal({
       await axios
         .post('http://localhost:8080/insert-vehicle', formDataWithUserEmail)
         .then((response) => {
-          console.log(response.data);
+          console.log(response.data.message);
           fetchUserVehiclesInformation(userEmail);
         })
         .catch((error) => {
@@ -118,7 +118,7 @@ function AddVehicleModal({
       license: '',
       make: '',
       model: '',
-      year: 0,
+      year: '',
       email: userEmail, // Reset email back to the logged-in user's email
     });
   };
@@ -127,12 +127,12 @@ function AddVehicleModal({
   return (
     <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
-        <Modal.Title>Add Vehicles</Modal.Title>
+        <Modal.Title>Add a Vehicle</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <form>
           <div className="form-group">
-            <label>License</label>
+            <label>License Plate</label>
             <br />
             <input
               type="text"
@@ -197,22 +197,28 @@ function AddVehicleModal({
           </div>
         </form>
       </Modal.Body>
-      <Modal.Footer>
-        {/* Close Button */}
-        <Button variant="secondary" onClick={handleClose}>
-          Close
-        </Button>
-        {/* Reset Button */}
-        <Button variant="secondary" onClick={handleReset}>
-          Reset
-        </Button>
-        {/* Save & Add Button */}
+      <Modal.Footer className="d-flex justify-content-between">
+        {/* Close and Reset Buttons */}
+        <div>
+          <Button
+            variant="secondary"
+            onClick={handleClose}
+            id="add-vehicle-close"
+          >
+            Close
+          </Button>
+          <Button variant="secondary" onClick={handleReset}>
+            Reset
+          </Button>
+        </div>
+
+        {/* Add Button */}
         <Button
           className="save-button"
           variant="primary"
           onClick={handleCreateButton}
         >
-          Save & Add
+          Add
         </Button>
       </Modal.Footer>
     </Modal>

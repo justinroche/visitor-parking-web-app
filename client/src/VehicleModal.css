@@ -1,32 +1,63 @@
-.save-button{
-    background-color: rgb(81, 40, 132) !important;
-    border: 3px rgb(81, 40, 132) !important;
+.save-button {
+  background-color: rgb(81, 40, 132) !important;
+  border: 3px rgb(81, 40, 132) !important;
 }
 
-.add-button{
-    background-color: rgb(81, 40, 132) !important;
-    border: 3px rgb(81, 40, 132) !important;
+.add-button {
+  background-color: rgb(81, 40, 132) !important;
+  border: 3px rgb(81, 40, 132) !important;
 }
 
-.delete-button{
-    background-color: rgb(81, 40, 132) !important;
-    border: 3px rgb(81, 40, 132) !important;
-    padding: none;
-    font-size: 0.75em;  
+.delete-button {
+  background-color: rgb(81, 40, 132) !important;
+  border: 3px rgb(81, 40, 132) !important;
+  padding: none;
+  font-size: 0.75em;
 }
 
 .table-container {
-    display: flex;
-    justify-content: center;
-  }
-  
-  table {
-    width: 100%; 
-    border-collapse: collapse;
-  }
-  
-  th, td {
-    padding: 6px; /* Adjust padding as needed */
-    border: 1px solid #dddddd;
-    text-align: left;
-  }
+  display: flex;
+  justify-content: center;
+}
+
+.vehicles-table {
+  border-collapse: collapse;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.vehicles-table th,
+.vehicles-table td {
+  padding: 6px;
+  text-align: left;
+  max-width: 110px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Remove side padding from first and last cells */
+.vehicles-table th:first-child,
+.vehicles-table td:first-child {
+  padding-left: 0;
+}
+
+.vehicles-table th:last-child,
+.vehicles-table td:last-child {
+  padding-right: 0;
+}
+
+.delete-button-cell {
+  text-align: right !important;
+  padding: 6px;
+}
+
+#no-saved-vehicles {
+  text-align: center;
+}
+
+.your-vehicles-footer {
+  display: flex;
+  justify-content: center;
+}

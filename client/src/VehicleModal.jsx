@@ -52,70 +52,72 @@ function VehicleModal({ show, handleClose, userEmail }) {
 
   // Render the modal.
   return (
-    <Modal show={show} onHide={handleClose}>
-      <Modal.Header closeButton>
-        <Modal.Title>Vehicles</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        {/* Display user's vehicles */}
-        {vehicles.length === 0 && <h5>No saved vehicles</h5>}
-        {vehicles.length > 0 && (
-          <>
-            <h5>Your Vehicles</h5>
-            <div className="table-container">
-              <table>
-                <thead>
-                  <tr>
-                    <th>License Plate</th>
-                    <th>Make</th>
-                    <th>Model</th>
-                    <th>Year</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {vehicles.map((vehicle, index) => (
-                    <tr key={vehicle.license}>
-                      <td>{vehicle.license}</td>
-                      <td>{vehicle.make}</td>
-                      <td>{vehicle.model}</td>
-                      <td>{vehicle.year}</td>
-                      <td>
-                        <Button
-                          className="delete-button"
-                          variant="secondary"
-                          onClick={() => handleDeleteVehicle(vehicle.license)}
-                        >
-                          Delete
-                        </Button>
-                      </td>
+    <>
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Your Vehicles</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {/* Display user's vehicles */}
+          {vehicles.length === 0 && (
+            <h5 id="no-saved-vehicles">No saved vehicles</h5>
+          )}
+          {vehicles.length > 0 && (
+            <>
+              <div className="table-container">
+                <table className="vehicles-table">
+                  <thead>
+                    <tr>
+                      <th>License Plate</th>
+                      <th>Year</th>
+                      <th>Make</th>
+                      <th>Model</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </>
-        )}
-      </Modal.Body>
-      <Modal.Footer>
-        <Button
-          className="add-button"
-          type="button"
-          onClick={handleOpenAddVehicleModal}
-        >
-          Add Vehicle
-        </Button>
-        {/* AddVehicleModal */}
-        <AddVehicleModal
-          show={addVehicleModalVisible}
-          handleClose={handleCloseAddVehicleModal}
-          userEmail={userEmail}
-          fetchUserVehiclesInformation={fetchUserVehiclesInformation}
-        />
-        <Button variant="secondary" onClick={handleClose}>
-          Close
-        </Button>
-      </Modal.Footer>
-    </Modal>
+                  </thead>
+                  <tbody>
+                    {vehicles.map((vehicle, index) => (
+                      <tr key={vehicle.license}>
+                        <td>{vehicle.license}</td>
+                        <td>{vehicle.year}</td>
+                        <td>{vehicle.make}</td>
+                        <td>{vehicle.model}</td>
+                        <td className="delete-button-cell">
+                          <Button
+                            className="delete-button"
+                            variant="secondary"
+                            onClick={() => handleDeleteVehicle(vehicle.license)}
+                          >
+                            Remove
+                          </Button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </>
+          )}
+        </Modal.Body>
+        <Modal.Footer className="d-flex justify-content-between">
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+          <Button
+            className="add-button"
+            type="button"
+            onClick={handleOpenAddVehicleModal}
+          >
+            Add Vehicle
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      <AddVehicleModal
+        show={addVehicleModalVisible}
+        handleClose={handleCloseAddVehicleModal}
+        userEmail={userEmail}
+        fetchUserVehiclesInformation={fetchUserVehiclesInformation}
+      />
+    </>
   );
 }
 
