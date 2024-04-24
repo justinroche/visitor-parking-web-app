@@ -4,6 +4,7 @@ import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import './VehicleModal.css';
 import AddVehicleModal from './AddVehicleModal';
+import { serverURL } from './host.json';
 
 function VehicleModal({ show, handleClose, userEmail }) {
   const [vehicles, setVehicles] = useState([]);
