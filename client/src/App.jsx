@@ -27,7 +27,7 @@ function App() {
   const handleShowPaymentModal = () => setShowPaymentModal(true);
 
   const handleShowTimeAddedModal = () => setShowTimeAddedModal(true);
-  const handleSCloseTimeAddedModal = () => setShowTimeAddedModal(false);
+  const handleCloseTimeAddedModal = () => setShowTimeAddedModal(false);
 
   /* Components */
   function AppHeader() {
@@ -62,7 +62,7 @@ function App() {
         />
         <TimeAddedModal // code in this section causes screen to go blank
           show={showTimeAddedModal}
-          handleClose={handleSCloseTimeAddedModal}
+          handleClose={handleCloseTimeAddedModal}
         />
       </div>
     );
