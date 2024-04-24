@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import React from 'react';
 import axios from 'axios';
 import './App.css';
@@ -13,6 +13,7 @@ import VehicleModal from './VehicleModal';
 import DateTime from './DateTime';
 import UserPasses from './UserPasses';
 import Alert from '@mui/material/Alert';
+import { AlertTitle } from '@mui/material';
 
 function App() {
   /* State */
@@ -33,6 +34,7 @@ function App() {
   const [addTimePass, setAddTimePass] = useState(null);
   const [addTimePassRemaining, setAddTimePassRemaining] = useState(null);
   const [showVehicleModal, setShowVehicleModal] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
 
   /* Handlers */
   const handleClosePurchasePassModal = () => setShowPurchasePassModal(false);
@@ -73,6 +75,17 @@ function App() {
   };
   const handleShowVehicleModal = () => setShowVehicleModal(true);
   const handleCloseVehicleModal = () => setShowVehicleModal(false);
+
+  useEffect(() => {
+    // Clear the success message after 10 seconds
+    const timer = setTimeout(() => {
+      setSuccessMessage('');
+    }, 10000);
+
+    return () => {
+      clearTimeout(timer); // Clear the timer when the component unmounts
+    };
+  }, [successMessage]);
 
   /* Components */
   function AppHeader() {
@@ -180,19 +193,26 @@ function App() {
           </div>
 
           <div className="col">
-            {isLoggedIn ? (
+          {isLoggedIn ? (
+            <>
+              {successMessage && (
+                <Alert className = 'alert' severity="success">
+                  <AlertTitle>{successMessage}</AlertTitle>
+                </Alert>
+              )}
               <UserPasses
                 email={userEmail}
                 passes={passes}
                 handleShowAddTimeModal={handleShowAddTimeModal}
                 fetchPasses={fetchPasses}
               />
-            ) : (
-              <h5 className="log-in-message">
-                Please sign in or create an account to view your passes.
-              </h5>
-            )}
-          </div>
+            </>
+          ) : (
+            <h5 className="log-in-message">
+              Please sign in or create an account to view your passes.
+            </h5>
+          )}
+        </div>
 
           <div className="col">
             <div className="availability">
@@ -236,6 +256,7 @@ function App() {
           fetchPasses={fetchPasses}
           isLoggedIn={isLoggedIn}
           email={userEmail}
+          setSuccessMessage={setSuccessMessage}
         />
         <AddTimeModal
           show={showAddTimeModal}

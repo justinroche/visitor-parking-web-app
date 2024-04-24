@@ -30,6 +30,12 @@
   white-space: nowrap;
 }
 
+.alert{
+  margin-top: 40px;
+  margin-left: 50px;
+  padding-bottom: 10px;
+}
+
 #buy-pass-button {
   margin-left: 85px;
   width: 250px;

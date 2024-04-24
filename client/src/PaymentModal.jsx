@@ -4,6 +4,8 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import axios from 'axios';
 import './PaymentModal.css';
+import Alert from '@mui/material/Alert';
+import { AlertTitle } from '@mui/material';
 
 function PaymentModal({
   show,
@@ -12,6 +14,7 @@ function PaymentModal({
   fetchPasses,
   isLoggedIn,
   email,
+  setSuccessMessage,
 }) {
   /* State */
   const [paymentData, setPaymentData] = useState({
@@ -20,6 +23,8 @@ function PaymentModal({
     expirationDate: '',
     cvc: '',
   });
+
+  const [alertMessage, setAlertMessage] = useState('');
 
   /* Effect */
   // These effects are a bit janky...
@@ -78,6 +83,7 @@ function PaymentModal({
 
   // handleSubmitButton merges the pass and payment data and sends it to the backend.
   function handleSubmitButton() {
+    setAlertMessage(''); // Clear previous alert message
     /* Verify that all fields are present */
     if (
       !paymentData.nameOnCard ||
@@ -85,7 +91,7 @@ function PaymentModal({
       !paymentData.expirationDate ||
       !paymentData.cvc
     ) {
-      alert('Please fill all required fields.');
+      setAlertMessage('Please fill all required fields.');
       return;
     }
 
@@ -93,21 +99,21 @@ function PaymentModal({
     const cardNumberRegex = /^\d{4}(\s?\d{4}){3}$/;
     const formattedCardNumber = paymentData.cardNumber.replace(/\s/g, '');
     if (!cardNumberRegex.test(formattedCardNumber)) {
-      alert('Please enter a valid 16-digit card number.');
+      setAlertMessage('Please enter a valid 16-digit card number.');
       return;
     }
 
     /* Verify MM/YY expiration date */
     const expirationDateRegex = /^(0[1-9]|1[0-2])\/([0-9]{2})$/;
     if (!expirationDateRegex.test(paymentData.expirationDate)) {
-      alert('Please enter a valid mm/yy expiration date.');
+      setAlertMessage('Please enter a valid mm/yy expiration date.');
       return;
     }
 
     /* Verify 3-digit CVC */
     const cvcRegex = /^\d{3}$/;
     if (!cvcRegex.test(paymentData.cvc)) {
-      alert('Please enter a valid 3-digit CVC.');
+      setAlertMessage('Please enter a valid 3-digit CVC.');
       return;
     }
 
@@ -122,6 +128,7 @@ function PaymentModal({
 
           if (isLoggedIn) {
             fetchPasses(email);
+            setSuccessMessage('Payment successful!');
           }
         })
         .catch((error) => {
@@ -135,6 +142,7 @@ function PaymentModal({
           console.log(response.data);
           if (isLoggedIn) {
             fetchPasses(email);
+            setSuccessMessage('Payment successful!');
           }
         })
         .catch((error) => {
@@ -156,6 +164,12 @@ function PaymentModal({
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
+        {/* Alert */}
+        {alertMessage && (
+          <Alert style={{marginBottom: '10px'}} severity="error">
+            <AlertTitle>{alertMessage}</AlertTitle>
+          </Alert>
+        )}
         <Form>
           <Form.Group controlId="nameOnCard">
             <Form.Label>Name on Card</Form.Label>
@@ -224,6 +238,7 @@ function PaymentModal({
             onClick={handleSubmitButton}
           >
             Submit Payment
+            {/* when this button is clicked successfuly display success message*/}
           </Button>
         </div>
       </Modal.Footer>
