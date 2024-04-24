@@ -2,7 +2,7 @@ import React from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 
-function TimeAddedModal(show, handleClose) {
+function TimeAddedModal({ show, handleClose }) {
   return (
     // modal front end
     <Modal show={show} onHide={handleClose} backdrop="static">
