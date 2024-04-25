@@ -107,7 +107,7 @@ function AddTimeModal({
       <Modal.Body>
         {/* Alert */}
         {alertMessage && (
-          <Alert style={{marginBottom: '10px'}} severity="error">
+          <Alert style={{ marginBottom: '10px' }} severity="error">
             <AlertTitle>{alertMessage}</AlertTitle>
           </Alert>
         )}
@@ -120,53 +120,51 @@ function AddTimeModal({
         <p>{remaining}</p>
 
         <h5>How much time would you like to add?</h5>
-        <form>
-          <input
-            type="radio"
-            id="hourlyRadioButton"
-            name="passLengthType"
-            value="hours"
-            checked={formData.passLengthType === 'hours'}
-            onChange={handleInputChange}
-          />
-          <label className="radioButtonLabel" htmlFor="hourlyRadioButton">
-            Hourly
-          </label>
+        <input
+          type="radio"
+          id="hourlyRadioButton"
+          name="passLengthType"
+          value="hours"
+          checked={formData.passLengthType === 'hours'}
+          onChange={handleInputChange}
+        />
+        <label className="radioButtonLabel" htmlFor="hourlyRadioButton">
+          Hourly
+        </label>
 
-          <input
-            type="radio"
-            id="dailyRadioButton"
-            name="passLengthType"
-            value="days"
-            checked={formData.passLengthType === 'days'}
-            onChange={handleInputChange}
-          />
-          <label className="radioButtonLabel" htmlFor="dailyRadioButton">
-            Daily
-          </label>
+        <input
+          type="radio"
+          id="dailyRadioButton"
+          name="passLengthType"
+          value="days"
+          checked={formData.passLengthType === 'days'}
+          onChange={handleInputChange}
+        />
+        <label className="radioButtonLabel" htmlFor="dailyRadioButton">
+          Daily
+        </label>
 
-          {/* Only display pass length selector after hours/weeks have been specified. */}
-          {formData.passLengthType !== '' && (
-            <>
-              <p id="passLengthPrompt">
-                Please specify the number of {formData.passLengthType} (
-                {formData.passLengthType === 'hours' ? 3 : 7} max).
-              </p>
-              <input
-                type="number"
-                id="passLengthInput"
-                name="passLengthValue"
-                value={formData.passLengthValue}
-                min={1}
-                max={formData.passLengthType === 'hours' ? 3 : 7}
-                onChange={handleInputChange}
-                inputMode="numeric" // Restrict input to numeric values
-                onKeyDown={(e) => e.preventDefault()} // Prevent direct input
-              />
-            </>
-          )}
-          <br />
-        </form>
+        {/* Only display pass length selector after hours/weeks have been specified. */}
+        {formData.passLengthType !== '' && (
+          <>
+            <p id="passLengthPrompt">
+              Please specify the number of {formData.passLengthType} (
+              {formData.passLengthType === 'hours' ? 3 : 7} max).
+            </p>
+            <input
+              type="number"
+              id="passLengthInput"
+              name="passLengthValue"
+              value={formData.passLengthValue}
+              min={1}
+              max={formData.passLengthType === 'hours' ? 3 : 7}
+              onChange={handleInputChange}
+              inputMode="numeric" // Restrict input to numeric values
+              onKeyDown={(e) => e.preventDefault()} // Prevent direct input
+            />
+          </>
+        )}
+        <br />
 
         <div id="passCostSection">
           <br />

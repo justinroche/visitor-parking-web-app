@@ -136,73 +136,71 @@ function AddVehicleModal({
         <Modal.Title>Add a Vehicle</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <form>
-          <div className="form-group">
-            <label>License Plate</label>
-            <br />
-            <input
-              type="text"
-              id="licenseInput"
-              name="license"
-              placeholder="Enter License"
-              value={formData.license}
-              onChange={handleInputChange}
-              required
-              tabIndex={1}
-            />
-            <br />
-            <br />
-          </div>
-          <div className="form-group">
-            <label>Make</label>
-            <br />
-            <input
-              type="text"
-              id="makeInput"
-              name="make"
-              placeholder="Enter Make"
-              value={formData.make}
-              onChange={handleInputChange}
-              required
-              tabIndex={2}
-            />
-            <br />
-            <br />
-          </div>
-          <div className="form-group">
-            <label>Model</label>
-            <br />
-            <input
-              type="text"
-              id="modelInput"
-              name="model"
-              placeholder="Enter Model"
-              value={formData.model}
-              onChange={handleInputChange}
-              required
-              tabIndex={3}
-            />
-            <br />
-            <br />
-          </div>
-          <div className="form-group">
-            <label>Year</label>
-            <br />
-            <input
-              type="text"
-              id="yearInput"
-              name="year"
-              placeholder="Enter Year"
-              value={formData.year}
-              onChange={handleInputChange}
-              onKeyDown={handleYearKeyPress}
-              required
-              tabIndex={4}
-            />
-            <br />
-            <br />
-          </div>
-        </form>
+        <div className="form-group">
+          <label>License Plate</label>
+          <br />
+          <input
+            type="text"
+            id="licenseInput"
+            name="license"
+            placeholder="Enter License"
+            value={formData.license}
+            onChange={handleInputChange}
+            required
+            tabIndex={1}
+          />
+          <br />
+          <br />
+        </div>
+        <div className="form-group">
+          <label>Make</label>
+          <br />
+          <input
+            type="text"
+            id="makeInput"
+            name="make"
+            placeholder="Enter Make"
+            value={formData.make}
+            onChange={handleInputChange}
+            required
+            tabIndex={2}
+          />
+          <br />
+          <br />
+        </div>
+        <div className="form-group">
+          <label>Model</label>
+          <br />
+          <input
+            type="text"
+            id="modelInput"
+            name="model"
+            placeholder="Enter Model"
+            value={formData.model}
+            onChange={handleInputChange}
+            required
+            tabIndex={3}
+          />
+          <br />
+          <br />
+        </div>
+        <div className="form-group">
+          <label>Year</label>
+          <br />
+          <input
+            type="text"
+            id="yearInput"
+            name="year"
+            placeholder="Enter Year"
+            value={formData.year}
+            onChange={handleInputChange}
+            onKeyDown={handleYearKeyPress}
+            required
+            tabIndex={4}
+          />
+          <br />
+          <br />
+        </div>
       </Modal.Body>
       <Modal.Footer className="d-flex justify-content-between">
         {/* Close and Reset Buttons */}

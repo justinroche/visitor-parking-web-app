@@ -50,7 +50,7 @@ function CreateAccountModal({ show, handleClose }) {
       event.preventDefault();
       handleCreateButton();
     }
-  };  
+  };
 
   // Handle form submission
   const handleCreateButton = async () => {
@@ -115,7 +115,7 @@ function CreateAccountModal({ show, handleClose }) {
   };
 
   return (
-    <Modal show={show} onHide={handleCloseButton}>
+    <Modal show={show} onHide={handleCloseButton} backdrop="static">
       <Modal.Header closeButton>
         <Modal.Title>Create an Account</Modal.Title>
       </Modal.Header>
@@ -127,116 +127,112 @@ function CreateAccountModal({ show, handleClose }) {
             <AlertTitle>{alertMessage}</AlertTitle>
           </Alert>
         )}
-        <form>
-          {/* First Name Input */}
-          <div className="form-group">
-            <label htmlFor="createAccountFirstNameInput">First Name</label>
-            <br />
+        {/* First Name Input */}
+        <div className="form-group">
+          <label htmlFor="createAccountFirstNameInput">First Name</label>
+          <br />
+          <input
+            id="createAccountFirstNameInput"
+            className="create-account-input-box"
+            type="text"
+            name="firstName"
+            value={formData.firstName}
+            onChange={handleInputChange}
+            placeholder="Enter First Name"
+            tabIndex={1}
+            required
+          />
+        </div>
+        <br />
+
+        {/* Last Name Input */}
+        <div className="form-group">
+          <label htmlFor="createAccountLastNameInput">Last Name</label>
+          <br />
+          <input
+            id="createAccountFastNameInput"
+            className="create-account-input-box"
+            type="text"
+            name="lastName"
+            value={formData.lastName}
+            onChange={handleInputChange}
+            placeholder="Enter Last Name"
+            tabIndex={2}
+            required
+          />
+        </div>
+        <br />
+
+        {/* Email Input */}
+        <div className="form-group">
+          <label htmlFor="createAccountEmailInput">Email</label>
+          <br />
+          <input
+            id="createAccountEmailInput"
+            className="create-account-input-box"
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleInputChange}
+            placeholder="Enter Email"
+            tabIndex={3}
+            required
+          />
+        </div>
+        <br />
+
+        {/* Password Input */}
+        <div className="form-group">
+          <label htmlFor="createAccountPasswordInput">Password </label>
+          <br />
+          <div className="password-container">
             <input
-              id="createAccountFirstNameInput"
+              id="createAccountPasswordInput"
               className="create-account-input-box"
-              type="text"
-              name="firstName"
-              value={formData.firstName}
+              type={passwordVisibility ? 'text' : 'password'}
+              name="password"
+              value={formData.password}
               onChange={handleInputChange}
-              placeholder="Enter First Name"
-              tabIndex={1}
+              placeholder="Enter Password"
+              tabIndex={4}
               required
             />
+            <Button
+              id="password-button"
+              type="button"
+              onClick={togglePasswordVisibility}
+            >
+              <FontAwesomeIcon icon={passwordVisibility ? faEyeSlash : faEye} />
+            </Button>
           </div>
-          <br />
+        </div>
+        <br />
 
-          {/* Last Name Input */}
-          <div className="form-group">
-            <label htmlFor="createAccountLastNameInput">Last Name</label>
-            <br />
-            <input
-              id="createAccountFastNameInput"
-              className="create-account-input-box"
-              type="text"
-              name="lastName"
-              value={formData.lastName}
-              onChange={handleInputChange}
-              placeholder="Enter Last Name"
-              tabIndex={2}
-              required
-            />
-          </div>
+        {/* Confirm Password Input */}
+        <div>
+          <label htmlFor="createAccountConfirmPasswordInput">
+            Confirm Password
+          </label>
           <br />
-
-          {/* Email Input */}
-          <div className="form-group">
-            <label htmlFor="createAccountEmailInput">Email</label>
-            <br />
-            <input
-              id="createAccountEmailInput"
-              className="create-account-input-box"
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleInputChange}
-              placeholder="Enter Email"
-              tabIndex={3}
-              required
-            />
-          </div>
-          <br />
-
-          {/* Password Input */}
-          <div className="form-group">
-            <label htmlFor="createAccountPasswordInput">Password </label>
-            <br />
-            <div className="password-container">
-              <input
-                id="createAccountPasswordInput"
-                className="create-account-input-box"
-                type={passwordVisibility ? 'text' : 'password'}
-                name="password"
-                value={formData.password}
-                onChange={handleInputChange}
-                placeholder="Enter Password"
-                tabIndex={4}
-                required
-              />
-              <Button
-                id="password-button"
-                type="button"
-                onClick={togglePasswordVisibility}
-              >
-                <FontAwesomeIcon
-                  icon={passwordVisibility ? faEyeSlash : faEye}
-                />
-              </Button>
-            </div>
-          </div>
-          <br />
-
-          {/* Confirm Password Input */}
-          <div>
-            <label htmlFor="createAccountConfirmPasswordInput">
-              Confirm Password
-            </label>
-            <br />
-            <input
-              id="createAccountConfirmPasswordInput"
-              className="create-account-input-box"
-              type="password"
-              name="confirmPassword"
-              value={formData.confirmPassword}
-              onChange={handleInputChange}
-              placeholder="Confirm Password"
-              onKeyDown={handleConfirmPasswordKeyPress}
-              tabIndex={5}
-              required
-            />
-          </div>
-          {/* Passwords Match Validation */}
-          {formData.password &&
-            formData.confirmPassword &&
-            formData.password !== formData.confirmPassword && (
-              <span id="password-alert">Passwords must match!</span>
-            )}
-        </form>
+          <input
+            id="createAccountConfirmPasswordInput"
+            className="create-account-input-box"
+            type="password"
+            name="confirmPassword"
+            value={formData.confirmPassword}
+            onChange={handleInputChange}
+            placeholder="Confirm Password"
+            onKeyDown={handleConfirmPasswordKeyPress}
+            tabIndex={5}
+            required
+          />
+        </div>
+        {/* Passwords Match Validation */}
+        {formData.password &&
+          formData.confirmPassword &&
+          formData.password !== formData.confirmPassword && (
+            <span id="password-alert">Passwords must match!</span>
+          )}
       </Modal.Body>
 
       <Modal.Footer className="d-flex justify-content-between">

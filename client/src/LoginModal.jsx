@@ -91,23 +91,21 @@ function LoginModal({ show, handleClose, handleLogin, fetchPasses }) {
             </Alert>
           )}
           {/* Email input */}
-          <form>
-            <div className="input-group">
-              <span className="input-group-text">
-                <FontAwesomeIcon icon={faEnvelope} />
-              </span>
-              <input
-                type="email"
-                id="emailInput"
-                name="email"
-                placeholder="Email Address"
-                value={formData.email}
-                onChange={handleInputChange}
-                tabIndex={1}
-                required
-              />
-            </div>
-          </form>
+          <div className="input-group">
+            <span className="input-group-text">
+              <FontAwesomeIcon icon={faEnvelope} />
+            </span>
+            <input
+              type="email"
+              id="emailInput"
+              name="email"
+              placeholder="Email Address"
+              value={formData.email}
+              onChange={handleInputChange}
+              tabIndex={1}
+              required
+            />
+          </div>
           <br />
 
           {/* Password input */}
