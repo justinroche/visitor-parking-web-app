@@ -43,6 +43,15 @@ function CreateAccountModal({ show, handleClose }) {
     setPasswordVisibility(!passwordVisibility);
   };
 
+  // Used as shortcut key button "enter" for user once they entered confirmPassword input
+  const handleConfirmPasswordKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      console.log('Enter key pressed on confirmPassword input');
+      event.preventDefault();
+      handleCreateButton();
+    }
+  };  
+
   // Handle form submission
   const handleCreateButton = async () => {
     setAlertMessage(''); // Clear previous alert message
@@ -216,6 +225,7 @@ function CreateAccountModal({ show, handleClose }) {
               value={formData.confirmPassword}
               onChange={handleInputChange}
               placeholder="Confirm Password"
+              onKeyDown={handleConfirmPasswordKeyPress}
               tabIndex={5}
               required
             />

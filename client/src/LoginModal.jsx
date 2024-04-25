@@ -41,6 +41,16 @@ function LoginModal({ show, handleClose, handleLogin, fetchPasses }) {
     setCreateAccountModalVisible(false);
   };
 
+  const handlePasswordKeyPress = (event) => {
+    // Check if Enter key is pressed (key code 13)
+    if (event.key === 'Enter') {
+      // Prevent default form submission behavior
+      event.preventDefault();
+      // Trigger login attempt
+      handleLoginAttempt();
+    }
+  };
+
   const handleLoginAttempt = async () => {
     setAlertMessage(''); // Clear previous alert message
     try {
@@ -113,6 +123,7 @@ function LoginModal({ show, handleClose, handleLogin, fetchPasses }) {
               placeholder="Password"
               value={formData.password}
               onChange={handleInputChange}
+              onKeyDown={handlePasswordKeyPress}
               tabIndex={2}
               required
             />

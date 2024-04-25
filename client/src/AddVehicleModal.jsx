@@ -64,7 +64,13 @@ function AddVehicleModal({
     return true;
   };
 
-  // Inside the AddVehicleModal component
+  // Handle 'Enter' key press on the year input field
+  const handleYearKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      event.preventDefault(); // Prevent form submission
+      handleCreateButton(); // Call handleCreateButton function
+    }
+  };
 
   // Handle form submission
   const handleCreateButton = async () => {
@@ -189,6 +195,7 @@ function AddVehicleModal({
               placeholder="Enter Year"
               value={formData.year}
               onChange={handleInputChange}
+              onKeyDown={handleYearKeyPress}
               required
               tabIndex={4}
             />
