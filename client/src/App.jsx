@@ -252,6 +252,11 @@ function App() {
               </>
             ) : (
               <>
+                {successMessage && (
+                  <Alert className="alert" severity="success">
+                    <AlertTitle>{successMessage}</AlertTitle>
+                  </Alert>
+                )}
                 <h5 className="log-in-message">
                   Please log in to view your passes or continue as a guest.
                 </h5>
@@ -278,6 +283,7 @@ function App() {
         <CreateAccountModal
           show={showCreateAccountModal}
           handleClose={handleCloseCreateAccountModal}
+          setSuccessMessage={setSuccessMessage}
         />
         <ParkingInfoModal
           show={showParkingInfoModal}

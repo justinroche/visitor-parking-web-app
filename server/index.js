@@ -346,7 +346,6 @@ const purchasePass = async (req, res) => {
   const livePass = await livePassExists(data.licensePlate);
   if (livePass) {
     console.log('Live pass already exists... responding to front end.');
-    //alert("This plate number already has an active pass, if you would like to add more time continue as normal.");
     console.log(passData);
     await updateLivePass(passData);
     return res.status(200).json({ message: 'Live pass exists' });

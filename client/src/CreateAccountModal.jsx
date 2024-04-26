@@ -15,7 +15,7 @@ const validateEmail = (email) => {
   return emailRegex.test(email);
 };
 
-function CreateAccountModal({ show, handleClose }) {
+function CreateAccountModal({ show, handleClose, setSuccessMessage }) {
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -76,13 +76,12 @@ function CreateAccountModal({ show, handleClose }) {
     try {
       axios
         .post(serverURL + '/insert-user', formData)
-        .then((response) => {})
+        .then((response) => {
+          setSuccessMessage('Account created successfully! Please log in.');
+        })
         .catch((error) => {
           console.error('Error:', error);
         });
-
-      // Success handling
-      alert('Account created, you may now log in.');
 
       // Reset the form
       setFormData({
@@ -99,7 +98,7 @@ function CreateAccountModal({ show, handleClose }) {
       console.error('Error:', error);
 
       // Error handling (e.g., notify the user)
-      alert('Error inserting user data');
+      alert('Error creating an account. Please try again.');
     }
   };
 
