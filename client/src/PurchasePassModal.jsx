@@ -201,14 +201,16 @@ function PurchasePassModal({
         )}
         {/* License plate text input */}
         <h5>License Plate</h5>
-        <input
-          type="text"
-          id="licensePlateInput"
-          name="licensePlate"
-          placeholder="ABC1234"
-          value={formData.licensePlate}
-          onChange={handleInputChange}
-        />
+        <form>
+          <input
+            type="text"
+            id="licensePlateInput"
+            name="licensePlate"
+            placeholder="ABC1234"
+            value={formData.licensePlate}
+            onChange={handleInputChange}
+          />
+        </form>
         <br />
 
         {/* Saved vehicles dropdown */}
@@ -238,50 +240,52 @@ function PurchasePassModal({
 
         {/* Pass duration radio buttons */}
         <h5>Pass Duration</h5>
-        <input
-          type="radio"
-          id="hourlyRadioButton"
-          name="passLengthType"
-          value="hours"
-          checked={formData.passLengthType === 'hours'}
-          onChange={handleInputChange}
-        />
-        <label className="radioButtonLabel" htmlFor="hourlyRadioButton">
-          Hourly
-        </label>
+        <form>
+          <input
+            type="radio"
+            id="hourlyRadioButton"
+            name="passLengthType"
+            value="hours"
+            checked={formData.passLengthType === 'hours'}
+            onChange={handleInputChange}
+          />
+          <label className="radioButtonLabel" htmlFor="hourlyRadioButton">
+            Hourly
+          </label>
 
-        <input
-          type="radio"
-          id="dailyRadioButton"
-          name="passLengthType"
-          value="days"
-          checked={formData.passLengthType === 'days'}
-          onChange={handleInputChange}
-        />
-        <label className="radioButtonLabel" htmlFor="dailyRadioButton">
-          Daily
-        </label>
+          <input
+            type="radio"
+            id="dailyRadioButton"
+            name="passLengthType"
+            value="days"
+            checked={formData.passLengthType === 'days'}
+            onChange={handleInputChange}
+          />
+          <label className="radioButtonLabel" htmlFor="dailyRadioButton">
+            Daily
+          </label>
 
-        {/* Only display pass length selector after hours/weeks have been specified. */}
-        {formData.passLengthType !== '' && (
-          <>
-            <p id="passLengthPrompt">
-              Please specify the number of {formData.passLengthType} (
-              {formData.passLengthType === 'hours' ? 3 : 7} max).
-            </p>
-            <input
-              type="number"
-              id="passLengthInput"
-              name="passLengthValue"
-              value={formData.passLengthValue}
-              min={1}
-              max={formData.passLengthType === 'hours' ? 3 : 7}
-              onChange={handleInputChange}
-              inputMode="numeric" // Restrict input to numeric values
-              onKeyDown={(e) => e.preventDefault()} // Prevent direct input
-            />
-          </>
-        )}
+          {/* Only display pass length selector after hours/weeks have been specified. */}
+          {formData.passLengthType !== '' && (
+            <>
+              <p id="passLengthPrompt">
+                Please specify the number of {formData.passLengthType} (
+                {formData.passLengthType === 'hours' ? 3 : 7} max).
+              </p>
+              <input
+                type="number"
+                id="passLengthInput"
+                name="passLengthValue"
+                value={formData.passLengthValue}
+                min={1}
+                max={formData.passLengthType === 'hours' ? 3 : 7}
+                onChange={handleInputChange}
+                inputMode="numeric" // Restrict input to numeric values
+                onKeyDown={(e) => e.preventDefault()} // Prevent direct input
+              />
+            </>
+          )}
+        </form>
         <br />
 
         {/* Push notifications checkbox 
@@ -316,27 +320,29 @@ function PurchasePassModal({
               <option value="45">45 minutes</option>
               <option value="60">60 minutes</option>
             </select>
-            {email == '' && (
-              <input
-                type="text"
-                id="passEmailInput"
-                name="email"
-                placeholder="Enter your email address"
-                value={formData.email}
-                onChange={handleInputChange}
-              />
-            )}
-            {email && (
-              <input
-                type="text"
-                id="passEmailInput"
-                name="formEmail"
-                placeholder="Enter your email address"
-                value={email}
-                onChange={handleInputChange}
-                disabled
-              />
-            )}
+            <form>
+              {email == '' && (
+                <input
+                  type="text"
+                  id="passEmailInput"
+                  name="email"
+                  placeholder="Enter your email address"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                />
+              )}
+              {email && (
+                <input
+                  type="text"
+                  id="passEmailInput"
+                  name="formEmail"
+                  placeholder="Enter your email address"
+                  value={email}
+                  onChange={handleInputChange}
+                  disabled
+                />
+              )}
+            </form>
           </>
         )}
 
