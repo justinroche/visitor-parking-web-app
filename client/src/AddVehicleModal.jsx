@@ -4,6 +4,8 @@ import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import './AddVehicleModal.css';
 import { serverURL } from './host.json';
+import Alert from '@mui/material/Alert';
+import { AlertTitle } from '@mui/material';
 
 function AddVehicleModal({
   show,
@@ -18,6 +20,8 @@ function AddVehicleModal({
     year: '',
     email: userEmail,
   });
+
+  const [alertMessage, setAlertMessage] = useState('');
 
   // Max length for license plate is 7 characters.
   useEffect(() => {
@@ -42,22 +46,23 @@ function AddVehicleModal({
 
   // Function to validate input fields for adding a vehicle
   const validateInput = (license, make, model, year) => {
+    setAlertMessage(''); // Clear previous alert message
     // Check if any of the fields are empty
     if (!license || !make || !model || !year) {
-      alert('Please fill out all required fields.');
+      setAlertMessage('Please fill out all required fields.');
       return false;
     }
 
     /* Verify license plate length */
     if (formData.license.length < 1 || formData.license.length > 7) {
-      alert(
+      setAlertMessage(
         'Please enter a valid license plate (e.g., "123ABC" or "ABC1234").'
       );
       return;
     }
 
-    if (isNaN(year) || year.length !== 4) {
-      alert('Please enter a valid year.');
+    if (isNaN(year) || year.length !== 4 || year < 1886 || year > 2024) {
+      setAlertMessage('Please enter a valid year.');
       return false;
     }
 
@@ -82,6 +87,7 @@ function AddVehicleModal({
     }
 
     try {
+      setAlertMessage(''); // Clear previous alert message
       // Create a new object with all form data and add userEmail to it
       const formDataWithUserEmail = {
         ...formData,
@@ -96,7 +102,7 @@ function AddVehicleModal({
         })
         .catch((error) => {
           console.error('Error:', error);
-          alert('Error adding vehicle.');
+          setAlertMessage('Error adding vehicle.');
         });
 
       // Reset the form
@@ -111,10 +117,11 @@ function AddVehicleModal({
       // Close the modal
       handleClose();
     } catch (error) {
+      setAlertMessage('');
       console.error('Error:', error);
 
       // Error handling (e.g., notify the user)
-      alert('Error inserting vehicle data');
+      setAlertMessage('Error inserting vehicle data');
     }
   };
 
@@ -131,19 +138,25 @@ function AddVehicleModal({
 
   // Render the modal.
   return (
-    <Modal show={show} onHide={handleClose}>
+    <Modal show={show} onHide={handleClose} backdrop="static">
       <Modal.Header closeButton>
         <Modal.Title>Add a Vehicle</Modal.Title>
       </Modal.Header>
       <Modal.Body>
+        {/* Alert */}
+        {alertMessage && (
+          <Alert style={{ marginBottom: '10px' }} severity="error">
+            <AlertTitle>{alertMessage}</AlertTitle>
+          </Alert>
+        )}
         <div className="form-group">
-          <label>License Plate</label>
+          <h5 className='headers'>License Plate</h5>
           <br />
           <input
             type="text"
             id="licenseInput"
             name="license"
-            placeholder="Enter License"
+            placeholder="ABC1234"
             value={formData.license}
             onChange={handleInputChange}
             required
@@ -153,7 +166,7 @@ function AddVehicleModal({
           <br />
         </div>
         <div className="form-group">
-          <label>Make</label>
+          <h5 className='headers'>Make</h5>
           <br />
           <input
             type="text"
@@ -169,7 +182,7 @@ function AddVehicleModal({
           <br />
         </div>
         <div className="form-group">
-          <label>Model</label>
+          <h5 className='headers'>Model</h5>
           <br />
           <input
             type="text"
@@ -185,7 +198,7 @@ function AddVehicleModal({
           <br />
         </div>
         <div className="form-group">
-          <label>Year</label>
+          <h5 className='headers'>Year</h5>
           <br />
           <input
             type="text"

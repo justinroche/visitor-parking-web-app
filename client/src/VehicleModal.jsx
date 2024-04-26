@@ -53,7 +53,7 @@ function VehicleModal({ show, handleClose, userEmail }) {
   // Render the modal.
   return (
     <>
-      <Modal show={show} onHide={handleClose}>
+      <Modal show={show} onHide={handleClose} backdrop="static">
         <Modal.Header closeButton>
           <Modal.Title>Your Vehicles</Modal.Title>
         </Modal.Header>
