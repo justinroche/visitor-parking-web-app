@@ -199,19 +199,6 @@ function PurchasePassModal({
             <AlertTitle>{alertMessage}</AlertTitle>
           </Alert>
         )}
-        {/* License plate text input */}
-        <h5>License Plate</h5>
-        <form>
-          <input
-            type="text"
-            id="licensePlateInput"
-            name="licensePlate"
-            placeholder="ABC1234"
-            value={formData.licensePlate}
-            onChange={handleInputChange}
-          />
-        </form>
-        <br />
 
         {/* Saved vehicles dropdown */}
         {savedVehicles.length > 0 && (
@@ -237,6 +224,20 @@ function PurchasePassModal({
             <br />
           </>
         )}
+
+        {/* License plate text input */}
+        <h5>License Plate</h5>
+        <form>
+          <input
+            type="text"
+            id="licensePlateInput"
+            name="licensePlate"
+            placeholder="ABC1234"
+            value={formData.licensePlate}
+            onChange={handleInputChange}
+          />
+        </form>
+        <br />
 
         {/* Pass duration radio buttons */}
         <h5>Pass Duration</h5>

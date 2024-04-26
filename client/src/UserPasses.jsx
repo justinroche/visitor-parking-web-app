@@ -52,7 +52,12 @@ function UserPasses({
   }
 
   if (passes.length === 0) {
-    return <h5 className="none-found-text">No passes found</h5>;
+    return (
+      <h5 className="none-found-text">
+        You do not have any live passes. Please purchase one via the menu on the
+        left.
+      </h5>
+    );
   }
 
   return (

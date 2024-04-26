@@ -1,10 +1,10 @@
 import DateTime from './DateTime';
 
-function Availability({ userEmail, currentAvailability }) {
+function Availability({ userFullName, currentAvailability }) {
   return (
     <div className="col">
       <div className="availability">
-        <h5>{userEmail && `Welcome, ${userEmail}`}</h5>
+        <h5>{userFullName && `Welcome, ${userFullName}.`}</h5>
       </div>
       <div className="availability">
         <DateTime />

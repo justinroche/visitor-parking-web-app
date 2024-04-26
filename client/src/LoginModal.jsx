@@ -53,7 +53,12 @@ function LoginModal({
       if (response.status === 200) {
         await fetchPasses(formData.email); // Fetch user passes on successful login
         handleClose(); // Close the modal on successful login
-        handleLogin(formData.email); // Update the login state
+        handleLogin(
+          formData.email,
+          response.data.userData.firstName +
+            ' ' +
+            response.data.userData.lastName
+        ); // Update the login state
       }
     } catch (error) {
       if (error.response) {

@@ -33,6 +33,7 @@ function App() {
   const [showAddTimeModal, setShowAddTimeModal] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userEmail, setUserEmail] = useState('');
+  const [userFullName, setUserFullName] = useState('');
   const [passes, setPasses] = useState([]);
   const [addTimePass, setAddTimePass] = useState(null);
   const [addTimePassRemaining, setAddTimePassRemaining] = useState(null);
@@ -66,8 +67,9 @@ function App() {
     setAddTimePassRemaining(remaining);
     setShowAddTimeModal(true);
   };
-  const handleLogin = (email) => {
+  const handleLogin = (email, fullName) => {
     setIsLoggedIn(true);
+    setUserFullName(fullName);
     setUserEmail(email.toLowerCase());
     fetchPasses(email); // Fetch passes when user logs in
   };
@@ -75,6 +77,7 @@ function App() {
   const handleLogout = () => {
     setIsLoggedIn(false);
     setUserEmail('');
+    setUserFullName('');
     setPasses([]); // Clear passes when user logs out
   };
   const handleShowVehicleModal = () => setShowVehicleModal(true);
@@ -257,7 +260,7 @@ function App() {
           </div>
 
           <Availability
-            userEmail={userEmail}
+            userFullName={userFullName}
             currentAvailability={currentAvailability}
           />
         </div>
