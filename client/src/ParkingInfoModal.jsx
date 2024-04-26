@@ -6,7 +6,6 @@ import mapImage from './media/uwwmap.png';
 
 // This modal is a DEMO component. Use it as a reference.
 function CampusParkingInfoModal({ show, handleClose }) {
-  // Send a POST request to the server when the modal is closed.
   function handleCloseButton() {
     handleClose();
   }
@@ -55,6 +54,9 @@ function CampusParkingInfoModal({ show, handleClose }) {
               <li>2 hours - $3.05</li>
               <li>3 hours - $4.45</li>
             </ul>
+            <p>
+              For passes longer than three hours, please purchase a daily pass.
+            </p>
             <br />
 
             <h5>Map</h5>

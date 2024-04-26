@@ -16,6 +16,7 @@ import Alert from '@mui/material/Alert';
 import { AlertTitle } from '@mui/material';
 import Availability from './Availability';
 import { serverURL } from './host.json';
+import CreateAccountModal from './CreateAccountModal';
 
 function App() {
   /* State */
@@ -56,6 +57,7 @@ function App() {
   const handleShowLoginModal = () => setShowLoginModal(true);
   const handleCloseAccountSettingsModal = () =>
     setShowAccountSettingsModal(false);
+  const [showCreateAccountModal, setShowCreateAccountModal] = useState(false);
   const handleShowAccountSettingsModal = () =>
     setShowAccountSettingsModal(true);
   const handleCloseAddTimeModal = () => setShowAddTimeModal(false);
@@ -77,6 +79,14 @@ function App() {
   };
   const handleShowVehicleModal = () => setShowVehicleModal(true);
   const handleCloseVehicleModal = () => setShowVehicleModal(false);
+
+  const handleOpenCreateAccountModal = () => {
+    setShowCreateAccountModal(true);
+  };
+
+  const handleCloseCreateAccountModal = () => {
+    setShowCreateAccountModal(false);
+  };
 
   useEffect(() => {
     // Clear the success message after 10 seconds
@@ -128,13 +138,22 @@ function App() {
               </Button>
             )}
             {!isLoggedIn && (
-              <Button
-                className="login-button"
-                variant="secondary"
-                onClick={handleShowLoginModal}
-              >
-                Log In
-              </Button>
+              <>
+                <Button
+                  className="login-button"
+                  variant="secondary"
+                  onClick={handleShowLoginModal}
+                >
+                  Log In
+                </Button>
+                <Button
+                  className="sign-up-button"
+                  variant="secondary"
+                  onClick={handleOpenCreateAccountModal}
+                >
+                  Sign Up
+                </Button>
+              </>
             )}
             {isLoggedIn && (
               <Button
@@ -231,8 +250,7 @@ function App() {
             ) : (
               <>
                 <h5 className="log-in-message">
-                  Please sign in or create an account to view your passes or
-                  continue as a guest.
+                  Please log in to view your passes or continue as a guest.
                 </h5>
               </>
             )}
@@ -252,6 +270,11 @@ function App() {
           handleClose={handleCloseLoginModal}
           handleLogin={handleLogin}
           fetchPasses={fetchPasses}
+          handleOpenCreateAccountModal={handleOpenCreateAccountModal}
+        />
+        <CreateAccountModal
+          show={showCreateAccountModal}
+          handleClose={handleCloseCreateAccountModal}
         />
         <ParkingInfoModal
           show={showParkingInfoModal}

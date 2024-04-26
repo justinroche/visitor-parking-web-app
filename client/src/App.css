@@ -91,13 +91,7 @@
   column-gap: 5px;
 }
 
-.login-button {
-  width: 50%;
-  max-width: 100% !important;
-  /*background-color: rgb(106, 105, 107) !important;*/
-  /*border-color: rgb(106, 105, 107) !important;*/
-}
-
+.login-button,
 .logout-button {
   width: 50%;
   max-width: 100% !important;
@@ -105,12 +99,10 @@
   /*border-color: rgb(106, 105, 107) !important;*/
 }
 
-.account-settings {
+.sign-up-button {
   width: 50%;
-  margin-bottom: 10px;
   max-width: 100% !important;
-  /*background-color: rgb(106, 105, 107) !important;*/
-  /*border-color: rgb(106, 105, 107) !important;*/
+  margin-top: 10px;
 }
 
 .button-container {
