@@ -66,7 +66,7 @@ function App() {
   };
   const handleLogin = (email) => {
     setIsLoggedIn(true);
-    setUserEmail(email);
+    setUserEmail(email.toLowerCase());
     fetchPasses(email); // Fetch passes when user logs in
   };
 
@@ -229,9 +229,12 @@ function App() {
                 />
               </>
             ) : (
-              <h5 className="log-in-message">
-                Please sign in or create an account to view your passes.
-              </h5>
+              <>
+                <h5 className="log-in-message">
+                  Please sign in or create an account to view your passes or
+                  continue as a guest.
+                </h5>
+              </>
             )}
           </div>
 
