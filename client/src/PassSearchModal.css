@@ -1,0 +1,15 @@
+#passSearchInput {
+  width: 220px;
+}
+
+#passSearchButton {
+  margin-top: 1rem;
+}
+
+#passSearchResults {
+  margin-top: 2rem;
+}
+
+#passSearchResults p {
+  margin: 10px 0;
+}

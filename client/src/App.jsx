@@ -17,11 +17,13 @@ import { AlertTitle } from '@mui/material';
 import Availability from './Availability';
 import { serverURL } from './host.json';
 import CreateAccountModal from './CreateAccountModal';
+import PassSearchModal from './PassSearchModal';
 
 function App() {
   /* State */
   const [showPurchasePassModal, setShowPurchasePassModal] = useState(false);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [showPassSearchModal, setShowPassSearchModal] = useState(true);
   const [purchasePassData, setPurchasePassData] = useState({
     licensePlate: '',
     passCost: 0,
@@ -54,6 +56,8 @@ function App() {
   //const handlePaymentModalOpen = () => setShowPaymentModal(true);
   const handleCloseParkingInfoModal = () => setShowParkingInfoModal(false);
   const handleShowParkingInfoModal = () => setShowParkingInfoModal(true);
+  const handleShowPassSearchModal = () => setShowPassSearchModal(true);
+  const handleClosePassSearchModal = () => setShowPassSearchModal(false);
   const handleCloseLoginModal = () => setShowLoginModal(false);
   const handleShowLoginModal = () => setShowLoginModal(true);
   const handleCloseAccountSettingsModal = () =>
@@ -218,20 +222,32 @@ function App() {
               variant="secondary"
               onClick={handleShowPurchasePassModal}
             >
-              Buy A Pass
+              Buy a Pass
             </Button>
-            <br />
-            <br />
             {isLoggedIn && (
-              <Button
-                id="add-vehicle-button"
-                className="primary-button"
-                variant="secondary"
-                onClick={handleShowVehicleModal}
-              >
-                Add/Update Vehicles
-              </Button>
+              <>
+                <br />
+                <br />
+                <Button
+                  id="add-vehicle-button"
+                  className="primary-button"
+                  variant="secondary"
+                  onClick={handleShowVehicleModal}
+                >
+                  Add/Update Vehicles
+                </Button>
+              </>
             )}
+            <br />
+            <br />
+            <Button
+              id="pass-search-button"
+              className="primary-button"
+              variant="secondary"
+              onClick={handleShowPassSearchModal}
+            >
+              Search for a Pass
+            </Button>
           </div>
 
           <div className="col">
@@ -319,6 +335,10 @@ function App() {
           show={showVehicleModal}
           handleClose={handleCloseVehicleModal}
           userEmail={userEmail}
+        />
+        <PassSearchModal
+          show={showPassSearchModal}
+          handleClose={handleClosePassSearchModal}
         />
       </div>
     );
