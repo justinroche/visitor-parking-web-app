@@ -127,8 +127,8 @@ function PaymentModal({
         .then((response) => {
           if (isLoggedIn) {
             fetchPasses(email);
-            setSuccessMessage('Payment successful!');
           }
+          setSuccessMessage('Payment successful!');
         })
         .catch((error) => {
           console.error('Error:', error);
