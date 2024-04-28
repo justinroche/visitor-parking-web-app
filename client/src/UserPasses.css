@@ -33,3 +33,21 @@
   margin-right: 40px;
   margin-top: 40px;
 }
+
+
+
+.current-passes tbody tr:nth-child(even) { /*to add color to every-other row*/
+  background-color: rgb(246, 241, 249);
+}
+
+.current-passes tbody td {
+  border-bottom: 1px solid #ddd; /* border between each row */
+
+}
+
+.header-row  {
+  border-top: 2px solid #ddd; /* Border above and below the headers */
+  border-bottom: 2px solid #ddd; 
+}
+
+
