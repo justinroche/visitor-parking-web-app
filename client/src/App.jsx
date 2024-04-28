@@ -23,7 +23,7 @@ function App() {
   /* State */
   const [showPurchasePassModal, setShowPurchasePassModal] = useState(false);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
-  const [showPassSearchModal, setShowPassSearchModal] = useState(true);
+  const [showPassSearchModal, setShowPassSearchModal] = useState(false);
   const [purchasePassData, setPurchasePassData] = useState({
     licensePlate: '',
     passCost: 0,
@@ -53,7 +53,6 @@ function App() {
   };
   const handleClosePaymentModal = () => setShowPaymentModal(false);
   const handleShowPaymentModal = () => setShowPaymentModal(true);
-  //const handlePaymentModalOpen = () => setShowPaymentModal(true);
   const handleCloseParkingInfoModal = () => setShowParkingInfoModal(false);
   const handleShowParkingInfoModal = () => setShowParkingInfoModal(true);
   const handleShowPassSearchModal = () => setShowPassSearchModal(true);
