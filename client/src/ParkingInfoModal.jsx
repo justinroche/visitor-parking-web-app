@@ -12,7 +12,7 @@ function CampusParkingInfoModal({ show, handleClose }) {
 
   // Render the modal.
   return (
-    <Modal show={show} onHide={handleClose} size="lg" backdrop="static">
+    <Modal show={show} onHide={handleClose} size="lg">
       <Modal.Header closeButton>
         <Modal.Title>Visitor Parking on Campus</Modal.Title>
       </Modal.Header>

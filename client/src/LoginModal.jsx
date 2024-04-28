@@ -16,7 +16,7 @@ function LoginModal({
   handleClose,
   handleLogin,
   fetchPasses,
-  handleOpenCreateAccountModal,
+  handleShowCreateAccountModal,
 }) {
   /* State */
   const [formData, setFormData] = useState({
@@ -135,7 +135,7 @@ function LoginModal({
           <Button
             className="primary-button"
             variant="primary"
-            onClick={handleOpenCreateAccountModal}
+            onClick={handleShowCreateAccountModal}
           >
             Sign Up
           </Button>

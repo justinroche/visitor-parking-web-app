@@ -1,49 +1,57 @@
-import { useState, useEffect } from 'react';
-import React from 'react';
-import axios from 'axios';
-import './App.css';
+/* Import external components */
+import React, { useState, useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
+import axios from 'axios';
+import Alert from '@mui/material/Alert';
+import { AlertTitle } from '@mui/material';
+
+/* Import local components */
+import { serverURL } from './host.json';
+import CreateAccountModal from './CreateAccountModal';
+import PassSearchModal from './PassSearchModal';
 import PaymentModal from './PaymentModal';
 import ParkingInfoModal from './ParkingInfoModal';
-import uww_logo from './media/UWWhitewater_logo.png';
 import LoginModal from './LoginModal';
 import AddTimeModal from './AddTimeModal';
 import PurchasePassModal from './PurchasePassModal';
 import VehicleModal from './VehicleModal';
-import DateTime from './DateTime';
-import UserPasses from './UserPasses';
-import Alert from '@mui/material/Alert';
-import { AlertTitle } from '@mui/material';
 import Availability from './Availability';
-import { serverURL } from './host.json';
-import CreateAccountModal from './CreateAccountModal';
-import PassSearchModal from './PassSearchModal';
+import UserPasses from './UserPasses';
+import uww_logo from './media/UWWhitewater_logo.png';
+import './App.css';
 
 function App() {
   /* State */
+  /* Modal visibility variables */
   const [showPurchasePassModal, setShowPurchasePassModal] = useState(false);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [showPassSearchModal, setShowPassSearchModal] = useState(false);
-  const [purchasePassData, setPurchasePassData] = useState({
-    licensePlate: '',
-    passCost: 0,
-  });
   const [showParkingInfoModal, setShowParkingInfoModal] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
-  const [showAccountSettingsModal, setShowAccountSettingsModal] =
-    useState(false);
   const [showAddTimeModal, setShowAddTimeModal] = useState(false);
+  const [showVehicleModal, setShowVehicleModal] = useState(false);
+  const [showCreateAccountModal, setShowCreateAccountModal] = useState(false);
+
+  /* User/helper variables */
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userEmail, setUserEmail] = useState('');
   const [userFullName, setUserFullName] = useState('');
   const [passes, setPasses] = useState([]);
+  const [currentAvailability, setCurrentAvailability] = useState(null);
+  const [successMessage, setSuccessMessage] = useState('');
+
+  /* Pass data variables */
+  const [purchasePassData, setPurchasePassData] = useState({
+    licensePlate: '',
+    passCost: 0,
+  });
+
+  /* Add time variables */
   const [addTimePass, setAddTimePass] = useState(null);
   const [addTimePassRemaining, setAddTimePassRemaining] = useState(null);
-  const [showVehicleModal, setShowVehicleModal] = useState(false);
-  const [successMessage, setSuccessMessage] = useState('');
-  const [currentAvailability, setCurrentAvailability] = useState(null);
+
   /* Handlers */
-  const handleClosePurchasePassModal = () => setShowPurchasePassModal(false);
+  /* Modal handlers */
   const handleShowPurchasePassModal = () => {
     setPurchasePassData({
       licensePlate: '',
@@ -51,25 +59,34 @@ function App() {
     });
     setShowPurchasePassModal(true);
   };
-  const handleClosePaymentModal = () => setShowPaymentModal(false);
+  const handleClosePurchasePassModal = () => setShowPurchasePassModal(false);
+
   const handleShowPaymentModal = () => setShowPaymentModal(true);
-  const handleCloseParkingInfoModal = () => setShowParkingInfoModal(false);
+  const handleClosePaymentModal = () => setShowPaymentModal(false);
+
   const handleShowParkingInfoModal = () => setShowParkingInfoModal(true);
+  const handleCloseParkingInfoModal = () => setShowParkingInfoModal(false);
+
   const handleShowPassSearchModal = () => setShowPassSearchModal(true);
   const handleClosePassSearchModal = () => setShowPassSearchModal(false);
-  const handleCloseLoginModal = () => setShowLoginModal(false);
+
   const handleShowLoginModal = () => setShowLoginModal(true);
-  const handleCloseAccountSettingsModal = () =>
-    setShowAccountSettingsModal(false);
-  const [showCreateAccountModal, setShowCreateAccountModal] = useState(false);
-  const handleShowAccountSettingsModal = () =>
-    setShowAccountSettingsModal(true);
-  const handleCloseAddTimeModal = () => setShowAddTimeModal(false);
+  const handleCloseLoginModal = () => setShowLoginModal(false);
+
   const handleShowAddTimeModal = (passID, remaining) => {
     setAddTimePass(passID);
     setAddTimePassRemaining(remaining);
     setShowAddTimeModal(true);
   };
+  const handleCloseAddTimeModal = () => setShowAddTimeModal(false);
+
+  const handleShowVehicleModal = () => setShowVehicleModal(true);
+  const handleCloseVehicleModal = () => setShowVehicleModal(false);
+
+  const handleShowCreateAccountModal = () => setShowCreateAccountModal(true);
+  const handleCloseCreateAccountModal = () => setShowCreateAccountModal(false);
+
+  /* Login handlers */
   const handleLogin = (email, fullName) => {
     setIsLoggedIn(true);
     setUserFullName(fullName);
@@ -83,42 +100,45 @@ function App() {
     setUserFullName('');
     setPasses([]); // Clear passes when user logs out
   };
-  const handleShowVehicleModal = () => setShowVehicleModal(true);
-  const handleCloseVehicleModal = () => setShowVehicleModal(false);
 
-  const handleOpenCreateAccountModal = () => {
-    setShowCreateAccountModal(true);
-  };
-
-  const handleCloseCreateAccountModal = () => {
-    setShowCreateAccountModal(false);
-  };
-
+  /* Effects */
+  /* Clear success message after 10 seconds */
   useEffect(() => {
-    // Clear the success message after 10 seconds
     const timer = setTimeout(() => {
       setSuccessMessage('');
     }, 10000);
 
-    return () => {
-      clearTimeout(timer); // Clear the timer when the component unmounts
-    };
+    return () => clearTimeout(timer);
   }, [successMessage]);
 
-  // Fetch number of avilable spots every minute
+  /* Fetch availability every minute */
   useEffect(() => {
     fetchAvailability();
-
     const intervalId = setInterval(fetchAvailability, 60000);
-
-    // Clear interval when component unmounts
     return () => clearInterval(intervalId);
   });
 
+  /* Fetch current availability */
   const fetchAvailability = async () => {
     try {
       const response = await axios.get(serverURL + '/availability');
       setCurrentAvailability(response.data.availability);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  /* Fetch user's passes */
+  const fetchPasses = async (email) => {
+    try {
+      const response = await axios.post(serverURL + '/passes', {
+        email,
+      });
+      if (response.data.message === 'No passes found') {
+        setPasses([]);
+        return;
+      }
+      setPasses(response.data.passes);
     } catch (error) {
       console.error(error);
     }
@@ -133,16 +153,6 @@ function App() {
           <h1>Visitor Parking</h1>
 
           <div className="button-container">
-            {/* Hide account settings window for the time being */}
-            {false && isLoggedIn && (
-              <Button
-                className="account-settings"
-                variant="secondary"
-                onClick={handleShowAccountSettingsModal}
-              >
-                Account Settings
-              </Button>
-            )}
             {!isLoggedIn && (
               <>
                 <Button
@@ -155,7 +165,7 @@ function App() {
                 <Button
                   className="sign-up-button"
                   variant="secondary"
-                  onClick={handleOpenCreateAccountModal}
+                  onClick={handleShowCreateAccountModal}
                 >
                   Sign Up
                 </Button>
@@ -174,30 +184,6 @@ function App() {
         </div>
       </div>
     );
-  }
-
-  function getDate() {
-    const today = new Date();
-    const month = today.getMonth() + 1;
-    const year = today.getFullYear();
-    const date = today.getDate();
-    return `${month}/${date}/${year}`;
-  }
-
-  async function fetchPasses(email) {
-    try {
-      const response = await axios.post(serverURL + '/passes', {
-        email,
-      });
-      if (response.data.message === 'No passes found') {
-        setPasses([]);
-        return;
-      }
-      setPasses(response.data.passes);
-    } catch (error) {
-      console.error(error);
-      // Handle error
-    }
   }
 
   function AppMain() {
@@ -293,7 +279,7 @@ function App() {
           handleClose={handleCloseLoginModal}
           handleLogin={handleLogin}
           fetchPasses={fetchPasses}
-          handleOpenCreateAccountModal={handleOpenCreateAccountModal}
+          handleShowCreateAccountModal={handleShowCreateAccountModal}
         />
         <CreateAccountModal
           show={showCreateAccountModal}
@@ -348,8 +334,6 @@ function App() {
     <>
       <AppHeader />
       <AppMain />
-      {/*<Alert severity="success">Sample Success Message</Alert>
-      <Alert severity="error">Sample Error Message</Alert>*/}
     </>
   );
 }

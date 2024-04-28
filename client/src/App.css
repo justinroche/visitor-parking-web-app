@@ -73,13 +73,6 @@
   overflow-x: hidden;
 }
 
-.campus-map {
-  flex: 0 0 auto; /* Prevent the container from stretching */
-  margin-left: 70px; /* Add margin to create space between text and image */
-  max-width: 100%; /* Ensure the image doesn't exceed container width */
-  max-height: 100%; /* Ensure the image doesn't exceed container height */
-}
-
 .whitewater-logo {
   max-width: 100%;
   max-height: 100%;
