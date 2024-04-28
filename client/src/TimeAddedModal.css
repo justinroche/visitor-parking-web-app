@@ -8,6 +8,12 @@
   border-radius: 5px;
   float: right;
 }
+.confirm:hover {
+ background-color: rgb(124, 39, 203);
+}
+.confirm:active {
+  background-color: rgb(94, 30, 154);
+}
 
 .cancel {
   background-color: rgb(128, 128, 128);
@@ -18,4 +24,10 @@
   border: 0px;
   border-radius: 5px;
   float: right;
+}
+.cancel:hover {
+  background-color: rgb(110, 110, 110);
+}
+.cancel:active {
+  background-color: rgb(70, 70, 70);;
 }
