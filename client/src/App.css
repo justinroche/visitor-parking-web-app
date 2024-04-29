@@ -116,14 +116,6 @@
   font-size: large;
 }
 
-.current-passes {
-  align-items: center !important;
-  margin-left: 50px;
-  margin-right: 40px;
-  margin-top: 40px;
-  width: 25%;
-}
-
 .log-in-message {
   align-items: center !important;
   margin-left: 50px;
