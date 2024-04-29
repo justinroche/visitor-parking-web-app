@@ -36,6 +36,11 @@ function LoginModal({
     setPasswordVisibility(!passwordVisibility);
   };
 
+  const handleSignUpButton = () => {
+    handleShowCreateAccountModal();
+    handleClose();
+  };
+
   const handlePasswordKeyPress = (event) => {
     // Check if Enter key is pressed (key code 13)
     if (event.key === 'Enter') {
@@ -135,7 +140,7 @@ function LoginModal({
           <Button
             className="primary-button"
             variant="primary"
-            onClick={handleShowCreateAccountModal}
+            onClick={handleSignUpButton}
           >
             Sign Up
           </Button>
