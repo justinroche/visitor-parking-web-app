@@ -1,26 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
-import axios from 'axios';
 import './AddTimeModal';
 import Alert from '@mui/material/Alert';
 import { AlertTitle } from '@mui/material';
+import './AddTimeModal.css';
 
 function AddTimeModal({
   show, // Boolean to determine if the modal is visible.
   handleClose, // Function to close the modal.
-  //isLoggedIn, // Boolean to determine if the user is logged in. This displays the saved vehicles feature.
   handleShowPaymentModal, // Function to show the payment modal.
   setPurchasePassData, // Function to set the purchase pass data when the user continues to payment.
-  pass,
-  remaining,
+  pass, // The pass object to which time will be added.
+  remaining, // The remaining time on the pass.
 }) {
+  /* State */
   const [formData, setFormData] = useState({
     passLengthType: '',
     passLengthValue: '1',
     passCost: 0,
   });
-
   const [passCost, setPassCost] = useState(0);
   const [alertMessage, setAlertMessage] = useState('');
 
@@ -65,7 +64,6 @@ function AddTimeModal({
   }
 
   // handleContinueButton validates user inputs and continues to the payment modal.
-  // This system uses alerts for error messages. We might want to change this to a more user-friendly system in the future.
   function handleContinueButton() {
     setAlertMessage(''); // Clear previous alert message
     /* Verify that necessary fields are present */
@@ -107,15 +105,13 @@ function AddTimeModal({
       <Modal.Body>
         {/* Alert */}
         {alertMessage && (
-          <Alert style={{ marginBottom: '10px' }} severity="error">
+          <Alert id="add-time-alert" severity="error">
             <AlertTitle>{alertMessage}</AlertTitle>
           </Alert>
         )}
-        {/* This should be recieved from the database */}
         <h5>License Plate</h5>
         <p>{pass ? pass.license : ''}</p>
 
-        {/* This should be recieved from the database */}
         <h5>Time Remaining</h5>
         <p>{remaining}</p>
 
