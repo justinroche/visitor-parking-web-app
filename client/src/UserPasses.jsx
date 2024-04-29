@@ -9,6 +9,7 @@ function UserPasses({
   fetchPasses,
   fetchAvailability,
 }) {
+  /* State variable for time remaining for each pass */
   const [timeRemaining, setTimeRemaining] = useState({});
 
   function refreshPassesAndAvailability() {
@@ -16,6 +17,7 @@ function UserPasses({
     fetchAvailability();
   }
 
+  /* Calculate time remaining for each pass every minute */
   useEffect(() => {
     const calculateTimeRemaining = () => {
       const now = new Date();
@@ -47,6 +49,7 @@ function UserPasses({
     return () => clearInterval(intervalId);
   }, []);
 
+  /* Display passes loading or no passes depending on the state of the passes parameter */
   if (!passes) {
     return <h5>Loading passes...</h5>;
   }
