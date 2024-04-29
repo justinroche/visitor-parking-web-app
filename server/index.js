@@ -1,3 +1,4 @@
+/* Import backend libraries */
 const express = require('express');
 const bodyParser = require('body-parser');
 const mysql = require('mysql');
@@ -5,13 +6,13 @@ const util = require('util');
 const moment = require('moment');
 const cors = require('cors');
 
+/* Initialize the Express app */
 const app = express();
 const PORT = 8080;
-
 app.use(cors());
-
 app.use(bodyParser.json());
 
+/* Connection pool */
 const pool = mysql.createPool({
   host: 'washington.uww.edu',
   user: 'rochejd20',
@@ -19,13 +20,14 @@ const pool = mysql.createPool({
   database: 'uww-visitor-parking',
 });
 
+/* Listen for Endpoints */
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}...`);
 });
 
 const queryAsync = util.promisify(pool.query).bind(pool);
 
-// Asynchronous query function with error handling
+/* Asynchronous query function with error handling */
 const executeQuery = async (query, values) => {
   try {
     const results = await queryAsync(query, values);
@@ -36,6 +38,7 @@ const executeQuery = async (query, values) => {
   }
 };
 
+/* Query to create a new user in the database */
 const insertUserData = async (userData) => {
   const insertionQuery =
     'INSERT INTO Accounts (firstName, lastName, email, password) VALUES (?, ?, ?, ?)';
@@ -51,7 +54,8 @@ const insertUserData = async (userData) => {
   return results;
 };
 
-app.post('/insert-user', async (req, res) => {
+/* Endpoint to create a new user */
+const insertUserCall = async (req, res) => {
   const userData = req.body;
 
   console.log(userData);
@@ -63,9 +67,10 @@ app.post('/insert-user', async (req, res) => {
     console.error('Error inserting user data:', error);
     res.status(500).json({ message: 'Error inserting user data' });
   }
-});
+};
 
-app.post('/login-user', async (req, res) => {
+/* Endpoint to log in a user */
+const loginUserCall = async (req, res) => {
   const { email, password } = req.body;
   const query = 'SELECT * FROM Accounts WHERE email = ?';
   try {
@@ -86,8 +91,9 @@ app.post('/login-user', async (req, res) => {
     console.error('Error logging in:', error);
     res.status(500).json({ message: 'Error logging in' });
   }
-});
+};
 
+/* Query to insert a user's vehicle */
 const insertVehicleData = async (userData) => {
   const insertionQuery =
     'INSERT INTO Vehicles (license, make, model, year, email) VALUES (?, ?, ?, ?, ?)';
@@ -104,7 +110,8 @@ const insertVehicleData = async (userData) => {
   return results;
 };
 
-app.post('/insert-vehicle', async (req, res) => {
+/* Endpoint to insert a user's vehicle */
+const insertVehicleCall = async (req, res) => {
   const userData = req.body;
 
   console.log(userData);
@@ -116,10 +123,10 @@ app.post('/insert-vehicle', async (req, res) => {
     console.error('Error inserting user vehicle:', error);
     res.status(500).json({ message: 'Error inserting user vehicle' });
   }
-});
+};
 
 // Endpoint to fetch user's vehicles based on email
-app.post('/get-user-vehicles', async (req, res) => {
+const getUserVehicles = async (req, res) => {
   const { email } = req.body; // Extract email from request body
 
   // Query to fetch vehicles based on email
@@ -132,10 +139,10 @@ app.post('/get-user-vehicles', async (req, res) => {
     console.error('Error fetching user vehicles:', error);
     res.status(500).json({ message: 'Error fetching user vehicles' });
   }
-});
+};
 
-// Endpoint to delete a vehicle
-app.delete('/delete-vehicle/:licensePlate', async (req, res) => {
+/* Endpoint to delete a vehicle */
+const deleteVehicle = async (req, res) => {
   const licensePlate = req.params.licensePlate; // Extract license plate from request parameters
 
   // Query to delete vehicle based on license plate
@@ -148,10 +155,10 @@ app.delete('/delete-vehicle/:licensePlate', async (req, res) => {
     console.error('Error deleting vehicle:', error);
     res.status(500).json({ message: 'Error deleting vehicle' });
   }
-});
+};
 
-// Function to check if a pass is live
-function isPassLive(pass) {
+/* Determine if a given pass is live */
+const isPassLive = (pass) => {
   // Extract startTime and duration from the pass object
   const { startTime, duration } = pass;
 
@@ -160,10 +167,10 @@ function isPassLive(pass) {
 
   // Check if the current time is between startTime and endTime
   return moment().isBetween(startTime, endTime);
-}
+};
 
-// Endpoint to fetch passes based on email
-app.post('/passes', async (req, res) => {
+/* Endpoint to fetch a user's live passes */
+const fetchUserPasses = async (req, res) => {
   const { email } = req.body; // Extract email from request body
 
   // Query to fetch passes based on email
@@ -185,9 +192,9 @@ app.post('/passes', async (req, res) => {
     console.error('Error fetching passes:', error);
     res.status(500).json({ message: 'Error fetching passes' });
   }
-});
+};
 
-// calculates new time for pass
+/* Calculate and return the new time for a live pass */
 const addTimeFromLicense = async (duration, licensePlate) => {
   const fetchActivePassDuration =
     'SELECT duration FROM Passes WHERE license = ? ORDER BY startTime DESC LIMIT 1';
@@ -200,7 +207,7 @@ const addTimeFromLicense = async (duration, licensePlate) => {
   return newTime;
 };
 
-// Updates pass that is currently active
+/* Query to add time to a live pass */
 const updateLivePass = async (passData) => {
   let newTime = await addTimeFromLicense(passData.duration, passData.license);
   console.log('New time:', newTime);
@@ -214,7 +221,7 @@ const updateLivePass = async (passData) => {
   return results;
 };
 
-// Insert a pass into the database
+/* Queries to insert a pass into the database */
 const insertPass = async (passData) => {
   let passInsertionQuery;
   let values;
@@ -255,7 +262,7 @@ const insertPass = async (passData) => {
   return results;
 };
 
-// Calculate and return the start time and duration of the provided pass
+/* Calculate and return the necessary data of the provided pass */
 const preparePurchasePassData = (data) => {
   const startTime = new Date();
   const durationHours =
@@ -263,43 +270,32 @@ const preparePurchasePassData = (data) => {
       ? data.passLengthValue * 24
       : data.passLengthValue;
 
-  if (data.notificationsEnabled) {
-    return {
-      license: data.licensePlate,
-      duration: durationHours,
-      startTime: startTime,
-      email: data.email,
-      notifyEnabled: true,
-      notifyWhen: data.notificationTime,
-    };
-  }
-
-  if (data.email) {
-    return {
-      license: data.licensePlate,
-      duration: durationHours,
-      startTime: startTime,
-      email: data.email,
-      notifyEnabled: false,
-    };
-  }
-
-  return {
+  let passData = {
     license: data.licensePlate,
     duration: durationHours,
     startTime: startTime,
-    notifyEnabled: false,
+    notifyEnabled: data.notificationsEnabled ? true : false,
   };
+
+  if (data.email) {
+    passData.email = data.email;
+  }
+
+  if (data.notificationsEnabled) {
+    passData.notifyWhen = data.notificationTime;
+  }
+
+  return passData;
 };
 
-// Calculate the end time of a pass based on its start time and duration
+/* Calculate the end time of a pass based on its start time and duration */
 const calculatePassEndTime = (startTime, duration) => {
   const passEndTime = new Date(startTime);
   passEndTime.setHours(passEndTime.getHours() + duration);
   return passEndTime;
 };
 
-// Return if a license plate has a live pass
+/* Query to determine if a live pass exists for a given license plate */
 const livePassExists = async (licensePlate) => {
   const fetchMostRecentPassQuery =
     'SELECT * FROM Passes WHERE license = ? ORDER BY startTime DESC LIMIT 1';
@@ -319,7 +315,7 @@ const livePassExists = async (licensePlate) => {
   return false;
 };
 
-// Fetch pass information for a live pass
+/* Query to fetch the most recent pass under a given license plate */
 const fetchLivePassInformation = async (licensePlate) => {
   const livePass = await livePassExists(licensePlate);
   if (!livePass) {
@@ -332,7 +328,7 @@ const fetchLivePassInformation = async (licensePlate) => {
   return results.length > 0 ? results[0] : null;
 };
 
-// Check and process a pass insertion
+/* Endpoint to purchase a pass */
 const purchasePass = async (req, res) => {
   /* In practice, we would verify and charge the user's card here.
   For the purposes of this project, we assume the entered card information is valid. */
@@ -356,7 +352,7 @@ const purchasePass = async (req, res) => {
   return res.status(200).json({ message: 'Pass successfully inserted' });
 };
 
-// Search for a live pass
+/* Endpoint to search for a live pass */
 const passSearch = async (req, res) => {
   const licensePlate = req.body.licensePlate;
   console.log('Pass search initiated. Received:', licensePlate);
@@ -376,6 +372,7 @@ const passSearch = async (req, res) => {
   }
 };
 
+/* Endpoint to add time to a pass */
 const addTime = async (req, res) => {
   const passData = req.body;
   console.log('Add time initiated. Received:', passData);
@@ -398,6 +395,7 @@ const addTime = async (req, res) => {
   }
 };
 
+/* Endpoint to get the number of live passes */
 const getAvailability = async (req, res) => {
   const maxLivePasses = 100;
 
@@ -407,21 +405,13 @@ const getAvailability = async (req, res) => {
 };
 
 /* Routes */
+app.get('/availability', getAvailability);
 app.post('/purchase-pass', purchasePass);
 app.post('/pass-search', passSearch);
 app.post('/add-time', addTime);
-app.get('/availability', getAvailability);
-
-/* Fetch user information template ////////////////////////////
-app.post('/get-user-data', async (req, res) => {
-  const { column } = req.body;
-  const query = 'SELECT * FROM table WHERE column = ?';
-  try {
-    const results = await executeQuery(query, [column]);
-    res.status(200).json(results);
-  } catch (error) {
-    console.error('Error fetching user data:', error);
-    res.status(500).json({ message: 'Error fetching user data' });
-  }
-});
-*/
+app.post('/insert-user', insertUserCall);
+app.post('/login-user', loginUserCall);
+app.post('/insert-vehicle', insertVehicleCall);
+app.post('/passes', fetchUserPasses);
+app.post('/get-user-vehicles', getUserVehicles);
+app.delete('/delete-vehicle/:licensePlate', deleteVehicle);
