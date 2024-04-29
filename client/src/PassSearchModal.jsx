@@ -76,11 +76,7 @@ function PassSearchModal({ show, handleClose }) {
                 value={plateSearch}
                 onChange={handleSearchChange}
               />
-              <Button
-                variant="outline-primary"
-                type="submit"
-                id="passSearchButton"
-              >
+              <Button variant="primary" type="submit" id="passSearchButton">
                 Search
               </Button>
             </Form>

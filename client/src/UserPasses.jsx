@@ -65,9 +65,7 @@ function UserPasses({
       <thead>
         <tr>
           <th>
-            <h5 style={{ marginBottom: '30px' }} className="user-passes">
-              Your Passes
-            </h5>
+            <h5 className="user-passes">Your Passes</h5>
           </th>
           <th></th>
           <th className="fetch-passes-cell">

@@ -152,18 +152,19 @@ function App() {
           <img src={uww_logo} alt="uww image" className="whitewater-logo" />
           <h1>Visitor Parking</h1>
 
-          <div className="button-container">
+          <div className="header-button-container">
             {!isLoggedIn && (
               <>
                 <Button
-                  className="login-button"
+                  className="header-button"
                   variant="secondary"
                   onClick={handleShowLoginModal}
                 >
                   Log In
                 </Button>
                 <Button
-                  className="sign-up-button"
+                  id="sign-up-button"
+                  className="header-button"
                   variant="secondary"
                   onClick={handleShowCreateAccountModal}
                 >
@@ -173,7 +174,7 @@ function App() {
             )}
             {isLoggedIn && (
               <Button
-                className="logout-button"
+                className="header-button"
                 variant="secondary"
                 onClick={handleLogout}
               >
@@ -190,10 +191,10 @@ function App() {
     return (
       <div className="App-main">
         <div className="row">
-          <div className="col">
+          <div className="col" id="main-buttons-column">
             <Button
               id="info-button"
-              className="primary-button"
+              className="primary-button main-page-button"
               variant="primary"
               onClick={handleShowParkingInfoModal}
             >
@@ -203,7 +204,7 @@ function App() {
             <br />
             <Button
               id="buy-pass-button"
-              className="primary-button"
+              className="primary-button main-page-button"
               variant="secondary"
               onClick={handleShowPurchasePassModal}
             >
@@ -215,7 +216,7 @@ function App() {
                 <br />
                 <Button
                   id="add-vehicle-button"
-                  className="primary-button"
+                  className="primary-button main-page-button"
                   variant="secondary"
                   onClick={handleShowVehicleModal}
                 >
@@ -227,7 +228,7 @@ function App() {
             <br />
             <Button
               id="pass-search-button"
-              className="primary-button"
+              className="primary-button main-page-button"
               variant="secondary"
               onClick={handleShowPassSearchModal}
             >
@@ -236,32 +237,23 @@ function App() {
           </div>
 
           <div className="col">
+            {successMessage && (
+              <Alert className="alert" severity="success">
+                <AlertTitle>{successMessage}</AlertTitle>
+              </Alert>
+            )}
             {isLoggedIn ? (
-              <>
-                {successMessage && (
-                  <Alert className="alert" severity="success">
-                    <AlertTitle>{successMessage}</AlertTitle>
-                  </Alert>
-                )}
-                <UserPasses
-                  email={userEmail}
-                  passes={passes}
-                  handleShowAddTimeModal={handleShowAddTimeModal}
-                  fetchPasses={fetchPasses}
-                  fetchAvailability={fetchAvailability}
-                />
-              </>
+              <UserPasses
+                email={userEmail}
+                passes={passes}
+                handleShowAddTimeModal={handleShowAddTimeModal}
+                fetchPasses={fetchPasses}
+                fetchAvailability={fetchAvailability}
+              />
             ) : (
-              <>
-                {successMessage && (
-                  <Alert className="alert" severity="success">
-                    <AlertTitle>{successMessage}</AlertTitle>
-                  </Alert>
-                )}
-                <h5 className="log-in-message">
-                  Please log in to view your passes or continue as a guest.
-                </h5>
-              </>
+              <h5 className="log-in-message">
+                Please log in to view your passes or continue as a guest.
+              </h5>
             )}
           </div>
 

@@ -2,7 +2,7 @@ import DateTime from './DateTime';
 
 function Availability({ userFullName, currentAvailability }) {
   return (
-    <div className="col">
+    <div className="col" id="availability-column">
       <div className="availability">
         <h5>{userFullName && `Welcome, ${userFullName}.`}</h5>
       </div>

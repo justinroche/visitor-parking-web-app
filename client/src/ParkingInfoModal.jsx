@@ -19,7 +19,7 @@ function CampusParkingInfoModal({ show, handleClose }) {
       <Modal.Body>
         <div className="container">
           <div className="text-container">
-            <h5>General Parking Information</h5>
+            <h4>General Parking Information</h4>
 
             <p>
               Visitor parking passes are required 24/7 with the following
@@ -46,7 +46,7 @@ function CampusParkingInfoModal({ show, handleClose }) {
               <strong>only in Lot 19</strong>.
             </p>
             <br />
-            <h6>Rates</h6>
+            <h5>Rates</h5>
             <p>Daily visitor passes are $5.00 per day.</p>
             <p>Hourly visitor pass rates are as follows:</p>
             <ul>
@@ -59,7 +59,7 @@ function CampusParkingInfoModal({ show, handleClose }) {
             </p>
             <br />
 
-            <h5>Map</h5>
+            <h4>Map</h4>
             <p>
               Please refer to map below to determine which lots you may use
               (Visitor and Commuter parking)
