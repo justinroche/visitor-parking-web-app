@@ -5,7 +5,7 @@ import axios from 'axios';
 import './CreateAccountModal.css';
 import Alert from '@mui/material/Alert';
 import { AlertTitle } from '@mui/material';
-import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { faEye, faEyeSlash, faUser, faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { serverURL } from './host.json';
 
@@ -25,6 +25,7 @@ function CreateAccountModal({ show, handleClose, setSuccessMessage }) {
   });
 
   const [passwordVisibility, setPasswordVisibility] = useState(false);
+ const [confirmPasswordVisibility, setConfirmPasswordVisibility] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
 
   const handleCloseButton = () => {
@@ -43,6 +44,10 @@ function CreateAccountModal({ show, handleClose, setSuccessMessage }) {
     setPasswordVisibility(!passwordVisibility);
   };
 
+   const toggleConfirmPasswordVisibility = () => {
+    setConfirmPasswordVisibility(!confirmPasswordVisibility);
+  };
+  
   // Used as shortcut key button "enter" for user once they entered confirmPassword input
   const handleConfirmPasswordKeyPress = (event) => {
     if (event.key === 'Enter') {
@@ -128,8 +133,12 @@ function CreateAccountModal({ show, handleClose, setSuccessMessage }) {
         )}
         {/* First Name Input */}
         <div className="form-group">
-          <label htmlFor="createAccountFirstNameInput">First Name</label>
+          <label htmlFor="createAccountFirstNameInput" className="bold-label">First Name</label>
           <br />
+          <div className="firstName-container">
+          <span className="input-group-text">
+              <FontAwesomeIcon icon={faUser} />
+            </span>
           <input
             id="createAccountFirstNameInput"
             className="create-account-input-box"
@@ -142,12 +151,17 @@ function CreateAccountModal({ show, handleClose, setSuccessMessage }) {
             required
           />
         </div>
+        </div>
         <br />
 
         {/* Last Name Input */}
         <div className="form-group">
-          <label htmlFor="createAccountLastNameInput">Last Name</label>
+          <label htmlFor="createAccountLastNameInput" className="bold-label">Last Name</label>
           <br />
+          <div className="lastName-container">
+          <span className="input-group-text">
+              <FontAwesomeIcon icon={faUser} />
+            </span>
           <input
             id="createAccountFastNameInput"
             className="create-account-input-box"
@@ -160,12 +174,18 @@ function CreateAccountModal({ show, handleClose, setSuccessMessage }) {
             required
           />
         </div>
+        </div>
         <br />
 
         {/* Email Input */}
         <div className="form-group">
-          <label htmlFor="createAccountEmailInput">Email</label>
-          <br />
+          <label htmlFor="createAccountEmailInput" className="bold-label" FontAwesomeIcon icon={faLock} >
+         Email</label>
+        <br />
+        <div className="email-container">
+        <span className="input-group-text">
+              <FontAwesomeIcon icon={faEnvelope} />
+            </span>
           <input
             id="createAccountEmailInput"
             className="create-account-input-box"
@@ -178,13 +198,19 @@ function CreateAccountModal({ show, handleClose, setSuccessMessage }) {
             required
           />
         </div>
+        </div>
         <br />
 
         {/* Password Input */}
         <div className="form-group">
-          <label htmlFor="createAccountPasswordInput">Password </label>
+         <label htmlFor="createAccountPasswordInput" className="bold-label" >
+           Password
+           </label>
           <br />
           <div className="password-container">
+          <span className="input-group-text">
+              <FontAwesomeIcon icon={faLock} />
+            </span>
             <input
               id="createAccountPasswordInput"
               className="create-account-input-box"
@@ -209,14 +235,18 @@ function CreateAccountModal({ show, handleClose, setSuccessMessage }) {
 
         {/* Confirm Password Input */}
         <div>
-          <label htmlFor="createAccountConfirmPasswordInput">
+           <label htmlFor="createAccountConfirmPasswordInput" className="bold-label">
             Confirm Password
           </label>
           <br />
+          <div className="password-container">
+          <span className="input-group-text">
+              <FontAwesomeIcon icon={faLock} />
+            </span>
           <input
             id="createAccountConfirmPasswordInput"
             className="create-account-input-box"
-            type="password"
+            type={confirmPasswordVisibility ? 'text' : 'password'}
             name="confirmPassword"
             value={formData.confirmPassword}
             onChange={handleInputChange}
@@ -225,6 +255,14 @@ function CreateAccountModal({ show, handleClose, setSuccessMessage }) {
             tabIndex={5}
             required
           />
+            <Button
+              id="confirm-button"
+              type="button"
+              onClick={toggleConfirmPasswordVisibility}
+            >
+              <FontAwesomeIcon icon={passwordVisibility ? faEyeSlash : faEye} />
+            </Button>
+          </div>
         </div>
         {/* Passwords Match Validation */}
         {formData.password &&
