@@ -15,7 +15,7 @@ function PaymentModal({
   fetchPasses,
   isLoggedIn,
   email,
-  setSuccessMessage,
+  handleShowReceiptModal,
 }) {
   /* State */
   const [paymentData, setPaymentData] = useState({
@@ -117,7 +117,7 @@ function PaymentModal({
 
     // If the data contains a license plate, the user is buying a new pass.
     // If the data does not contain a license plate, the user is adding time to an existing pass.
-    let endpoint = purchasePassData.licensePlate
+    const endpoint = purchasePassData.licensePlate
       ? '/purchase-pass'
       : '/add-time';
 
@@ -127,7 +127,7 @@ function PaymentModal({
         if (isLoggedIn) {
           fetchPasses(email);
         }
-        setSuccessMessage('Payment successful!');
+        handleShowReceiptModal(response.data.receiptData);
       })
       .catch((error) => {
         console.error('Error:', error);

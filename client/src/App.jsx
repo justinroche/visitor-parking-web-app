@@ -15,6 +15,7 @@ import LoginModal from './LoginModal';
 import AddTimeModal from './AddTimeModal';
 import PurchasePassModal from './PurchasePassModal';
 import VehicleModal from './VehicleModal';
+import ReceiptModal from './ReceiptModal';
 import Availability from './Availability';
 import UserPasses from './UserPasses';
 import uww_logo from './media/UWWhitewater_logo.png';
@@ -31,6 +32,7 @@ function App() {
   const [showAddTimeModal, setShowAddTimeModal] = useState(false);
   const [showVehicleModal, setShowVehicleModal] = useState(false);
   const [showCreateAccountModal, setShowCreateAccountModal] = useState(false);
+  const [showReceiptModal, setShowReceiptModal] = useState(false);
 
   /* User/helper variables */
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -40,10 +42,15 @@ function App() {
   const [currentAvailability, setCurrentAvailability] = useState(null);
   const [successMessage, setSuccessMessage] = useState('');
 
-  /* Pass data variables */
+  /* Pass/receipt data variables */
   const [purchasePassData, setPurchasePassData] = useState({
     licensePlate: '',
     passCost: 0,
+  });
+  const [receiptData, setReceiptData] = useState({
+    expirationDate: '',
+    amount: 0,
+    id: '',
   });
 
   /* Add time variables */
@@ -85,6 +92,12 @@ function App() {
 
   const handleShowCreateAccountModal = () => setShowCreateAccountModal(true);
   const handleCloseCreateAccountModal = () => setShowCreateAccountModal(false);
+
+  const handleShowReceiptModal = (receiptData) => {
+    setReceiptData(receiptData);
+    setShowReceiptModal(true);
+  };
+  const handleCloseReceiptModal = () => setShowReceiptModal(false);
 
   /* Login handlers */
   const handleLogin = (email, fullName) => {
@@ -298,6 +311,7 @@ function App() {
           isLoggedIn={isLoggedIn}
           email={userEmail}
           setSuccessMessage={setSuccessMessage}
+          handleShowReceiptModal={handleShowReceiptModal}
         />
         <AddTimeModal
           show={showAddTimeModal}
@@ -316,6 +330,11 @@ function App() {
         <PassSearchModal
           show={showPassSearchModal}
           handleClose={handleClosePassSearchModal}
+        />
+        <ReceiptModal
+          show={showReceiptModal}
+          handleClose={handleCloseReceiptModal}
+          receiptData={receiptData}
         />
       </div>
     );

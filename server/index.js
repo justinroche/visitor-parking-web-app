@@ -291,7 +291,7 @@ const preparePurchasePassData = (data) => {
 /* Calculate the end time of a pass based on its start time and duration */
 const calculatePassEndTime = (startTime, duration) => {
   const passEndTime = new Date(startTime);
-  passEndTime.setHours(passEndTime.getHours() + duration);
+  passEndTime.setTime(passEndTime.getTime() + duration * 3600 * 1000);
   return passEndTime;
 };
 
@@ -349,7 +349,15 @@ const purchasePass = async (req, res) => {
 
   console.log('Inserting pass...');
   await insertPass(passData);
-  return res.status(200).json({ message: 'Pass successfully inserted' });
+
+  const receiptData = {
+    expirationDate: calculatePassEndTime(passData.startTime, passData.duration),
+    passCost: data.passCost,
+  };
+
+  return res
+    .status(200)
+    .json({ message: 'Pass successfully inserted', receiptData });
 };
 
 /* Endpoint to search for a live pass */
@@ -386,7 +394,22 @@ const addTime = async (req, res) => {
   try {
     // Call the addTimeToPass stored procedure
     await executeQuery('CALL addTimeToPass(?, ?)', [addHours, passID]);
-    return res.status(200).json({ message: 'Time successfully added' });
+    const updatedPass = await executeQuery(
+      'SELECT * FROM Passes WHERE passID = ?',
+      [passID]
+    );
+
+    const receiptData = {
+      expirationDate: calculatePassEndTime(
+        updatedPass[0].startTime,
+        updatedPass[0].duration
+      ),
+      passCost: passData.passCost,
+    };
+
+    return res
+      .status(200)
+      .json({ message: 'Time successfully added', receiptData });
   } catch (error) {
     console.error('Error adding time:', error);
     return res
