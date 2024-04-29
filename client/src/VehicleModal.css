@@ -61,3 +61,18 @@
   display: flex;
   justify-content: center;
 }
+
+.vehicles-table tr:nth-child(even) {
+  background-color: rgb(246, 241, 249);
+  
+}
+
+.vehicles-table td {
+  border-bottom: 1px solid #ddd; 
+
+}
+
+.vehicles-table th {
+  border-top: 2px solid #ddd; 
+  border-bottom: 2px solid #ddd; 
+}
