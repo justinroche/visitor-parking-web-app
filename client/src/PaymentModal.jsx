@@ -11,7 +11,7 @@ import { serverURL } from './host.json';
 function PaymentModal({
   show,
   handleClose,
-  purchasePassData,
+  purchasePassData, // This modal receives the purchase pass data and sends it (along with the payment info) to the backend upon payment.
   fetchPasses,
   isLoggedIn,
   email,
@@ -77,11 +77,6 @@ function PaymentModal({
     setPaymentData({ ...paymentData, [name]: value });
   };
 
-  function handleCloseButton() {
-    // TODO: Ask the user if they are sure before closing the modal.
-    handleClose();
-  }
-
   // handleSubmitButton merges the pass and payment data and sends it to the backend.
   function handleSubmitButton() {
     setAlertMessage(''); // Clear previous alert message
@@ -120,38 +115,27 @@ function PaymentModal({
 
     const mergedData = { ...purchasePassData, ...paymentData };
 
-    if (purchasePassData.licensePlate) {
-      // If the data contains a license plate, the user is buying a new pass.
-      axios
-        .post(serverURL + '/purchase-pass', mergedData)
-        .then((response) => {
-          if (isLoggedIn) {
-            fetchPasses(email);
-          }
-          setSuccessMessage('Payment successful!');
-        })
-        .catch((error) => {
-          console.error('Error:', error);
-        });
-    } else {
-      // If the data does not contain a license plate, the user is adding time to an existing pass.
-      axios
-        .post(serverURL + '/add-time', mergedData)
-        .then((response) => {
-          if (isLoggedIn) {
-            fetchPasses(email);
-            setSuccessMessage('Payment successful!');
-          }
-        })
-        .catch((error) => {
-          console.error('Error:', error);
-        });
-    }
+    // If the data contains a license plate, the user is buying a new pass.
+    // If the data does not contain a license plate, the user is adding time to an existing pass.
+    let endpoint = purchasePassData.licensePlate
+      ? '/purchase-pass'
+      : '/add-time';
+
+    axios
+      .post(serverURL + endpoint, mergedData)
+      .then((response) => {
+        if (isLoggedIn) {
+          fetchPasses(email);
+        }
+        setSuccessMessage('Payment successful!');
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
 
     handleClose();
   }
 
-  // Render the modal.
   return (
     <Modal show={show} onHide={handleClose} backdrop="static">
       <Modal.Header>
@@ -164,7 +148,7 @@ function PaymentModal({
       <Modal.Body>
         {/* Alert */}
         {alertMessage && (
-          <Alert style={{ marginBottom: '10px' }} severity="error">
+          <Alert id="payment-alert" severity="error">
             <AlertTitle>{alertMessage}</AlertTitle>
           </Alert>
         )}
@@ -226,7 +210,7 @@ function PaymentModal({
         )}
       </Modal.Body>
       <Modal.Footer className="d-flex justify-content-between">
-        <Button variant="secondary" onClick={handleCloseButton}>
+        <Button variant="secondary" onClick={handleClose}>
           Close
         </Button>
         <Button
@@ -235,7 +219,6 @@ function PaymentModal({
           onClick={handleSubmitButton}
         >
           Submit Payment
-          {/* when this button is clicked successfuly display success message*/}
         </Button>
       </Modal.Footer>
     </Modal>
