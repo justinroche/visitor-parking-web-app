@@ -7,8 +7,6 @@ import Alert from '@mui/material/Alert';
 import { AlertTitle } from '@mui/material';
 import { serverURL } from './host.json';
 
-/* React Bootstrap has a whole system for handling forms: https://react-bootstrap.netlify.app/docs/forms/overview/
-We might want to rewrite this to fit their outline in the future, but this works well enough for now. */
 function PurchasePassModal({
   show, // Boolean to determine if the modal is visible.
   handleClose, // Function to close the modal.
@@ -32,8 +30,8 @@ function PurchasePassModal({
   const [passCost, setPassCost] = useState(0);
   const [savedVehicles, setSavedVehicles] = useState([]);
   const [alertMessage, setAlertMessage] = useState('');
-  /* Effects */
 
+  /* Effects */
   // Fetch user's vehicles from the backend
   useEffect(() => {
     const fetchUserVehicles = async () => {
@@ -103,7 +101,6 @@ function PurchasePassModal({
   }
 
   // handleContinueButton validates user inputs and continues to the payment modal.
-  // This system uses alerts for error messages. We might want to change this to a more user-friendly system in the future.
   function handleContinueButton() {
     setAlertMessage(''); // Clear previous alert message
     /* Verify that necessary fields are present */
