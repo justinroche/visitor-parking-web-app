@@ -4,13 +4,7 @@ import Button from 'react-bootstrap/Button';
 import './ParkingInfoModal.css';
 import mapImage from './media/uwwmap.png';
 
-// This modal is a DEMO component. Use it as a reference.
 function CampusParkingInfoModal({ show, handleClose }) {
-  function handleCloseButton() {
-    handleClose();
-  }
-
-  // Render the modal.
   return (
     <Modal show={show} onHide={handleClose} size="lg">
       <Modal.Header closeButton>
@@ -71,7 +65,7 @@ function CampusParkingInfoModal({ show, handleClose }) {
         </div>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={handleCloseButton}>
+        <Button variant="secondary" onClick={handleClose}>
           Close
         </Button>
       </Modal.Footer>
