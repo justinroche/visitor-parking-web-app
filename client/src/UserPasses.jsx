@@ -97,8 +97,9 @@ function UserPasses({
               <td>{timeRemaining[pass.passID] || 'Calculating...'}</td>
               <td className="add-time-cell">
                 <Button
-                  className="add-time-button"
-                  variant="secondary"
+                  id="add-time-button"
+                  className="primary-button"
+                  variant="primary"
                   onClick={() =>
                     handleShowAddTimeModal(
                       pass.passID,

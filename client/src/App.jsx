@@ -205,7 +205,7 @@ function App() {
             <Button
               id="buy-pass-button"
               className="primary-button main-page-button"
-              variant="secondary"
+              variant="primary"
               onClick={handleShowPurchasePassModal}
             >
               Buy a Pass
@@ -217,7 +217,7 @@ function App() {
                 <Button
                   id="add-vehicle-button"
                   className="primary-button main-page-button"
-                  variant="secondary"
+                  variant="primary"
                   onClick={handleShowVehicleModal}
                 >
                   Add/Update Vehicles
@@ -229,7 +229,7 @@ function App() {
             <Button
               id="pass-search-button"
               className="primary-button main-page-button"
-              variant="secondary"
+              variant="primary"
               onClick={handleShowPassSearchModal}
             >
               Search for a Pass
