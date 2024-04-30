@@ -16,6 +16,7 @@ function PaymentModal({
   isLoggedIn,
   email,
   handleShowReceiptModal,
+  handleShowConfirmAddTimeModal,
 }) {
   /* State */
   const [paymentData, setPaymentData] = useState({
@@ -124,10 +125,14 @@ function PaymentModal({
     axios
       .post(serverURL + endpoint, mergedData)
       .then((response) => {
-        if (isLoggedIn) {
-          fetchPasses(email);
+        if (response.data.message === 'Live pass exists') {
+          handleShowConfirmAddTimeModal(response.data.livePassData);
+        } else {
+          if (isLoggedIn) {
+            fetchPasses(email);
+          }
+          handleShowReceiptModal(response.data.receiptData);
         }
-        handleShowReceiptModal(response.data.receiptData);
       })
       .catch((error) => {
         console.error('Error:', error);

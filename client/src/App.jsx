@@ -16,6 +16,7 @@ import AddTimeModal from './AddTimeModal';
 import PurchasePassModal from './PurchasePassModal';
 import VehicleModal from './VehicleModal';
 import ReceiptModal from './ReceiptModal';
+import ConfirmAddTimeModal from './ConfirmAddTimeModal';
 import Availability from './Availability';
 import UserPasses from './UserPasses';
 import uww_logo from './media/UWWhitewater_logo.png';
@@ -33,6 +34,7 @@ function App() {
   const [showVehicleModal, setShowVehicleModal] = useState(false);
   const [showCreateAccountModal, setShowCreateAccountModal] = useState(false);
   const [showReceiptModal, setShowReceiptModal] = useState(false);
+  const [showConfirmAddTimeModal, setShowConfirmAddTimeModal] = useState(false);
 
   /* User/helper variables */
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -51,6 +53,15 @@ function App() {
     expirationDate: '',
     amount: 0,
     id: '',
+  });
+  const [livePassData, setLivePassData] = useState({
+    passID: 0,
+    license: '',
+    expirationDate: '',
+    cost: 0,
+    passLengthType: '',
+    passLengthValue: '1',
+    duration: 0,
   });
 
   /* Add time variables */
@@ -98,6 +109,22 @@ function App() {
     setShowReceiptModal(true);
   };
   const handleCloseReceiptModal = () => setShowReceiptModal(false);
+
+  const handleShowConfirmAddTimeModal = (livePassData) => {
+    setLivePassData({
+      passID: livePassData.passID,
+      license: livePassData.license,
+      expirationDate: livePassData.expirationDate,
+      cost: livePassData.cost,
+      passLengthType: livePassData.passLengthType,
+      passLengthValue: livePassData.passLengthValue,
+      duration: livePassData.duration,
+    });
+    setShowConfirmAddTimeModal(true);
+  };
+
+  const handleCloseConfirmAddTimeModal = () =>
+    setShowConfirmAddTimeModal(false);
 
   /* Login handlers */
   const handleLogin = (email, fullName) => {
@@ -312,6 +339,7 @@ function App() {
           email={userEmail}
           setSuccessMessage={setSuccessMessage}
           handleShowReceiptModal={handleShowReceiptModal}
+          handleShowConfirmAddTimeModal={handleShowConfirmAddTimeModal}
         />
         <AddTimeModal
           show={showAddTimeModal}
@@ -335,6 +363,15 @@ function App() {
           show={showReceiptModal}
           handleClose={handleCloseReceiptModal}
           receiptData={receiptData}
+        />
+        <ConfirmAddTimeModal
+          show={showConfirmAddTimeModal}
+          handleClose={handleCloseConfirmAddTimeModal}
+          livePassData={livePassData}
+          handleShowReceiptModal={handleShowReceiptModal}
+          fetchPasses={fetchPasses}
+          isLoggedIn={isLoggedIn}
+          email={userEmail}
         />
       </div>
     );

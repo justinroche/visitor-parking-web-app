@@ -58,8 +58,6 @@ const insertUserData = async (userData) => {
 const insertUserCall = async (req, res) => {
   const userData = req.body;
 
-  console.log(userData);
-
   try {
     await insertUserData(userData);
     res.status(200).json({ message: 'User data successfully inserted' });
@@ -113,8 +111,6 @@ const insertVehicleData = async (userData) => {
 /* Endpoint to insert a user's vehicle */
 const insertVehicleCall = async (req, res) => {
   const userData = req.body;
-
-  console.log(userData);
 
   try {
     await insertVehicleData(userData);
@@ -200,6 +196,7 @@ const addTimeFromLicense = async (duration, licensePlate) => {
     'SELECT duration FROM Passes WHERE license = ? ORDER BY startTime DESC LIMIT 1';
 
   const results = await executeQuery(fetchActivePassDuration, [licensePlate]);
+
   console.log('Original time:', results[0].duration);
 
   let newTime = parseInt(duration) + results[0].duration;
@@ -310,7 +307,10 @@ const livePassExists = async (licensePlate) => {
       mostRecentPass.startTime,
       mostRecentPass.duration
     );
-    return currentTime < passEndTime;
+    if (currentTime < passEndTime) {
+      return results[0];
+    }
+    return false;
   }
   return false;
 };
@@ -342,9 +342,21 @@ const purchasePass = async (req, res) => {
   const livePass = await livePassExists(data.licensePlate);
   if (livePass) {
     console.log('Live pass already exists... responding to front end.');
-    console.log(passData);
-    await updateLivePass(passData);
-    return res.status(200).json({ message: 'Live pass exists' });
+
+    const livePassData = {
+      passID: livePass.passID,
+      license: passData.license,
+      expirationDate: calculatePassEndTime(
+        livePass.startTime,
+        livePass.duration
+      ),
+      cost: data.passCost,
+      passLengthType: data.passLengthType,
+      passLengthValue: data.passLengthValue,
+      duration: passData.duration,
+    };
+
+    return res.status(200).json({ message: 'Live pass exists', livePassData });
   }
 
   console.log('Inserting pass...');
@@ -352,12 +364,30 @@ const purchasePass = async (req, res) => {
 
   const receiptData = {
     expirationDate: calculatePassEndTime(passData.startTime, passData.duration),
-    passCost: data.passCost,
+    passCost: data.cost,
   };
 
   return res
     .status(200)
     .json({ message: 'Pass successfully inserted', receiptData });
+};
+
+const confirmAddTime = async (req, res) => {
+  const passData = req.body.livePassData;
+  console.log('Confirm add time initiated. Received:', passData);
+  await updateLivePass(passData);
+
+  const receiptData = {
+    expirationDate: calculatePassEndTime(
+      passData.expirationDate,
+      passData.duration
+    ),
+    passCost: passData.cost,
+  };
+
+  return res
+    .status(200)
+    .json({ message: 'Time successfully added', receiptData });
 };
 
 /* Endpoint to search for a live pass */
@@ -437,4 +467,5 @@ app.post('/login-user', loginUserCall);
 app.post('/insert-vehicle', insertVehicleCall);
 app.post('/passes', fetchUserPasses);
 app.post('/get-user-vehicles', getUserVehicles);
+app.post('/confirm-add-time', confirmAddTime);
 app.delete('/delete-vehicle/:licensePlate', deleteVehicle);
