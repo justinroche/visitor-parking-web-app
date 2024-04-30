@@ -4,14 +4,32 @@ import Button from 'react-bootstrap/Button';
 import ModalBody from 'react-bootstrap/esm/ModalBody';
 import './TimeAddedModal.css';
 
-function TimeAddedModal({ show, handleClose }) {
+function TimeAddedModal({ show, handleClose, livePass }) {
 
   function handleCloseBtn() {
+    // axios
+    //   .post('http://localhost:8080/purchase-pass', mergedData)
+    //   .then((response) => {
+    //     console.log(response.data);
+        
+    //   })
+    //   .catch((error) => {
+    //     console.error('Error:', error);
+    //   });
+
     handleClose();
   }
 
   function handleConfirmBtn() {
-    
+    axios
+      .post('http://localhost:8080/time-added', {livePass})
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+      
     handleClose();
   }
 

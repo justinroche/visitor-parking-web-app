@@ -132,6 +132,7 @@ const livePassExists = async (licensePlate) => {
     'SELECT * FROM Passes WHERE license = ? ORDER BY startTime DESC LIMIT 1';
 
   const results = await executeQuery(fetchMostRecentPassQuery, [licensePlate]);
+  console.log(results);
 
   // If a pass exists and the current time is before the pass end time, return true
   if (results.length > 0) {
@@ -141,7 +142,10 @@ const livePassExists = async (licensePlate) => {
       mostRecentPass.startTime,
       mostRecentPass.duration
     );
-    return currentTime < passEndTime;
+    if (currentTime < passEndTime){
+      return results[0].passID;
+    }
+    return false;
   }
   return false;
 };
@@ -170,13 +174,15 @@ const purchasePass = async (req, res) => {
   const passData = preparePurchasePassData(data);
 
   // If a live pass exists for the license plate, let the front end know so it can ask the user if they would like to add time to their pass.
-  const livePass = await livePassExists(data.licensePlate);
-  if (livePass) {
+  const passID = await livePassExists(data.licensePlate);
+  if (passID) {
+    const livePass = {
+      passID: passID,
+      duration: passData.duration,
+    };
     console.log('Live pass already exists... responding to front end.');
-    //alert("This plate number already has an active pass, if you would like to add more time continue as normal.");
     console.log(passData);
-    await updateLivePass(passData);
-    return res.status(200).json({ message: 'Live pass exists' });
+    return res.status(200).json({ message: 'Live pass exists', livePass });
   }
 
   console.log('Inserting pass...');
@@ -204,6 +210,16 @@ const passSearch = async (req, res) => {
   }
 };
 
+const timeAdded = async (req, res) => {
+  const updatePass =
+    'UPDATE Passes SET duration = ? WHERE passID = ?';
+
+  await executeQuery(updatePass, [req.body.livePass.duration, req.body.livePass.passID]);
+
+  return res.status(200).json({ message: 'successfully added time' })
+}
+
 /* Routes */
 app.post('/purchase-pass', purchasePass);
 app.post('/pass-search', passSearch);
+app.post('/time-added', timeAdded);

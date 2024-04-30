@@ -110,9 +110,9 @@ function PaymentModal({ show, handleClose, purchasePassData, handleShowTimeAdded
       .post('http://localhost:8080/purchase-pass', mergedData)
       .then((response) => {
         console.log(response.data);
-        // insert code here to check if a live pass exists
-        if (response.data.message = "Live pass exists") {
-          handleShowTimeAddedModal();
+        // check if a live pass exists
+        if (response.data.message == "Live pass exists") {
+          handleShowTimeAddedModal(response.data.livePass);
         }
       })
       .catch((error) => {

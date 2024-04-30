@@ -13,6 +13,7 @@ function App() {
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [purchasePassData, setPurchasePassData] = useState(null); // State for purchase pass data (license plate, credit card, etc.)
   const [showTimeAddedModal, setShowTimeAddedModal] = useState(false);
+  const [confirmTimeAddedPassID, setConfirmTimeAddedPassID] = useState({});
 
   /* Handlers */
   const handleClosePurchasePassModal = () => setShowPurchasePassModal(false);
@@ -26,7 +27,10 @@ function App() {
   const handleClosePaymentModal = () => setShowPaymentModal(false);
   const handleShowPaymentModal = () => setShowPaymentModal(true);
 
-  const handleShowTimeAddedModal = () => setShowTimeAddedModal(true);
+  const handleShowTimeAddedModal = (livePass) => {
+    setConfirmTimeAddedPassID(livePass);
+    setShowTimeAddedModal(true);
+  };
   const handleCloseTimeAddedModal = () => setShowTimeAddedModal(false);
 
   /* Components */
@@ -63,6 +67,7 @@ function App() {
         <TimeAddedModal // code in this section causes screen to go blank
           show={showTimeAddedModal}
           handleClose={handleCloseTimeAddedModal}
+          livePass={confirmTimeAddedPassID}
         />
       </div>
     );
