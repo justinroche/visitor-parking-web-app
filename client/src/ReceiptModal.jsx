@@ -6,8 +6,6 @@ import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 function ReceiptModal({ show, handleClose, receiptData }) {
   const expirationDate = new Date(receiptData.expirationDate);
 
-  console.log(receiptData);
-
   return (
     <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
