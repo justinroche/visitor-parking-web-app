@@ -57,7 +57,7 @@ function ConfirmAddTimeModal({
           <b>Total:</b> ${livePassData.cost.toFixed(2)}
         </p>
       </Modal.Body>
-      <Modal.Footer>
+      <Modal.Footer className="d-flex justify-content-between">
         <Button onClick={handleClose} variant="secondary">
           Cancel
         </Button>

@@ -51,8 +51,7 @@ function App() {
   });
   const [receiptData, setReceiptData] = useState({
     expirationDate: '',
-    amount: 0,
-    id: '',
+    passCost: 0,
   });
   const [livePassData, setLivePassData] = useState({
     passID: 0,

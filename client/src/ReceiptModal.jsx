@@ -19,7 +19,7 @@ function ReceiptModal({ show, handleClose, receiptData }) {
           Your pass expires at {expirationDate.toLocaleTimeString()} on{' '}
           {expirationDate.toLocaleDateString()}.
         </p>
-        <p>Amount charged: ${receiptData.passCost}</p>
+        <p>Amount charged: ${receiptData.passCost.toFixed(2)}</p>
       </Modal.Body>
       <Modal.Footer>
         <Button

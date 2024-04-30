@@ -42,12 +42,7 @@ function PassSearchModal({ show, handleClose }) {
               }
             ) +
               ' on ' +
-              new Date(response.data.passInfo.endTime).toLocaleDateString(
-                'en-US',
-                {
-                  dateStyle: 'short',
-                }
-              )
+              new Date(response.data.passInfo.endTime).toLocaleDateString()
           );
         }
       })
