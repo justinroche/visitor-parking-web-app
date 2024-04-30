@@ -6,6 +6,8 @@ import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 function ReceiptModal({ show, handleClose, receiptData }) {
   const expirationDate = new Date(receiptData.expirationDate);
 
+  console.log(receiptData);
+
   return (
     <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
@@ -19,7 +21,10 @@ function ReceiptModal({ show, handleClose, receiptData }) {
           Your pass expires at {expirationDate.toLocaleTimeString()} on{' '}
           {expirationDate.toLocaleDateString()}.
         </p>
-        <p>Amount charged: ${receiptData.passCost.toFixed(2)}</p>
+        <p>
+          Amount charged: $
+          {receiptData.passCost ? receiptData.passCost.toFixed(2) : ''}
+        </p>
       </Modal.Body>
       <Modal.Footer>
         <Button

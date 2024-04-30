@@ -26,7 +26,7 @@
 }
 
 .none-found-text {
-  align-items: center !important;
+  text-align: center;
   margin: 40px;
 }
 

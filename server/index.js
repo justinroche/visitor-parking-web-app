@@ -364,7 +364,7 @@ const purchasePass = async (req, res) => {
 
   const receiptData = {
     expirationDate: calculatePassEndTime(passData.startTime, passData.duration),
-    passCost: data.cost,
+    passCost: data.passCost,
   };
 
   return res
