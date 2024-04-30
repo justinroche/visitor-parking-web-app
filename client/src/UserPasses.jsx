@@ -68,7 +68,7 @@ function UserPasses({
       <thead>
         <tr>
           <th>
-            <h5 className="user-passes">Your Passes</h5>
+            <h4 className="user-passes">Your Passes</h4>
           </th>
           <th></th>
           <th className="fetch-passes-cell">

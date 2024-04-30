@@ -275,7 +275,7 @@ function App() {
             </Button>
           </div>
 
-          <div className="col">
+          <div className="col" id="user-passes-column">
             {successMessage && (
               <Alert className="alert" severity="success">
                 <AlertTitle>{successMessage}</AlertTitle>
