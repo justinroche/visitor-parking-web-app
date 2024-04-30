@@ -142,7 +142,7 @@ const livePassExists = async (licensePlate) => {
       mostRecentPass.startTime,
       mostRecentPass.duration
     );
-    if (currentTime < passEndTime){
+    if (currentTime < passEndTime) {
       return results[0].passID;
     }
     return false;
@@ -211,13 +211,21 @@ const passSearch = async (req, res) => {
 };
 
 const timeAdded = async (req, res) => {
-  const updatePass =
-    'UPDATE Passes SET duration = ? WHERE passID = ?';
+  const getCurrentHours = 'SELECT duration FROM Passes WHERE passID = ?';
 
-  await executeQuery(updatePass, [req.body.livePass.duration, req.body.livePass.passID]);
+  const currentHours = await executeQuery(getCurrentHours, [
+    req.body.livePass.passID,
+  ]);
 
-  return res.status(200).json({ message: 'successfully added time' })
-}
+  const updatePass = 'UPDATE Passes SET duration = ? WHERE passID = ?';
+
+  const newTime =
+    parseInt(req.body.livePass.duration) + parseInt(currentHours[0].duration);
+
+  await executeQuery(updatePass, [newTime, req.body.livePass.passID]);
+
+  return res.status(200).json({ message: 'successfully added time' });
+};
 
 /* Routes */
 app.post('/purchase-pass', purchasePass);
