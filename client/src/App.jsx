@@ -74,6 +74,7 @@ function App() {
       licensePlate: '',
       passCost: 0,
     });
+    setSuccessMessage('');
     setShowPurchasePassModal(true);
   };
   const handleClosePurchasePassModal = () => setShowPurchasePassModal(false);
@@ -84,10 +85,16 @@ function App() {
   const handleShowParkingInfoModal = () => setShowParkingInfoModal(true);
   const handleCloseParkingInfoModal = () => setShowParkingInfoModal(false);
 
-  const handleShowPassSearchModal = () => setShowPassSearchModal(true);
+  const handleShowPassSearchModal = () => {
+    setSuccessMessage('');
+    setShowPassSearchModal(true);
+  };
   const handleClosePassSearchModal = () => setShowPassSearchModal(false);
 
-  const handleShowLoginModal = () => setShowLoginModal(true);
+  const handleShowLoginModal = () => {
+    setSuccessMessage('');
+    setShowLoginModal(true);
+  };
   const handleCloseLoginModal = () => setShowLoginModal(false);
 
   const handleShowAddTimeModal = (passID, remaining) => {
@@ -100,7 +107,10 @@ function App() {
   const handleShowVehicleModal = () => setShowVehicleModal(true);
   const handleCloseVehicleModal = () => setShowVehicleModal(false);
 
-  const handleShowCreateAccountModal = () => setShowCreateAccountModal(true);
+  const handleShowCreateAccountModal = () => {
+    setSuccessMessage('');
+    setShowCreateAccountModal(true);
+  };
   const handleCloseCreateAccountModal = () => setShowCreateAccountModal(false);
 
   const handleShowReceiptModal = (receiptData) => {
@@ -141,14 +151,6 @@ function App() {
   };
 
   /* Effects */
-  /* Clear success message after 10 seconds */
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setSuccessMessage('');
-    }, 10000);
-
-    return () => clearTimeout(timer);
-  }, [successMessage]);
 
   /* Fetch availability every minute */
   useEffect(() => {
