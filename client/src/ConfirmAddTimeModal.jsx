@@ -51,7 +51,9 @@ function ConfirmAddTimeModal({
         <p>
           <b>Current expiration:</b>{' '}
           {currentExpirationDate.toLocaleDateString()} at{' '}
-          {currentExpirationDate.toLocaleTimeString()}
+          {currentExpirationDate.toLocaleTimeString('en-US', {
+            timeStyle: 'short',
+          })}
         </p>
         <p>
           <b>Total:</b> ${livePassData.cost.toFixed(2)}

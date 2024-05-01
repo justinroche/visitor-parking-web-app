@@ -175,7 +175,7 @@ function AddTimeModal({
             Close
           </Button>
           <Button
-            className="save-button"
+            className="primary-button"
             variant="primary"
             onClick={handleContinueButton}
           >

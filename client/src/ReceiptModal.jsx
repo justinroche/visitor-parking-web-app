@@ -16,8 +16,11 @@ function ReceiptModal({ show, handleClose, receiptData }) {
       </Modal.Header>
       <Modal.Body>
         <p>
-          Your pass expires at {expirationDate.toLocaleTimeString()} on{' '}
-          {expirationDate.toLocaleDateString()}.
+          Your pass expires at{' '}
+          {expirationDate.toLocaleTimeString('en-US', {
+            timeStyle: 'short',
+          })}{' '}
+          on {expirationDate.toLocaleDateString()}.
         </p>
         <p>
           Amount charged: $

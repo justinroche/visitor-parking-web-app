@@ -38,7 +38,7 @@ function PassSearchModal({ show, handleClose }) {
             new Date(response.data.passInfo.endTime).toLocaleTimeString(
               'en-US',
               {
-                timeStyle: 'medium',
+                timeStyle: 'short',
               }
             ) +
               ' on ' +
