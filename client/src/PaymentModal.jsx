@@ -126,8 +126,10 @@ function PaymentModal({
       .post(serverURL + endpoint, mergedData)
       .then((response) => {
         if (response.data.message === 'Live pass exists') {
+          // Confirm to add time if a live pass already exists
           handleShowConfirmAddTimeModal(response.data.livePassData);
         } else {
+          // Otherwise, fetch the updated passes and show the receipt
           if (isLoggedIn) {
             fetchPasses(email);
           }

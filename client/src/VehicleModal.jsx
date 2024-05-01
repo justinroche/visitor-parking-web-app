@@ -7,6 +7,7 @@ import AddVehicleModal from './AddVehicleModal';
 import { serverURL } from './host.json';
 
 function VehicleModal({ show, handleClose, userEmail }) {
+  /* State */
   const [vehicles, setVehicles] = useState([]);
   const [addVehicleModalVisible, setAddVehicleModalVisible] = useState(false);
 
@@ -64,37 +65,36 @@ function VehicleModal({ show, handleClose, userEmail }) {
           )}
           {vehicles.length > 0 && (
             <>
-              <div className="table-container">
-                <table className="vehicles-table">
-                  <thead>
-                    <tr>
-                      <th>License Plate</th>
-                      <th>Year</th>
-                      <th>Make</th>
-                      <th>Model</th>
+              <table className="vehicles-table">
+                <thead>
+                  <tr>
+                    <th>License Plate</th>
+                    <th>Year</th>
+                    <th>Make</th>
+                    <th>Model</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {vehicles.map((vehicle, index) => (
+                    <tr key={vehicle.license}>
+                      <td>{vehicle.license}</td>
+                      <td>{vehicle.year}</td>
+                      <td>{vehicle.make}</td>
+                      <td>{vehicle.model}</td>
+                      <td className="delete-button-cell">
+                        <Button
+                          id="remove-vehicle-button"
+                          className="primary-button"
+                          variant="primary"
+                          onClick={() => handleDeleteVehicle(vehicle.license)}
+                        >
+                          Remove
+                        </Button>
+                      </td>
                     </tr>
-                  </thead>
-                  <tbody>
-                    {vehicles.map((vehicle, index) => (
-                      <tr key={vehicle.license}>
-                        <td>{vehicle.license}</td>
-                        <td>{vehicle.year}</td>
-                        <td>{vehicle.make}</td>
-                        <td>{vehicle.model}</td>
-                        <td className="delete-button-cell">
-                          <Button
-                            className="delete-button"
-                            variant="secondary"
-                            onClick={() => handleDeleteVehicle(vehicle.license)}
-                          >
-                            Remove
-                          </Button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+                  ))}
+                </tbody>
+              </table>
             </>
           )}
         </Modal.Body>
@@ -103,8 +103,9 @@ function VehicleModal({ show, handleClose, userEmail }) {
             Close
           </Button>
           <Button
-            className="add-button"
+            className="primary-button"
             type="button"
+            variant="primary"
             onClick={handleOpenAddVehicleModal}
           >
             Add Vehicle
