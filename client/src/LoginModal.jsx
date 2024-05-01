@@ -154,6 +154,7 @@ function LoginModal({
             className="primary-button"
             variant="primary"
             onClick={handleLoginAttempt}
+            tabIndex={3}
           >
             Log In
           </Button>
