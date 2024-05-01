@@ -15,12 +15,6 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { serverURL } from './host.json';
 
-// Function to validate email address
-const validateEmail = (email) => {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(email);
-};
-
 function CreateAccountModal({ show, handleClose, setSuccessMessage }) {
   const [formData, setFormData] = useState({
     firstName: '',
@@ -47,6 +41,12 @@ function CreateAccountModal({ show, handleClose, setSuccessMessage }) {
   // Toggle password visibility
   const togglePasswordVisibility = () => {
     setPasswordVisibility(!passwordVisibility);
+  };
+
+  // Function to validate email address
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
   };
 
   // Used as shortcut key button "enter" for user once they entered confirmPassword input
@@ -83,27 +83,33 @@ function CreateAccountModal({ show, handleClose, setSuccessMessage }) {
         .post(serverURL + '/insert-user', formData)
         .then((response) => {
           setSuccessMessage('Account created successfully! Please log in.');
+
+          // Reset the form
+          setFormData({
+            firstName: '',
+            lastName: '',
+            email: '',
+            password: '',
+            confirmPassword: '',
+          });
+
+          // Close the modal
+          handleCloseButton();
         })
         .catch((error) => {
+          if (error.response.status === 400) {
+            setAlertMessage(
+              'An account with this email already exists. Please log in or use a different email.'
+            );
+          } else if (error.response.status === 500) {
+            setAlertMessage('An server error occurred. Please try again.');
+          }
           console.error('Error:', error);
         });
-
-      // Reset the form
-      setFormData({
-        firstName: '',
-        lastName: '',
-        email: '',
-        password: '',
-        confirmPassword: '',
-      });
-
-      // Close the modal
-      handleCloseButton();
     } catch (error) {
       console.error('Error:', error);
 
-      // Error handling (e.g., notify the user)
-      alert('Error creating an account. Please try again.');
+      setAlertMessage('Error creating an account. Please try again.');
     }
   };
 
@@ -296,6 +302,7 @@ function CreateAccountModal({ show, handleClose, setSuccessMessage }) {
           className="primary-button"
           variant="primary"
           onClick={handleCreateButton}
+          tabIndex={6}
         >
           Create
         </Button>

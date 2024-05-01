@@ -54,11 +54,25 @@ const insertUserData = async (userData) => {
   return results;
 };
 
+const emailExists = async (email) => {
+  const query = 'SELECT * FROM Accounts WHERE email = ?';
+  try {
+    const results = await executeQuery(query, [email]);
+    return results.length > 0;
+  } catch (error) {
+    console.error('Error checking email:', error);
+    return true;
+  }
+};
+
 /* Endpoint to create a new user */
 const insertUserCall = async (req, res) => {
   const userData = req.body;
 
   try {
+    if (await emailExists(userData.email)) {
+      return res.status(400).json({ message: 'Email already exists' });
+    }
     await insertUserData(userData);
     res.status(200).json({ message: 'User data successfully inserted' });
   } catch (error) {
