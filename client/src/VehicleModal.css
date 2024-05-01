@@ -1,0 +1,51 @@
+#remove-vehicle-button {
+  font-size: 0.75em;
+}
+
+.delete-button-cell {
+  text-align: right !important;
+}
+
+.vehicles-table {
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.vehicles-table th,
+.vehicles-table td {
+  padding: 6px;
+  text-align: left;
+  max-width: 110px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Remove side padding from first and last cells */
+.vehicles-table th:first-child,
+.vehicles-table td:first-child {
+  padding-left: 0;
+}
+
+.vehicles-table th:last-child,
+.vehicles-table td:last-child {
+  padding-right: 0;
+}
+
+#no-saved-vehicles {
+  text-align: center;
+}
+
+.vehicles-table tr:nth-child(even) {
+  background-color: rgb(246, 241, 249);
+}
+
+.vehicles-table td {
+  border-bottom: 1px solid #ddd;
+}
+
+.vehicles-table th {
+  border-top: 2px solid #ddd;
+  border-bottom: 2px solid #ddd;
+}

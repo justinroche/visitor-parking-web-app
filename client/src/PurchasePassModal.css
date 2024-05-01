@@ -1,0 +1,33 @@
+.radioButtonLabel {
+  margin-right: 10px;
+  margin-left: 5px;
+}
+
+#notificationLabel {
+  margin-left: 5px;
+}
+
+#notificationTimeSelector {
+  margin-bottom: 5px;
+}
+
+#notificationPrompt {
+  margin: 10px 0 5px;
+}
+
+#passLengthPrompt {
+  margin: 10px 0 5px;
+}
+
+#passLengthInput {
+  width: 50px;
+}
+
+#passEmailInput {
+  width: 250px;
+}
+
+#passCostSection p {
+  margin-bottom: 0;
+  font-size: 1.5em;
+}

@@ -1,0 +1,50 @@
+.current-passes {
+  width: 90%;
+  align-items: center !important;
+  margin: 40px;
+}
+
+.header-row th {
+  padding: 10px 5px;
+}
+
+.license-plate {
+  width: 40%;
+}
+
+.add-time-cell,
+.fetch-passes-cell {
+  text-align: center;
+}
+
+.fetch-passes-button {
+  margin-bottom: 30px;
+}
+
+.pass-row td {
+  padding: 5px 5px;
+}
+
+.none-found-text {
+  text-align: center;
+  margin: 40px;
+}
+
+/* Change color of every other row */
+.current-passes tbody tr:nth-child(even) {
+  background-color: rgb(246, 241, 249);
+}
+
+.current-passes tbody td {
+  border-bottom: 1px solid #ddd;
+}
+
+.header-row {
+  border-top: 2px solid #ddd;
+  border-bottom: 2px solid #ddd;
+  font-size: 18px;
+}
+
+.user-passes {
+  margin-bottom: 30px;
+}
