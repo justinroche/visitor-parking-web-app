@@ -310,7 +310,6 @@ const calculatePassEndTime = (startTime, duration) => {
 const livePassExists = async (licensePlate) => {
   const fetchMostRecentPassQuery =
     'SELECT * FROM Passes WHERE license = ? ORDER BY startTime DESC LIMIT 1';
-
   const results = await executeQuery(fetchMostRecentPassQuery, [licensePlate]);
 
   // If a pass exists and the current time is before the pass end time, return true
@@ -374,34 +373,52 @@ const purchasePass = async (req, res) => {
   }
 
   console.log('Inserting pass...');
-  await insertPass(passData);
 
-  const receiptData = {
-    expirationDate: calculatePassEndTime(passData.startTime, passData.duration),
-    passCost: data.passCost,
-  };
+  try {
+    await insertPass(passData);
 
-  return res
-    .status(200)
-    .json({ message: 'Pass successfully inserted', receiptData });
+    const receiptData = {
+      expirationDate: calculatePassEndTime(
+        passData.startTime,
+        passData.duration
+      ),
+      passCost: data.passCost,
+    };
+
+    return res
+      .status(200)
+      .json({ message: 'Pass successfully inserted', receiptData });
+  } catch (error) {
+    console.log('Error inserting pass:', error);
+    return res
+      .status(500)
+      .json({ error: 'An error occurred while inserting pass' });
+  }
 };
 
 const confirmAddTime = async (req, res) => {
   const passData = req.body.livePassData;
   console.log('Confirm add time initiated. Received:', passData);
-  await updateLivePass(passData);
+  try {
+    await updateLivePass(passData);
 
-  const receiptData = {
-    expirationDate: calculatePassEndTime(
-      passData.expirationDate,
-      passData.duration
-    ),
-    passCost: passData.cost,
-  };
+    const receiptData = {
+      expirationDate: calculatePassEndTime(
+        passData.expirationDate,
+        passData.duration
+      ),
+      passCost: passData.cost,
+    };
 
-  return res
-    .status(200)
-    .json({ message: 'Time successfully added', receiptData });
+    return res
+      .status(200)
+      .json({ message: 'Time successfully added', receiptData });
+  } catch (error) {
+    console.error('Error adding time:', error);
+    return res
+      .status(500)
+      .json({ error: 'An error occurred while adding time' });
+  }
 };
 
 /* Endpoint to search for a live pass */
