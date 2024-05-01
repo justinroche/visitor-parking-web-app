@@ -13,6 +13,7 @@ function AddVehicleModal({
   userEmail,
   fetchUserVehiclesInformation,
 }) {
+  /* State */
   const [formData, setFormData] = useState({
     license: '',
     make: '',
@@ -20,9 +21,9 @@ function AddVehicleModal({
     year: '',
     email: userEmail,
   });
-
   const [alertMessage, setAlertMessage] = useState('');
 
+  /* Effects */
   // Max length for license plate is 7 characters.
   useEffect(() => {
     if (formData.license.length > 7) {
@@ -44,7 +45,7 @@ function AddVehicleModal({
     setFormData({ ...formData, [name]: value });
   };
 
-  // Function to validate input fields for adding a vehicle
+  // Function to validate input fields before submitting
   const validateInput = (license, make, model, year) => {
     setAlertMessage(''); // Clear previous alert message
     // Check if any of the fields are empty
@@ -132,7 +133,7 @@ function AddVehicleModal({
       make: '',
       model: '',
       year: '',
-      email: userEmail, // Reset email back to the logged-in user's email
+      email: userEmail,
     });
   };
 
@@ -150,8 +151,7 @@ function AddVehicleModal({
           </Alert>
         )}
         <div className="form-group">
-          <h5 className='headers'>License Plate</h5>
-          <br />
+          <h5 className="headers">License Plate</h5>
           <input
             type="text"
             id="licenseInput"
@@ -166,8 +166,7 @@ function AddVehicleModal({
           <br />
         </div>
         <div className="form-group">
-          <h5 className='headers'>Make</h5>
-          <br />
+          <h5 className="headers">Make</h5>
           <input
             type="text"
             id="makeInput"
@@ -182,8 +181,7 @@ function AddVehicleModal({
           <br />
         </div>
         <div className="form-group">
-          <h5 className='headers'>Model</h5>
-          <br />
+          <h5 className="headers">Model</h5>
           <input
             type="text"
             id="modelInput"
@@ -198,8 +196,7 @@ function AddVehicleModal({
           <br />
         </div>
         <div className="form-group">
-          <h5 className='headers'>Year</h5>
-          <br />
+          <h5 className="headers">Year</h5>
           <input
             type="text"
             id="yearInput"
@@ -211,8 +208,6 @@ function AddVehicleModal({
             required
             tabIndex={4}
           />
-          <br />
-          <br />
         </div>
       </Modal.Body>
       <Modal.Footer className="d-flex justify-content-between">
@@ -232,9 +227,10 @@ function AddVehicleModal({
 
         {/* Add Button */}
         <Button
-          className="save-button"
+          className="primary-button"
           variant="primary"
           onClick={handleCreateButton}
+          tabIndex={5}
         >
           Add
         </Button>
