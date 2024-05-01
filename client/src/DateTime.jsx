@@ -22,11 +22,7 @@ export const DateTime = () => {
   return (
     <div>
       <p> Today is {formatDate(date)}</p>
-      <p>
-        {date.toLocaleTimeString('en-US', {
-          timeStyle: 'short',
-        })}
-      </p>
+      <p>{date.toLocaleTimeString()}</p>
     </div>
   );
 };
