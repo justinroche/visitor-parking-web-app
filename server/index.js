@@ -14,8 +14,8 @@ const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
     user: 'uwwparkingpassnotify@gmail.com',
-    pass: 'ezlofmgjlpyvxknk'
-  }
+    pass: 'ezlofmgjlpyvxknk',
+  },
 });
 
 /* Initialize the Express app */
@@ -42,59 +42,63 @@ const connection = mysql.createConnection({
 });
 
 /* Scheduling function, gets called every 1 minute */
-cron.schedule('* */1 * * * *', () =>{
+cron.schedule('* */1 * * * *', () => {
   // calls getCurrentNotify() stored procedure and stores values into results
-    let sqlQuery = `CALL getCurrentNotify()`;
-    // runs query and returns a list of the results
-    console.log("I've reached here!");
-    connection.query(sqlQuery, [false], (error, results, fields) => {
-      
-      if (error) return console.error(error.message);
-      console.log("The database connection was successful");
-      
-      
-      // loop to parse the results and check if it is time to send notifications
-      for(let i =0; i < results[0].length; i++){
-        let parsedResult = JSON.parse(JSON.stringify(results[0]));
-        let passID = parsedResult[i].passID;
-        let license = parsedResult[i].license;
-        let startTime = parsedResult[i].startTime;
-        let duration = parsedResult[i].duration;
-        let email = parsedResult[i].email;
-        let notifyWhen = parsedResult[i].notifyWhen;
-        startTime = new Date(startTime);
-        const currentDate = new Date(Date.now());
-        let endTime = new Date(startTime.getTime() + duration * 60000 * 60);
-        let notifyTime = new Date(endTime.getTime() - notifyWhen * 60000);
-        let expiryTime = (duration*60)-notifyWhen;
+  let sqlQuery = `CALL getCurrentNotify()`;
+  // runs query and returns a list of the results
+  connection.query(sqlQuery, [false], (error, results, fields) => {
+    if (error) return console.error(error.message);
 
-        // check to see if notification should be sent yet, and adjusts the email message accordingly
-        if(notifyTime - currentDate <= 0){
-          const mailOptions = {
-            from: 'uwwparkingpassnotify@gmail.com',
-            to: email,
-            subject: 'UWW Visitor Parking Pass Expiry Notice',
-            html: '<p>Hello, your visitor parking pass for ' + startTime + ' is set to expire in ' + expiryTime + ' minutes ' +
-            '(Pass ID: ' + passID + ')</p>'
-          };
-          // disables further notifications after notification is initially sent
-          connection.query("UPDATE Passes SET notifyEnabled = 0 WHERE passID = " + 
-              passID + ";", [false], (error, results, fields) =>{
-                if (error) return console.error(error.message);
-              });
-          
-          //sends mail using the transporter
-          transporter.sendMail(mailOptions, function(err, info){
-            if(err)
-              console.log(err);
-            else
-              // sends email notification and marks pass as no longer needing a notification to be sent.
-              console.log(info);
-              notifiedPasses.push(passID);   
-            }      
-        )} 
-      }    
-    })
+    // loop to parse the results and check if it is time to send notifications
+    for (let i = 0; i < results[0].length; i++) {
+      let parsedResult = JSON.parse(JSON.stringify(results[0]));
+      let passID = parsedResult[i].passID;
+      let license = parsedResult[i].license;
+      let startTime = parsedResult[i].startTime;
+      let duration = parsedResult[i].duration;
+      let email = parsedResult[i].email;
+      let notifyWhen = parsedResult[i].notifyWhen;
+      startTime = new Date(startTime);
+      const currentDate = new Date(Date.now());
+      let endTime = new Date(startTime.getTime() + duration * 60000 * 60);
+      let notifyTime = new Date(endTime.getTime() - notifyWhen * 60000);
+      let expiryTime = duration * 60 - notifyWhen;
+
+      // check to see if notification should be sent yet, and adjusts the email message accordingly
+      if (notifyTime - currentDate <= 0) {
+        const mailOptions = {
+          from: 'uwwparkingpassnotify@gmail.com',
+          to: email,
+          subject: 'UWW Visitor Parking Pass Expiry Notice',
+          html:
+            '<p>Hello, your visitor parking pass for ' +
+            startTime +
+            ' is set to expire in ' +
+            expiryTime +
+            ' minutes ' +
+            '(Pass ID: ' +
+            passID +
+            ')</p>',
+        };
+        // disables further notifications after notification is initially sent
+        connection.query(
+          'UPDATE Passes SET notifyEnabled = 0 WHERE passID = ' + passID + ';',
+          [false],
+          (error, results, fields) => {
+            if (error) return console.error(error.message);
+          }
+        );
+
+        //sends mail using the transporter
+        transporter.sendMail(mailOptions, function (err, info) {
+          if (err) console.log(err);
+          // sends email notification and marks pass as no longer needing a notification to be sent.
+          else console.log(info);
+          notifiedPasses.push(passID);
+        });
+      }
+    }
+  });
 });
 
 /* Listen for Endpoints */
@@ -564,7 +568,6 @@ const getAvailability = async (req, res) => {
   const availability = maxLivePasses - results[0].length;
   res.status(200).json({ availability: availability });
 };
-
 
 /* Routes */
 app.get('/availability', getAvailability);
