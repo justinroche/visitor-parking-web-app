@@ -32,20 +32,26 @@ const pool = mysql.createPool({
   database: 'uww-visitor-parking',
 });
 
+/* separate connection for notifications, as using the pool was causing a bug not allowing the database to be
+used properly. */
+const connection = mysql.createConnection({
+  host: 'washington.uww.edu',
+  user: 'rochejd20',
+  password: 'jr1649',
+  database: 'uww-visitor-parking',
+});
+
 /* Scheduling function, gets called every 1 minute */
 cron.schedule('* */1 * * * *', () =>{
-
-  // creates connection from the pool to call stored procedures in the database
-  pool.getConnection(function(err, connection) {
-
   // calls getCurrentNotify() stored procedure and stores values into results
-    if (err) return console.error(err.message);
     let sqlQuery = `CALL getCurrentNotify()`;
-    let notifiedPasses = [];
-    
     // runs query and returns a list of the results
+    console.log("I've reached here!");
     connection.query(sqlQuery, [false], (error, results, fields) => {
+      
       if (error) return console.error(error.message);
+      console.log("The database connection was successful");
+      
       
       // loop to parse the results and check if it is time to send notifications
       for(let i =0; i < results[0].length; i++){
@@ -89,7 +95,6 @@ cron.schedule('* */1 * * * *', () =>{
         )} 
       }    
     })
-  });
 });
 
 /* Listen for Endpoints */
