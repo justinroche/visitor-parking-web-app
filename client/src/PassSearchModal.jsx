@@ -7,6 +7,7 @@ import {
   faCheckCircle,
   faXmarkCircle,
 } from '@fortawesome/free-solid-svg-icons';
+import { serverURL } from './host.json';
 
 function PassSearchModal({ show, handleClose }) {
   const [plateSearch, setPlateSearch] = useState('');
@@ -30,7 +31,7 @@ function PassSearchModal({ show, handleClose }) {
     setLoading(true);
 
     await axios
-      .post('http://localhost:8080/pass-search', {
+      .post(serverURL + '/pass-search', {
         licensePlate: plateSearch,
       })
       .then((response) => {

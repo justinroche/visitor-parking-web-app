@@ -2,6 +2,7 @@ import React from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
+import { serverURL } from './host.json';
 
 function ConfirmAddTimeModal({
   show,
@@ -14,7 +15,7 @@ function ConfirmAddTimeModal({
 }) {
   function handleConfirm() {
     axios
-      .post('http://localhost:8080/confirm-add-time', { livePassData })
+      .post(serverURL + '/confirm-add-time', { livePassData })
       .then((response) => {
         if (isLoggedIn) {
           fetchPasses(email);
