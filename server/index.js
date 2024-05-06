@@ -86,6 +86,7 @@ cron.schedule('* */1 * * * *', () => {
           [false],
           (error, results, fields) => {
             if (error) return console.error(error.message);
+            console.log('Email notification sent for passID: ' + passID);
           }
         );
 
