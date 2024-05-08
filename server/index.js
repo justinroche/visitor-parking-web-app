@@ -62,7 +62,7 @@ cron.schedule('* */1 * * * *', () => {
       const currentDate = new Date(Date.now());
       let endTime = new Date(startTime.getTime() + duration * 60000 * 60);
       let notifyTime = new Date(endTime.getTime() - notifyWhen * 60000);
-      let expiryTime = duration * 60 - notifyWhen;
+      let expiryTime = notifyWhen;
 
       // check to see if notification should be sent yet, and adjusts the email message accordingly
       if (notifyTime - currentDate <= 0) {
