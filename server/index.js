@@ -9,12 +9,15 @@ const cors = require('cors');
 const nodemailer = require('nodemailer');
 const cron = require('node-cron');
 
+const dbCredentials = require('./dbCredentials.json');
+const nmCredentials = require('./nmCredentials.json');
+
 /* Initialize transporter to send email notifications */
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: 'uwwparkingpassnotify@gmail.com',
-    pass: 'ezlofmgjlpyvxknk',
+    user: nmCredentials.user,
+    pass: nmCredentials.password,
   },
 });
 
@@ -26,19 +29,19 @@ app.use(bodyParser.json());
 
 /* Connection pool */
 const pool = mysql.createPool({
-  host: 'washington.uww.edu',
-  user: 'rochejd20',
-  password: 'jr1649',
-  database: 'uww-visitor-parking',
+  host: dbCredentials.host,
+  user: dbCredentials.user,
+  password: dbCredentials.password,
+  database: dbCredentials.db,
 });
 
 /* separate connection for notifications, as using the pool was causing a bug not allowing the database to be
 used properly. */
 const connection = mysql.createConnection({
-  host: 'washington.uww.edu',
-  user: 'rochejd20',
-  password: 'jr1649',
-  database: 'uww-visitor-parking',
+  host: dbCredentials.host,
+  user: dbCredentials.user,
+  password: dbCredentials.password,
+  database: dbCredentials.db,
 });
 
 /* Scheduling function, gets called every 1 minute */
@@ -72,8 +75,8 @@ cron.schedule('* */1 * * * *', () => {
           subject: 'UWW Visitor Parking Pass Expiry Notice',
           html:
             '<p>Hello, your visitor parking pass for ' +
-            startTime +
-            ' is set to expire in ' +
+            license +
+            ' will expire in ' +
             expiryTime +
             ' minutes ' +
             '(Pass ID: ' +
