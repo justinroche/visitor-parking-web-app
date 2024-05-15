@@ -22,3 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Private credentials and login information
+nmCredentials.json
+dbCredentials.json
